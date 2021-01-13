@@ -1,19 +1,28 @@
 import React from "react";
-import { Grid, Card, CardContent, Typography } from "@material-ui/core";
+import { Grid, Paper } from "@material-ui/core";
 import { createUseStyles } from "react-jss";
+import AccountCircle from '@material-ui/icons/AccountCircle';
+import VpnKeyIcon from '@material-ui/icons/VpnKey';
+import { InputWithIcon } from "../../../components/elements"
 
 const useStyles = createUseStyles((theme) => ({
-    card: {
-        overflow: "visible !important",
-        borderRadius: "1rem",
+    root: {
+        flexGrow: 1,
     },
-    cardContent: {
-        backgroundColor: "#282a2d",
-        color: "#FFFFFF",
-        padding: "4rem"
+    paper: {
+        alignItems: "center",
+        margin: "auto",
+        borderRadius: ".25rem",
+        display: "flex",
+        flexDirection: "column",
+        padding: "3rem",
+        maxWidth: "500px"
     },
-    loginForm: {
-        padding: "3rem"
+    formControl: {
+        width: "350px",
+    },
+    inputDiv: {
+        padding: ".5rem",
     }
 }));
 
@@ -21,24 +30,39 @@ const Login = (props) => {
     const classes = useStyles();
     return (
         <React.Fragment>
-            <Grid
-                container
-                spacing={0}
-                direction="column"
-                alignItems="center"
-                justify="center"
-                style={{ minHeight: '100vh' }}
-            >
-                <Grid item>
-                    <Card className={classes.card}>
-                        <CardContent className={classes.cardContent}>
-                            <div className={classes.loginForm}>
-                                <span>Hey its me Bajoy</span>
-                            </div>
-                        </CardContent>
-                    </Card>
+            <div className={classes.root}>
+                <Grid
+                    container
+                    spacing={0}
+                    direction="column"
+                    alignItems="center"
+                    justify="center"
+                    style={{ minHeight: '100vh' }}
+                >
+                    <Grid item xs={12}>
+                        <Paper className={classes.paper}>
+                            <Grid container>
+                                <Grid item>
+                                    <form className={classes.loginForm}>
+                                        <div className={classes.inputDiv}>
+                                            <InputWithIcon
+                                                className={classes.formControl}
+                                                label="Username"
+                                                icon={<AccountCircle />} />
+                                        </div>
+                                        <div className={classes.inputDiv}>
+                                            <InputWithIcon
+                                                className={classes.formControl}
+                                                label="Posting Key"
+                                                icon={<VpnKeyIcon />} />
+                                        </div>
+                                    </form>
+                                </Grid>
+                            </Grid>
+                        </Paper>
+                    </Grid>
                 </Grid>
-            </Grid>
+            </div>
         </React.Fragment>
     );
 }

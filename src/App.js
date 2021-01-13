@@ -8,8 +8,7 @@ import { createUseStyles } from "react-jss";
 const useStyles = createUseStyles((theme) => ({
   wrapper: {
     overflow: "hidden !important",
-    backgroundColor: "#202225",
-    color: "#FFFFFF",
+    backgroundColor: "#f7f7ff",
   },
 }));
 
