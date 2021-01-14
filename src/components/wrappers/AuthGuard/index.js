@@ -1,13 +1,13 @@
 import React from 'react'
-// import { connect } from 'react-redux'
+import { connect } from 'react-redux'
 import { useLocation, Redirect } from 'react-router-dom'
 
 const AuthGuard = (props) => {
     const { children } = props
     const location = useLocation()
     const { pathname } = location
-    const is_authenticated = false
-
+    const { user } = props
+    const { is_authenticated } = user;
 
     const isGuardedRoute = () => {
         return pathname.match(/^(\/dashboard)/g)
@@ -29,8 +29,9 @@ const AuthGuard = (props) => {
         </React.Fragment>
     )
 }
+const mapStateToProps = (state) => ({
+    user: state.auth.get('user'),
+})
 
-// const mapStateToProps = (state) => ({
-// })
 
-export default AuthGuard
+export default connect(mapStateToProps)(AuthGuard)

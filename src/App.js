@@ -2,7 +2,7 @@ import React from "react";
 import { withRouter } from "react-router";
 import { renderRoutes } from "react-router-config";
 import routes from "./routes";
-import { AuthGuard } from "./components"
+import { AuthGuard, Init } from "./components"
 import { createUseStyles } from "react-jss";
 
 const useStyles = createUseStyles((theme) => ({
@@ -20,11 +20,13 @@ const AppWrapper = ({ children }) => {
 function App() {
   return (
     <React.Fragment>
-      <AuthGuard>
-        <AppWrapper>
-          {renderRoutes(routes)}
-        </AppWrapper>
-      </AuthGuard>
+      <Init>
+        <AuthGuard>
+          <AppWrapper>
+            {renderRoutes(routes)}
+          </AppWrapper>
+        </AuthGuard>
+      </Init>
     </React.Fragment>
   );
 }

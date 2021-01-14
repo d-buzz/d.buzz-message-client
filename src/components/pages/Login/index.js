@@ -1,33 +1,42 @@
-import React from "react";
-import Button from "@material-ui/core/Button";
-import CssBaseline from "@material-ui/core/CssBaseline";
-import Paper from "@material-ui/core/Paper";
-import TextField from "@material-ui/core/TextField";
-import FormControlLabel from "@material-ui/core/FormControlLabel";
-import Checkbox from "@material-ui/core/Checkbox";
-import Link from "@material-ui/core/Link";
-import Grid from "@material-ui/core/Grid";
-import Box from "@material-ui/core/Box";
-import Typography from "@material-ui/core/Typography";
-import MenuIcon from '@material-ui/icons/Menu';
+import React, { useState } from "react";
+import { bindActionCreators } from "redux";
+import { connect } from "react-redux";
+
+import {
+  CssBaseline,
+  Paper,
+  Grid,
+  Box,
+  Typography,
+  Link
+} from "@material-ui/core"
 import { makeStyles } from "@material-ui/core/styles";
-import IconButton from '@material-ui/core/IconButton';
 
 import logo from "../../../images/dbuzz_logo.png";
-import { Input, InputAdornment } from "@material-ui/core";
-import AccountCircle  from '@material-ui/icons/AccountCircle';
-import VpnKey  from '@material-ui/icons/VpnKey';
+import AccountCircle from '@material-ui/icons/AccountCircle';
+import VpnKey from '@material-ui/icons/VpnKey';
+import { TextFieldWithIcon, ContainedButton } from "../../elements";
+import { authenticateUserRequest } from "../../../store/auth/actions"
+import { broadcastNotification } from "../../../store/interfaces/actions"
 
-
-function Copyright() {
+const Copyright = () => {
   return (
     <Typography variant="body2" color="textSecondary" align="center">
-      {"Copyright © "}
+      {"© 2021 "}
       <Link color="inherit" href="#">
-        DataLoft LLC
-      </Link>{" "}
-      {new Date().getFullYear()}
-      {"."}
+        Dataloft, LLC
+      </Link>{"."}
+    </Typography>
+  );
+}
+const SignUp = () => {
+  return (
+    <Typography variant="body2" color="textSecondary" align="center">
+      {"Don't have an account? "}
+      <Link href="https://hiveonboard.com/create-account?ref=dbuzz&redirect_url=https://d.buzz/login"
+        variant="body2" target="_blank">
+        {"Signup now"}
+      </Link>
     </Typography>
   );
 }
@@ -36,52 +45,90 @@ const useStyles = makeStyles((theme) => ({
   root: {
     flexGrow: 1,
   },
-  //   paper: {
-  //     marginTop: theme.spacing(8),
-  //     display: "flex",
-  //     flexDirection: "column",
-  //     alignItems: "center",
-  //   },
   paper: {
+    marginTop: theme.spacing(8),
+    display: "flex",
+    flexDirection: "column",
     alignItems: "center",
     margin: "auto",
     borderRadius: ".25rem",
-    display: "flex",
-    flexDirection: "column",
-    padding: "3rem",
+    padding: "2rem",
     maxWidth: "500px",
-  },
-
-  avatar: {
-    margin: theme.spacing(1),
-    backgroundColor: theme.palette.secondary.main,
   },
   form: {
     width: "100%", // Fix IE 11 issue.
     marginTop: theme.spacing(1),
   },
-  submit: {
-    margin: theme.spacing(3, 0, 2),
-    backgroundColor: "#e51c34",
-    color:"white",
-  },
   logo: {
-    height: "50px",
-    marginBottom: "-14px",
+    height: "40px",
+    marginBottom: "-7px",
     alignItems: "center",
-
   },
-  logoWrapper:{
-      position: "absolute",
-     
+  logoWrapper: {
+    paddingBottom: "1rem",
   },
-  hivePMfont:{
-      fontSize:"32px",
-  }
+  hivePMfont: {
+    fontSize: "32px",
+  },
 }));
 
-export default function LogIn() {
+const Login = (props) => {
   const classes = useStyles();
+
+  const { authenticateUserRequest, broadcastNotification } = props
+  const [loading, setLoading] = useState(false)
+  const [username, setUsername] = useState("")
+  const [password, setPassword] = useState("")
+  const [isUsernameTouched, setIsIUsernameTouched] = useState(false)
+  const [isPasswordTouched, setIsIPasswordTouched] = useState(false)
+
+  const onChangeInput = (e) => {
+    const { target } = e;
+    const { id, value } = target;
+
+    if (id === "username") {
+      setUsername(value)
+      if (!value) {
+        setIsIUsernameTouched(true)
+      }
+    } else if (id === "postingKey") {
+      setPassword(value)
+      if (!value) {
+        setIsIPasswordTouched(true)
+      }
+    }
+  }
+
+  const handLogin = () => {
+    if (username && password) {
+      setLoading(true);
+      authenticateUserRequest(username, password).then(
+        ({ is_authenticated }) => {
+          setLoading(false);
+          console.log(is_authenticated)
+          if (!is_authenticated) {
+            broadcastNotification(
+              "error",
+              "Authentication failed, please check your credentials."
+            );
+          } else {
+            handleClearInput();
+            broadcastNotification("success", "Authenticated successfully.");
+          }
+        }
+      );
+    } else {
+      setIsIUsernameTouched(true)
+      setIsIPasswordTouched(true)
+    }
+  }
+
+  const handleClearInput = () => {
+    setUsername("")
+    setPassword("")
+    setIsIUsernameTouched(false)
+    setIsIPasswordTouched(false)
+  }
 
   return (
     <div className={classes.root}>
@@ -93,75 +140,83 @@ export default function LogIn() {
         justify="center"
         style={{ minHeight: "100vh" }}
       >
+        <Grid item align="center">
+          <div className={classes.logoWrapper}>
+            <img src={logo} className={classes.logo} alt="hivepm logo" />
+          </div>
+          <Typography variant="h5">
+            Sign in
+          </Typography>
+          <Typography variant="subtitle2">
+            Sign in to continue to HivePM
+          </Typography>
+        </Grid>
         <Grid item xs={12}>
           <CssBaseline />
           <Paper className={classes.paper}>
-            <div class>
-              <img src={logo} className={classes.logo} /> 
-              <label className={classes.hivePMfont}>Hive PM</label>
-            </div>
-            <Typography component="h1" variant="h5">
-              Sign in
-            </Typography>
             <form className={classes.form} noValidate>
-    
-             <TextField
-                variant="outlined"
-                margin="normal"
-                required
-                fullWidth
+              <TextFieldWithIcon
                 id="username"
-                label = "Username"
-                placeholder="Please enter your Username"
-                name="username"
-                autoComplete="username"
-                autoFocus
-                InputProps={{
-                    startAdornment: <InputAdornment position="start"><AccountCircle/></InputAdornment>,
-                  }}
-               
-                
-              />
-              <TextField
-                variant="outlined"
-                margin="normal"
+                label="Username"
+                placeholder="Enter your username"
+                value={username}
+                icon={<AccountCircle />}
+                onChange={onChangeInput}
                 required
                 fullWidth
-                name="posting"
-                label="Posting Key"
-                placeholder="Please enter your Posting Key"
-                type="posting"
-                id="posting"
-                autoComplete="current-posting"
-                InputProps={{
-                    startAdornment: <InputAdornment position="start"><VpnKey/></InputAdornment>,
-                  }}
+                autoFocus
+                error={isUsernameTouched && !username}
+                helperText={isUsernameTouched && !username ? "Username is required" : ""}
               />
-             
-              <Button
-                type="submit"
+              <TextFieldWithIcon
+                id="postingKey"
+                label="Posting Key"
+                placeholder="Enter your posting key"
+                value={password}
+                icon={<VpnKey />}
+                onChange={onChangeInput}
+                type="password"
+                required
                 fullWidth
-                variant="contained"
-                color ="secondary"
-                className={classes.submit}
-              >
-                Sign In
-              </Button>
-              <Grid container>
-                <Grid item xs></Grid>
-                <Grid item>
-                  <Link href="#" variant="body2">
-                    {"Don't have an account? Sign Up"}
-                  </Link>
-                </Grid>
-              </Grid>
+                error={isPasswordTouched && !password}
+                helperText={isPasswordTouched && !password ? "Posting key is required" : ""}
+              />
+              <ContainedButton
+                type="button"
+                color="secondary"
+                label="Sign In"
+                onClick={handLogin}
+                className={classes.submitBtn}
+                fullWidth
+                disabled={loading}
+                loading={loading}
+                loadType="circular"
+              />
             </form>
           </Paper>
-          <Box mt={8}>
-            <Copyright />
+          <Box mt={6}>
+            <SignUp />
           </Box>
         </Grid>
+        <Box mt={2}>
+          <Copyright />
+        </Box>
       </Grid>
-    </div>
+    </div >
   );
 }
+
+const mapStateToProps = (state) => ({});
+
+const mapDispatchToProps = (dispatch) => ({
+  ...bindActionCreators(
+    {
+      authenticateUserRequest,
+      broadcastNotification,
+    },
+    dispatch
+  ),
+});
+
+export default connect(mapStateToProps, mapDispatchToProps)(Login);
+

@@ -1,8 +1,10 @@
 import React from "react";
+import { connect } from 'react-redux'
 import { Login, Dashboard } from "../../../components"
 
 const Home = (props) => {
-    const is_authenticated = false;
+    const { user } = props
+    const { is_authenticated } = user;
 
     return (
         <React.Fragment>
@@ -12,4 +14,8 @@ const Home = (props) => {
     );
 }
 
-export default Home;
+const mapStateToProps = (state) => ({
+    user: state.auth.get('user'),
+})
+
+export default connect(mapStateToProps)(Home)
