@@ -21,22 +21,11 @@ import { broadcastNotification } from "../../../store/interfaces/actions"
 
 const Copyright = () => {
   return (
-    <Typography variant="body2" color="textSecondary" align="center">
+    <Typography variant="body2" align="center">
       {"© 2021 "}
       <Link color="inherit" href="#">
         Dataloft, LLC
       </Link>{"."}
-    </Typography>
-  );
-}
-const SignUp = () => {
-  return (
-    <Typography variant="body2" color="textSecondary" align="center">
-      {"Don't have an account? "}
-      <Link href="https://hiveonboard.com/create-account?ref=dbuzz&redirect_url=https://d.buzz/login"
-        variant="body2" target="_blank">
-        {"Signup now"}
-      </Link>
     </Typography>
   );
 }
@@ -53,7 +42,8 @@ const useStyles = makeStyles((theme) => ({
     margin: "auto",
     borderRadius: ".25rem",
     padding: "2rem",
-    maxWidth: "500px",
+    maxWidth: "450px",
+    backgroundColor: theme.paper.backgroundColor
   },
   form: {
     width: "100%", // Fix IE 11 issue.
@@ -70,12 +60,17 @@ const useStyles = makeStyles((theme) => ({
   hivePMfont: {
     fontSize: "32px",
   },
+  signupLink: {
+    color: theme.fontColor.secondary
+  }
 }));
 
 const Login = (props) => {
   const classes = useStyles();
-
-  const { authenticateUserRequest, broadcastNotification } = props
+  const {
+    authenticateUserRequest,
+    broadcastNotification
+  } = props
   const [loading, setLoading] = useState(false)
   const [username, setUsername] = useState("")
   const [password, setPassword] = useState("")
@@ -91,7 +86,7 @@ const Login = (props) => {
       if (!value) {
         setIsIUsernameTouched(true)
       }
-    } else if (id === "postingKey") {
+    } else if (id === "password") {
       setPassword(value)
       if (!value) {
         setIsIPasswordTouched(true)
@@ -105,7 +100,6 @@ const Login = (props) => {
       authenticateUserRequest(username, password).then(
         ({ is_authenticated }) => {
           setLoading(false);
-          console.log(is_authenticated)
           if (!is_authenticated) {
             broadcastNotification(
               "error",
@@ -130,6 +124,13 @@ const Login = (props) => {
     setIsIPasswordTouched(false)
   }
 
+  const handleKeypress = (e) => {
+    //it triggers by pressing the enter key
+    if (e.charCode === 13) {
+      handLogin();
+    }
+  }
+
   return (
     <div className={classes.root}>
       <Grid
@@ -147,7 +148,7 @@ const Login = (props) => {
           <Typography variant="h5">
             Sign in
           </Typography>
-          <Typography variant="subtitle2">
+          <Typography variant="subtitle1">
             Sign in to continue to HivePM
           </Typography>
         </Grid>
@@ -169,17 +170,18 @@ const Login = (props) => {
                 helperText={isUsernameTouched && !username ? "Username is required" : ""}
               />
               <TextFieldWithIcon
-                id="postingKey"
-                label="Posting Key"
-                placeholder="Enter your posting key"
+                id="password"
+                label="Password"
+                placeholder="Enter your password"
                 value={password}
                 icon={<VpnKey />}
                 onChange={onChangeInput}
                 type="password"
                 required
                 fullWidth
+                onKeyPress={handleKeypress}
                 error={isPasswordTouched && !password}
-                helperText={isPasswordTouched && !password ? "Posting key is required" : ""}
+                helperText={isPasswordTouched && !password ? "Password is required" : ""}
               />
               <ContainedButton
                 type="button"
@@ -195,7 +197,13 @@ const Login = (props) => {
             </form>
           </Paper>
           <Box mt={6}>
-            <SignUp />
+            <Typography variant="body2" align="center">
+              {"Don't have an account? "}
+              <Link href="https://hiveonboard.com/create-account?ref=dbuzz&redirect_url=https://d.buzz/login"
+                variant="body2" target="_blank" className={classes.signupLink}>
+                {"Signup now"}
+              </Link>
+            </Typography>
           </Box>
         </Grid>
         <Box mt={2}>

@@ -1,14 +1,14 @@
 import React from "react";
-import { createUseStyles } from "react-jss";
 import {
     LinearProgress,
     withStyles,
     CircularProgress,
+    makeStyles
 } from "@material-ui/core";
 import Button from "@material-ui/core/Button";
 import { red } from "@material-ui/core/colors";
 
-const useStyles = createUseStyles({
+const useStyles = makeStyles((theme) => ({
     button: {
         margin: 1,
     },
@@ -19,11 +19,10 @@ const useStyles = createUseStyles({
         marginTop: -12,
         marginLeft: -12,
     },
-});
+}));
 const ColorButton = withStyles((theme) => ({
     root: {
-        color: theme.palette.getContrastText(red[500]),
-        backgroundColor: "#e51c34",
+        backgroundColor: theme.fontColor.secondary,
         "&:hover": {
             backgroundColor: red[900],
         },

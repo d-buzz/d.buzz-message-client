@@ -2,13 +2,13 @@ import React from "react";
 import { withRouter } from "react-router";
 import { renderRoutes } from "react-router-config";
 import routes from "./routes";
-import { AuthGuard, Init } from "./components"
-import { createUseStyles } from "react-jss";
+import { AuthGuard, Init, ThemeLoader } from "./components"
+import { makeStyles } from "@material-ui/core/styles";
 
-const useStyles = createUseStyles((theme) => ({
+const useStyles = makeStyles((theme) => ({
   wrapper: {
     overflow: "hidden !important",
-    backgroundColor: "#f7f7ff",
+    backgroundColor: theme.background.primary,
   },
 }));
 
@@ -20,13 +20,15 @@ const AppWrapper = ({ children }) => {
 function App() {
   return (
     <React.Fragment>
-      <Init>
-        <AuthGuard>
-          <AppWrapper>
-            {renderRoutes(routes)}
-          </AppWrapper>
-        </AuthGuard>
-      </Init>
+      <ThemeLoader>
+        <Init>
+          <AuthGuard>
+            <AppWrapper>
+              {renderRoutes(routes)}
+            </AppWrapper>
+          </AuthGuard>
+        </Init>
+      </ThemeLoader>
     </React.Fragment>
   );
 }
