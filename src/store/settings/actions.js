@@ -50,3 +50,9 @@ export const generateStyles = (theme) => ({
     type: GENERATE_STYLES,
     payload: theme,
 })
+
+export const SET_LAYOUT_SETTINGS = "LAYOUT_SET_SETTINGS";
+export const setLayoutSettings = (settings) => ({
+    type: SET_LAYOUT_SETTINGS,
+    payload: settings,
+})

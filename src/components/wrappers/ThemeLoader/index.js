@@ -1,24 +1,25 @@
 import React, { useState, useEffect } from 'react'
 import { connect } from 'react-redux'
 import { bindActionCreators } from 'redux'
-import { createMuiTheme } from '@material-ui/core/styles';
-import { getTheme } from "./../../../services/theme"
 import { ThemeProvider } from "./../../../components"
-import { getSavedThemeRequest, generateStyles } from "./../../../store/settings/actions"
+import { getSavedThemeRequest, generateStyles, setLayoutSettings } from "./../../../store/settings/actions"
+import LayoutSettings from "../../../theme/LayoutSettings"
 
 const ThemeLoader = (props) => {
     const {
         children,
         getSavedThemeRequest,
         generateStyles,
+        setLayoutSettings
     } = props
 
     const [loaded, setLoaded] = useState(false)
 
     useEffect(() => {
+        setLayoutSettings(LayoutSettings)
         getSavedThemeRequest()
             .then(({ mode }) => {
-                const theme = createMuiTheme(getTheme());
+                const theme = { ...LayoutSettings.themes[mode] }
                 generateStyles(theme)
                 setLoaded(true)
             })
@@ -40,6 +41,7 @@ const mapDispatchToProps = (dispatch) => ({
     ...bindActionCreators({
         getSavedThemeRequest,
         generateStyles,
+        setLayoutSettings
     }, dispatch),
 })
 

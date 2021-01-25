@@ -15,6 +15,12 @@ const light = {
     },
     message: {
         color: 'green !important',
+    },
+    sidebarLeft: {
+        backgroundColor: "white"
+    },
+    avatarMenu: {
+        backgroundColor: "white"
     }
 }
 
@@ -37,6 +43,12 @@ const dark = {
     },
     message: {
         color: 'lightgreen !important',
+    },
+    sidebarLeft: {
+        backgroundColor: "#36404a"
+    },
+    avatarMenu: {
+        backgroundColor: "#313a43"
     }
 }
 

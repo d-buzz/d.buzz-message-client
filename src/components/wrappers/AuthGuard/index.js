@@ -1,12 +1,11 @@
-import React from 'react'
+import React, { Fragment } from 'react'
 import { connect } from 'react-redux'
-import { useLocation, Redirect } from 'react-router-dom'
+import { Redirect, useLocation } from 'react-router-dom'
 
 const AuthGuard = (props) => {
-    const { children } = props
+    const { children, user } = props
     const location = useLocation()
     const { pathname } = location
-    const { user } = props
     const { is_authenticated } = user;
 
     const isGuardedRoute = () => {
@@ -14,24 +13,24 @@ const AuthGuard = (props) => {
     }
 
     return (
-        <React.Fragment>
+        <Fragment>
             {pathname && (
-                <React.Fragment>
+                <Fragment>
                     {is_authenticated && (
-                        <Redirect to={{ pathname: '/dashboard' }} />
+                        <Redirect to={{ pathname: '/chats' }} />
                     )}
                     {!is_authenticated && isGuardedRoute() && (
                         <Redirect to={{ pathname: '/' }} />
                     )}
                     {children}
-                </React.Fragment>
+                </Fragment>
             )}
-        </React.Fragment>
+        </Fragment>
     )
 }
+
 const mapStateToProps = (state) => ({
     user: state.auth.get('user'),
 })
 
-
-export default connect(mapStateToProps)(AuthGuard)
+export default connect(mapStateToProps)(AuthGuard);

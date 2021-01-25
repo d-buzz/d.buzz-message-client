@@ -37,7 +37,6 @@ export const fetchApi = async (
             return axios
                 .post(endPoints, payload, { header })
                 .then(function (response) {
-                    // console.log("response", response.data);
                     return response;
                 })
                 .catch(function (error) {
@@ -73,4 +72,39 @@ export const getUserToken = () => {
         token = user.token
     }
     return token;
+}
+
+export const isMobile = () => {
+    if (window) {
+        return window.matchMedia(`(max-width: 767px)`).matches;
+    }
+    return false;
+}
+
+export const isMdScreen = () => {
+    if (window) {
+        return window.matchMedia(`(max-width: 1199px)`).matches;
+    }
+    return false;
+}
+
+export const classList = (classes) => {
+    return Object.entries(classes)
+        .filter(entry => entry[1])
+        .map(entry => entry[0])
+        .join(" ");
+}
+
+
+export const getQueryParam = (prop) => {
+    let params = {};
+    const search = decodeURIComponent(
+        window.location.href.slice(window.location.href.indexOf("?") + 1)
+    );
+    const definitions = search.split("&");
+    definitions.forEach(function (val, key) {
+        let parts = val.split("=", 2);
+        params[parts[0]] = parts[1];
+    });
+    return prop && prop in params ? params[prop] : params;
 }

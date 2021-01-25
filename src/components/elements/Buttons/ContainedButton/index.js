@@ -22,7 +22,8 @@ const useStyles = makeStyles((theme) => ({
 }));
 const ColorButton = withStyles((theme) => ({
     root: {
-        backgroundColor: theme.fontColor.secondary,
+        backgroundColor: theme.palette.secondary.main,
+        color: theme.palette.text.primary,
         "&:hover": {
             backgroundColor: red[900],
         },

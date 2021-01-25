@@ -11,7 +11,6 @@ import {
     signoutUserFailure
 } from "./actions";
 import {
-    clearLocalStorage,
     setItemLocalStorage,
     getItemLocalStorage,
     removeItemLocalStorage
@@ -29,7 +28,6 @@ function* authenticateUserRequest(payload, meta) {
             user.is_authenticated = true;
             user.token = data.data;
             const session = JSON.stringify(user);
-            yield call(clearLocalStorage);
             yield call(setItemLocalStorage, "user", session);
         }
         yield put(authenticateUserSuccess(user, meta));

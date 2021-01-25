@@ -8,7 +8,7 @@ const useStyles = makeStyles((theme) => ({
         wordBreak: "break-word",
     },
     alertWrapper: {
-        ...theme.message.color,
+        ...theme.palette.warning.dark
     },
 }));
 

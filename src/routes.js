@@ -2,7 +2,9 @@ import {
     AppFrame,
     Home,
     Login,
-    Dashboard
+    Dashboard,
+    Chats,
+    Contacts
 } from './components';
 
 const routes = [
@@ -17,15 +19,25 @@ const routes = [
             {
                 path: '/login',
                 exact: true,
-                component: Login
+                component: Login,
             },
             {
                 path: '/dashboard',
                 exact: true,
                 component: Dashboard
             },
-        ]
-    }
+            {
+                path: '/chats',
+                exact: true,
+                component: Chats
+            },
+            {
+                path: '/contacts',
+                exact: true,
+                component: Contacts
+            },
+        ],
+    },
 ]
 
-export default routes;
+export default routes
