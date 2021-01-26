@@ -147,6 +147,9 @@ $spaces: (
     padding-right: 16px !important;
   }
 }
+.pr-45 {
+  padding-right: 45px !important;
+}
 .p-sm-24 {
   padding: 24px !important;
   @include media(767px) {
@@ -240,6 +243,9 @@ $spaces: (
 .h-100vh-80 {
   height: calc(100vh - 80px);
 }
+.h-100vh-65 {
+  height: calc(100vh - 65px);
+}
 .h-500 {
   height: 500px !important;
 }
@@ -270,4 +276,9 @@ $spaces: (
 .size-24 {
   height: 24px !important;
   width: 24px !important;
+}
+
+.px-4 {
+  padding-left: 1rem !important;
+  padding-right: 1rem !important;
 }

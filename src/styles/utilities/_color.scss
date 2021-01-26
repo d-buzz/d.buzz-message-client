@@ -12,8 +12,16 @@
   background: #fff !important;
   color: inherit;
 }
+
+.bg-blue {
+  background: #1976d2 !important;
+}
+
 .bg-default {
   background: $bg-default !important;
+}
+.bg-chat {
+  background: #36404a !important;
 }
 .bg-paper {
   background: $bg-paper;

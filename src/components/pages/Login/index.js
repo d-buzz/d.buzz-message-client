@@ -111,7 +111,6 @@ const Login = (props) => {
             );
           } else {
             handleClearInput();
-            broadcastNotification("success", "Authenticated successfully.");
           }
         }
       );
