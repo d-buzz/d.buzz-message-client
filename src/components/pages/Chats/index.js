@@ -1,6 +1,6 @@
 import React, { Fragment } from 'react';
 import { withStyles } from "@material-ui/core";
-import { ChatList, ChatMessages } from "./../../../components";
+import { ChatMessages } from "./../../../components";
 import { SimpleCard } from "./../../../components/elements";
 
 const styles = theme => ({});

@@ -1,11 +1,10 @@
 import React, { Fragment } from 'react';
 import { connect } from 'react-redux'
-import Scrollbar from "react-perfect-scrollbar";
-import { ChatSideNavTopBar, ChatSideNavContact } from "./../../../components";
+import { ChatSideNavContact } from "./../../../components";
 
 const ChatList = (props) => {
-    const { user } = props
-    const { username } = user
+    // const { user } = props
+    // const { username } = user
     const contacts = [
         {
             username: "missdarkstar06",
@@ -43,6 +42,14 @@ const ChatList = (props) => {
             username: "allaz",
             online: 0
         },
+        {
+            username: "missdarkstar06",
+            online: 1
+        },
+        {
+            username: "psychkrhoz",
+            online: 0
+        },
 
     ];
 
@@ -50,7 +57,7 @@ const ChatList = (props) => {
         return (
             contacts.map((item, index) => {
                 return (
-                    <ChatSideNavContact key={index} item={item} />
+                    <ChatSideNavContact index={index} item={item} />
                 )
             })
         )

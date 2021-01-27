@@ -61,8 +61,8 @@
     border-right: 1px solid rgba(0, 0, 0, 0.08);
 }
 
-.h-560 {
-    height: 560px;
+.h-600 {
+    height: 600px;
 }
 
 .items-center {
@@ -127,4 +127,17 @@
 .border-radius-4 {
     overflow: hidden;
     border-radius: 4px !important;
+}
+
+.chat-form {
+    height: inherit !important;
+}
+
+.chat-textbox {
+    padding-left: 5px;
+    padding-right: 8px;
+}
+
+.chat-amount{
+    color: red;
 }

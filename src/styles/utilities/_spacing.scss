@@ -129,6 +129,11 @@ $spaces: (
   padding-top: 0.5rem !important;
   padding-bottom: 0.5rem !important;
 }
+
+.py-4 {
+  padding-top: 1.5rem !important;
+  padding-bottom: 1rem !important;
+}
 .p-sm-30 {
   padding: 30px;
   @include media(767px) {
@@ -293,4 +298,8 @@ $spaces: (
 
 .pr-2 {
   padding-right: 1rem !important;
+}
+
+.pl-2 {
+  padding-left: 0.50rem !important;
 }

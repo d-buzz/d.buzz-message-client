@@ -11,7 +11,7 @@ import {
 import { setLayoutSettings } from "./../../../store/settings/actions"
 import { isMdScreen } from "./../../../services/helper"
 import { SimpleMenu } from "./../../elements"
-import { SearchBox, Brand } from "./../../../components"
+import { SearchBox } from "./../../../components"
 import logo from "../../../images/logo.png"
 
 const styles = theme => ({

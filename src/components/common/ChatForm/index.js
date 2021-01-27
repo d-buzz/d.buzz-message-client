@@ -1,29 +1,50 @@
 import React from "react"
-// import { makeStyles } from '@material-ui/core/styles';
-import {
-    Grid,
-    TextField,
-    Fab,
-} from '@material-ui/core'
+import { Button, TextField, withStyles } from "@material-ui/core"
 import SendIcon from '@material-ui/icons/Send';
 
-// const useStyles = makeStyles((theme) => ({
+const SendButton = withStyles((theme) => ({
+    root: {
+        backgroundColor: "#e51c34",
+        width: "56px",
+        height: "56px",
+        fontSize: "0.875rem",
+        minWidth: 0,
+        padding: 0,
+        minHeight: "36px",
+        borderRadius: "50%",
+        "&:hover": {
+            backgroundColor: '#b5091d'
+        }
+    },
+}))(Button);
 
-// }))
+const ChatTextField = withStyles((theme) => ({
+    root: {
+        '& .MuiOutlinedInput-root': {
+            '&.Mui-focused fieldset': {
+                borderColor: 'gray',
+            },
+        },
+    },
+}))(TextField);
 
 const ChatForm = (props) => {
-    // const classes = useStyles()
 
     return (
         <React.Fragment>
-            <Grid container style={{ padding: '20px' }}>
-                <Grid item xs={11}>
-                    <TextField id="outlined-basic-email" label="Type Something" fullWidth />
-                </Grid>
-                <Grid item xs={1} align="right">
-                    <Fab color="primary" aria-label="add"><SendIcon /></Fab>
-                </Grid>
-            </Grid>
+            <div className="flex items-center chat-textbox">
+                <ChatTextField
+                    variant="outlined"
+                    margin="normal"
+                    placeholder="Write a message..."
+                    fullWidth
+                    focused />
+                <div className="pl-2">
+                    <SendButton size="large">
+                        <SendIcon />
+                    </SendButton>
+                </div>
+            </div>
         </React.Fragment>
     )
 }

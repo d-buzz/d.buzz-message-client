@@ -1,8 +1,7 @@
 import React, { Fragment } from 'react';
-import { Avatar, IconButton, Icon } from "@material-ui/core";
+import { IconButton, Icon } from "@material-ui/core";
 
 const ChatMessageTopBar = ({ username }) => {
-    const userPic = `https://images.hive.blog/u/${username}/avatar/small`
     return (
         <Fragment>
             <div className="flex flex-space-between flex-middle p-1 bg-secondary">

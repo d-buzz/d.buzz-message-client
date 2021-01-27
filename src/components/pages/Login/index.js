@@ -16,6 +16,7 @@ import logo from "../../../images/logo.png";
 import AccountCircle from '@material-ui/icons/AccountCircle';
 import VpnKey from '@material-ui/icons/VpnKey';
 import { TextFieldWithIcon, ContainedButton } from "../../elements";
+import { Copyright } from "../../../components";
 import { authenticateUserRequest } from "../../../store/auth/actions"
 import { broadcastNotification } from "../../../store/interfaces/actions"
 
@@ -69,17 +70,6 @@ const Login = (props) => {
   const [password, setPassword] = useState("")
   const [isUsernameTouched, setIsIUsernameTouched] = useState(false)
   const [isPasswordTouched, setIsIPasswordTouched] = useState(false)
-
-  const Copyright = () => {
-    return (
-      <Typography variant="body2" align="center">
-        {"© 2021 "}
-        <Link color="inherit" href="#">
-          Dataloft, LLC
-        </Link>{"."}
-      </Typography>
-    );
-  }
 
   const onChangeInput = (e) => {
     const { target } = e;

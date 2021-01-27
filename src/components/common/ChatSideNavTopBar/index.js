@@ -5,7 +5,7 @@ import AddCircleOutlineIcon from '@material-ui/icons/AddCircleOutline';
 const ChatSideNavTopBar = (props) => {
     return (
         <Fragment>
-            <div className="chat-sidenav__topbar flex flex-space-between px-4 py-2 flex-middle">
+            <div className="chat-sidenav__topbar flex flex-space-between px-4 py-1 flex-middle">
                 <div className="flex items-center">
                     <h5 className="pr-45 white-space-pre mb-0 font-medium text-18 text-white">Conversations</h5>
                 </div>

@@ -1,5 +1,5 @@
 
-import React, { Fragment } from 'react';
+import React from 'react';
 import { connect } from "react-redux";
 import { bindActionCreators } from 'redux'
 import { withRouter } from 'react-router-dom'
@@ -10,6 +10,7 @@ import {
     Tooltip,
     IconButton,
     MuiThemeProvider,
+    Divider
 } from "@material-ui/core";
 import { SimpleMenu } from "../../elements"
 import {
@@ -17,7 +18,7 @@ import {
     generateStyles
 } from '../../../store/settings/actions'
 import SidenavTheme from "../../../theme/SidenavTheme"
-import { SideNav, Brand, ChatSideNavTopBar } from "./../../../components"
+import { SideNav, Brand, ChatSideNavTopBar, Copyright } from "./../../../components"
 
 const THEME = {
     LIGHT: 'light',
@@ -67,12 +68,12 @@ const SideNavLeft = (props) => {
     const RenderLogoSwitch = () => {
         return (
             <Brand>
-                <IconButton
+                {/* <IconButton
                     className="sidenav__toggle show-on-lg"
                     color="secondary"
                     onClick={handleToggleTheme}>
                     <Icon> wb_sunny </Icon>
-                </IconButton>
+                </IconButton> */}
             </Brand>
         );
     }
@@ -139,7 +140,15 @@ const SideNavLeft = (props) => {
                     <RenderLogoSwitch />
                     <RenderUser />
                     <ChatSideNavTopBar />
+                    <Divider />
                     <SideNav />
+                    <Divider />
+                    <div className="flex flex-space-between px-4 py-4 flex-middle">
+                        <div className="flex items-center" />
+                        <div className="flex flex-middle">
+                            <Copyright />
+                        </div>
+                    </div>
                 </div>
             </div>
         </MuiThemeProvider>
