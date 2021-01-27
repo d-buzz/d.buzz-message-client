@@ -58,17 +58,10 @@ const ChatList = (props) => {
 
     return (
         <Fragment>
-            <div className="bg-chat jss387 jss389">
-                <div className="bg-chat jss390">
-                    <ChatSideNavTopBar />
-                    <Scrollbar option={{ suppressScrollX: true }}
-                        className="scrollable position-relative h-full ps ps--active-y ps--active-x">
-                        {renderContacts()}
-                    </Scrollbar>
-                </div>
+            <div className="chat-list">
+                {renderContacts()}
             </div>
         </Fragment>
-        //#36404a
     )
 }
 const mapStateToProps = (state) => ({

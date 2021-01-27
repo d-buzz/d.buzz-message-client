@@ -11,14 +11,13 @@ import {
     IconButton,
     MuiThemeProvider,
 } from "@material-ui/core";
-import { Brand } from "../.."
 import { SimpleMenu } from "../../elements"
 import {
     setThemeRequest,
     generateStyles
 } from '../../../store/settings/actions'
 import SidenavTheme from "../../../theme/SidenavTheme"
-import { SideNav } from "./../../../components"
+import { SideNav, Brand, ChatSideNavTopBar } from "./../../../components"
 
 const THEME = {
     LIGHT: 'light',
@@ -65,7 +64,7 @@ const SideNavLeft = (props) => {
             })
     }
 
-    const renderLogoSwitch = () => {
+    const RenderLogoSwitch = () => {
         return (
             <Brand>
                 <IconButton
@@ -75,10 +74,10 @@ const SideNavLeft = (props) => {
                     <Icon> wb_sunny </Icon>
                 </IconButton>
             </Brand>
-        )
+        );
     }
 
-    const renderUser = () => {
+    const RenderUser = () => {
         return (
             <div className="sidenav__user">
                 <div className="username-photo">
@@ -137,12 +136,10 @@ const SideNavLeft = (props) => {
             <SidenavTheme theme={sidenavTheme} settings={layoutSettings} />
             <div className="sidenav">
                 <div className="sidenav__hold">
-                    {(
-                        <Fragment>
-                            {renderLogoSwitch()}
-                            <SideNav>{renderUser()}</SideNav>
-                        </Fragment>
-                    )}
+                    <RenderLogoSwitch />
+                    <RenderUser />
+                    <ChatSideNavTopBar />
+                    <SideNav />
                 </div>
             </div>
         </MuiThemeProvider>

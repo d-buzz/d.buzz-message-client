@@ -3,7 +3,8 @@ import { Card, withStyles } from "@material-ui/core";
 
 const CardGray = withStyles((theme) => ({
     root: {
-        backgroundColor: theme.palette.background.default
+        backgroundColor: theme.palette.background.default,
+        borderRadius: 0
     }
 }))(Card);
 

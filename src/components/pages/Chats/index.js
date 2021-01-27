@@ -12,9 +12,6 @@ const Chats = (props) => {
             <div className="relative flex-grow-1">
                 <SimpleCard>
                     <div className="relative flex h-full">
-                        <div className="flex h-full">
-                            <ChatList />
-                        </div>
                         <div className="relative flex-grow-1 h-full">
                             <ChatMessages />
                         </div>

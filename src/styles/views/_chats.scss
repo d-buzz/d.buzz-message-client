@@ -43,11 +43,8 @@
     border-radius: 7px;
 }
 
-.jss389 {
+.chat-list {
     width: 230px;
-}
-
-.jss387 {
     z-index: 91;
     overflow: hidden;
     position: relative;
@@ -56,7 +53,6 @@
         top: 0;
         left: 0;
         bottom: 0;
-        position: absolute;
     }
 }
 
@@ -65,7 +61,7 @@
     border-right: 1px solid rgba(0, 0, 0, 0.08);
 }
 
-.jss481 {
+.h-560 {
     height: 560px;
 }
 
@@ -81,6 +77,9 @@
     margin-left: 1rem !important;
 }
 
+.mr-4 {
+    margin-right: 0.75rem !important;
+}
 
 .p-1 {
     padding: 0.25rem !important;
@@ -109,4 +108,23 @@
 .jss482 {
     color: rgba(52, 49, 76, 1);
     display: inline-block;
+}
+
+.rounded {
+    overflow: hidden !important;
+    border-radius: 300px !important;
+}
+
+.justify-center {
+    justify-content: center;
+}
+
+.whitespace-pre-wrap {
+    word-break: break-word;
+    white-space: pre-wrap;
+}
+
+.border-radius-4 {
+    overflow: hidden;
+    border-radius: 4px !important;
 }

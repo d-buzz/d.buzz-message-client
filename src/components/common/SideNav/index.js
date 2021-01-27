@@ -3,12 +3,10 @@ import { connect } from "react-redux";
 import { bindActionCreators } from 'redux'
 import Scrollbar from "react-perfect-scrollbar";
 import { setLayoutSettings } from "./../../../store/settings/actions"
-import { VerticalNav } from "./../../../components"
-import { navigations } from "./../../../navigations"
+import { ChatList } from "./../../../components"
 
 const SideNav = (props) => {
     const {
-        children,
         layoutSettings,
         setLayoutSettings,
     } = props
@@ -32,9 +30,9 @@ const SideNav = (props) => {
 
     return (
         <Fragment>
-            <Scrollbar option={{ suppressScrollX: true }} className="scrollable position-relative">
-                {children}
-                <VerticalNav navigation={navigations} />
+            <Scrollbar option={{ suppressScrollX: true }}
+                className="scrollable position-relative">
+                <ChatList />
             </Scrollbar>
             {renderOverlay()}
         </Fragment>
