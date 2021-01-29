@@ -17,7 +17,7 @@ import AccountCircle from '@material-ui/icons/AccountCircle';
 import VpnKey from '@material-ui/icons/VpnKey';
 import { TextFieldWithIcon, ContainedButton } from "../../elements";
 import { Copyright } from "../../../components";
-import { authenticateUserRequest } from "../../../store/auth/actions"
+import { authenticateUserRequest, setFromLogin } from "../../../store/auth/actions"
 import { broadcastNotification } from "../../../store/interfaces/actions"
 
 const useStyles = makeStyles((theme) => ({
@@ -101,6 +101,7 @@ const Login = (props) => {
             );
           } else {
             handleClearInput();
+            setFromLogin(true)
           }
         }
       );
@@ -120,6 +121,7 @@ const Login = (props) => {
   const handleKeypress = (e) => {
     //it triggers by pressing the enter key
     if (e.charCode === 13) {
+      e.preventDefault()
       handLogin();
     }
   }

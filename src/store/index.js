@@ -7,6 +7,7 @@ import { settings } from "./settings/reducers";
 import { chat } from "./chat/reducers";
 import * as authSagas from "./auth/sagas"
 import * as settingsSagas from "./settings/sagas"
+import * as chatSagas from "./chat/sagas"
 
 export const rootReducer = combineReducers({
     thunk: thunkReducer,
@@ -20,5 +21,6 @@ export function* rootSaga() {
     yield all([
         ...Object.values(authSagas),
         ...Object.values(settingsSagas),
+        ...Object.values(chatSagas),
     ].map(fork));
 }

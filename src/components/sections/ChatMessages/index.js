@@ -8,15 +8,26 @@ import {
 } from "./../../../components";
 
 const ChatMessages = (props) => {
-    const { selectedContact, user } = props
-    const { username: mainUser } = user
+    const { selectedContact, user, messages } = props
+    const { username: loginUser } = user
     const { username } = selectedContact
+
+    const renderMessages = () => {
+        return (
+            messages.map((item, index) => {
+                return (
+                    <Message key={index} item={item} loginUser={loginUser} />
+                )
+            })
+        )
+    }
+
     return (
         <Fragment>
             <div className="flex-column relative chat-form">
                 <ChatMessageTopBar username={username} />
                 <ChatContainer>
-                    <Message username={username} mainUser={mainUser} />
+                    {renderMessages()}
                 </ChatContainer>
             </div>
         </Fragment>

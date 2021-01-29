@@ -7,6 +7,7 @@ const ChatContainer = ({ children }) => {
     return (
         <Fragment>
             <Scrollbar id="chat-message-list"
+                options={{ suppressScrollX: false }}
                 className="chat-message-list flex-grow-1 relative"
             >
                 {children}

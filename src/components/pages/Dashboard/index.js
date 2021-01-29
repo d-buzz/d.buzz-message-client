@@ -10,6 +10,8 @@ import { SideNavLeft, TopBar } from "./../../../components"
 import AppContext from "./../../../AppContext"
 import { setLayoutSettings } from "./../../../store/settings/actions"
 import { signoutUserRequest } from "./../../../store/auth/actions"
+import { setChatUsersListRequest } from "./../../../store/chat/actions"
+import ChatSocketServer from "../../../services/chatSocketServer"
 
 const styles = theme => {
     return {
@@ -22,13 +24,16 @@ const styles = theme => {
 
 const Dashboard = (props) => {
     const {
+        user,
         theme,
         layoutSettings,
         signoutUserRequest,
         setLayoutSettings,
+        setChatUsersListRequest,
         classes,
     } = props
 
+    const { username, token } = user
     const { routes } = useContext(AppContext)
     const layoutClasses = {
         [classes.layout]: true,
@@ -40,8 +45,22 @@ const Dashboard = (props) => {
         if (isMdScreen()) {
             updateSidebarMode({ mode: "close" })
         }
+        establishSocketConn()
         // eslint-disable-next-line react-hooks/exhaustive-deps
     }, [])
+
+    const establishSocketConn = () => {
+        if (username) {
+            ChatSocketServer.establishSocketConnection(username)
+            ChatSocketServer.getChatList(token)
+            ChatSocketServer.eventEmitter.on('chat-list-response', createChatListUsers);
+        }
+    }
+
+
+    const createChatListUsers = (response) => {
+        setChatUsersListRequest(response)
+    }
 
     const updateSidebarMode = (sideBarSettings) => {
         setLayoutSettings({
@@ -85,6 +104,7 @@ const Dashboard = (props) => {
 }
 
 const mapStateToProps = (state) => ({
+    user: state.auth.get('user'),
     theme: state.settings.get('themeStyles'),
     layoutSettings: state.settings.get('layoutSettings'),
 })
@@ -93,6 +113,7 @@ const mapDispatchToProps = (dispatch) => ({
     ...bindActionCreators({
         setLayoutSettings,
         signoutUserRequest,
+        setChatUsersListRequest
     }, dispatch),
 })
 

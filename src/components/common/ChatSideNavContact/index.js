@@ -3,11 +3,11 @@ import { ListItem, ListItemText, Avatar } from "@material-ui/core";
 import { NavLink } from "react-router-dom";
 
 const ChatSideNavContact = (props) => {
-    const { item, index } = props
+    const { username, online, index } = props
 
-    const userPic = `https://images.hive.blog/u/${item.username}/avatar/small`
+    const userPic = `https://images.hive.blog/u/${username}/avatar/small`
     let bgStatus = "secondary"
-    if (item.online === 1) {
+    if (online === 1) {
         bgStatus = "green"
     }
 
@@ -16,7 +16,7 @@ const ChatSideNavContact = (props) => {
             key={`${index}-${Math.random(0, 100)}`}
             button
             component={NavLink}
-            to={`/chats/@${item.username}`}
+            to={`/chats/@${username}`}
             className="nav-item">
             <div className="relative">
                 <Avatar className="avatar borderWhite" src={userPic} border="true" />
@@ -24,7 +24,7 @@ const ChatSideNavContact = (props) => {
             </div>
             <ListItemText
                 className="ml-15"
-                primary={`${item.username}`}
+                primary={`${username}`}
             />
         </ListItem >
     )
