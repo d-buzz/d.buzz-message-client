@@ -1,10 +1,9 @@
 import {
     AppFrame,
-    Home,
     Login,
-    Dashboard,
     Chats,
-    Contacts
+    Contacts,
+    NoChatSelected
 } from './components';
 
 const routes = [
@@ -12,24 +11,19 @@ const routes = [
         component: AppFrame,
         routes: [
             {
-                path: '/',
-                exact: true,
-                component: Home
-            },
-            {
                 path: '/login',
                 exact: true,
                 component: Login,
             },
             {
-                path: '/dashboard',
+                path: '/chats',
+                component: NoChatSelected,
                 exact: true,
-                component: Dashboard
             },
             {
-                path: '/chats',
+                path: '/chats/@:username',
                 exact: true,
-                component: Chats
+                component: Chats,
             },
             {
                 path: '/contacts',

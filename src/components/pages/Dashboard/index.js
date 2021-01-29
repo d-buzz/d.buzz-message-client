@@ -26,7 +26,7 @@ const Dashboard = (props) => {
         layoutSettings,
         signoutUserRequest,
         setLayoutSettings,
-        classes
+        classes,
     } = props
 
     const { routes } = useContext(AppContext)

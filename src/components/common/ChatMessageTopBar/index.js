@@ -1,7 +1,8 @@
 import React, { Fragment } from 'react';
 import { IconButton, Icon } from "@material-ui/core";
 
-const ChatMessageTopBar = ({ username }) => {
+const ChatMessageTopBar = (props) => {
+    const { username } = props
     return (
         <Fragment>
             <div className="flex flex-space-between flex-middle p-1 bg-secondary">
@@ -9,7 +10,9 @@ const ChatMessageTopBar = ({ username }) => {
                     <IconButton>
                         <Icon>people</Icon>
                     </IconButton>
-                    <h5 className="ml-2 white-space-pre mb-0 font-medium text-18 text-white">apitesting.girl</h5>
+                    <h5 className="ml-2 white-space-pre mb-0 font-medium text-18 text-white">
+                        {username}
+                    </h5>
                 </div>
                 <div className="flex flex-middle">
                     <IconButton>
@@ -19,7 +22,6 @@ const ChatMessageTopBar = ({ username }) => {
             </div>
         </Fragment>
     )
-
 }
 
 export default ChatMessageTopBar;

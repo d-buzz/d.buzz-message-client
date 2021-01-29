@@ -1,9 +1,9 @@
-import React, { Fragment, useState } from 'react';
-import { List, ListItem, ListItemText, Avatar } from "@material-ui/core";
+import React from 'react';
+import { ListItem, ListItemText, Avatar } from "@material-ui/core";
+import { NavLink } from "react-router-dom";
 
 const ChatSideNavContact = (props) => {
     const { item, index } = props
-    const [selectedIndex, setSelectedIndex] = useState(1)
 
     const userPic = `https://images.hive.blog/u/${item.username}/avatar/small`
     let bgStatus = "secondary"
@@ -11,29 +11,22 @@ const ChatSideNavContact = (props) => {
         bgStatus = "green"
     }
 
-    const handleMenuItemClick = (i) => {
-        setSelectedIndex(i);
-    }
-
     return (
-        <Fragment>
-            <List component="nav" className="cursor-pointer">
-                <ListItem
-                    button
-                    key={index}
-                    // selected={selectedIndex === index}
-                    onClick={() => handleMenuItemClick(index)}>
-                    <div className="relative">
-                        <Avatar className="avatar borderWhite" src={userPic} border={true} />
-                        <div className={`onlineStatus bg-${bgStatus}`} />
-                    </div>
-                    <ListItemText
-                        className="ml-15"
-                        primary={`${item.username}${index}`}
-                    />
-                </ListItem>
-            </List>
-        </Fragment>
+        <ListItem
+            key={`${index}-${Math.random(0, 100)}`}
+            button
+            component={NavLink}
+            to={`/chats/@${item.username}`}
+            className="nav-item">
+            <div className="relative">
+                <Avatar className="avatar borderWhite" src={userPic} border="true" />
+                <div className={`onlineStatus bg-${bgStatus}`} />
+            </div>
+            <ListItemText
+                className="ml-15"
+                primary={`${item.username}`}
+            />
+        </ListItem >
     )
 }
 export default ChatSideNavContact;

@@ -2,17 +2,15 @@
 import React from 'react';
 import { connect } from "react-redux";
 import { bindActionCreators } from 'redux'
-import { withRouter } from 'react-router-dom'
+import { withRouter, useHistory } from 'react-router-dom'
 import {
     Icon,
     withStyles,
-    MenuItem,
     Tooltip,
     IconButton,
     MuiThemeProvider,
     Divider
 } from "@material-ui/core";
-import { SimpleMenu } from "../../elements"
 import {
     setThemeRequest,
     generateStyles
@@ -20,10 +18,10 @@ import {
 import SidenavTheme from "../../../theme/SidenavTheme"
 import { SideNav, Brand, ChatSideNavTopBar, Copyright } from "./../../../components"
 
-const THEME = {
-    LIGHT: 'light',
-    DARK: 'dark',
-}
+// const THEME = {
+//     LIGHT: 'light',
+//     DARK: 'dark',
+// }
 const IconButtonWhite = withStyles(theme => ({
     root: {
         backgroundColor: "transparent",
@@ -40,29 +38,34 @@ const IconSmall = withStyles(() => ({
 const SideNavLeft = (props) => {
     const {
         user,
-        theme,
+        // theme,
         layoutSettings,
         handleSignOut,
-        setThemeRequest,
-        generateStyles
+        // setThemeRequest,
+        // generateStyles
     } = props
     const { username } = user
-    const { mode } = theme
+    // const { mode } = theme
+    const history = useHistory()
     const userPic = `https://images.hive.blog/u/${username}/avatar/small`
     const sidenavTheme = layoutSettings.themes[layoutSettings.leftSidebar.theme]
 
-    const handleToggleTheme = () => {
-        let newMode = mode
-        if (mode === THEME.LIGHT) {
-            newMode = THEME.DARK
-        } else {
-            newMode = THEME.LIGHT
-        }
-        setThemeRequest(newMode)
-            .then(({ mode }) => {
-                const theme = { ...layoutSettings.themes[mode] }
-                generateStyles(theme)
-            })
+    // const handleToggleTheme = () => {
+    //     let newMode = mode
+    //     if (mode === THEME.LIGHT) {
+    //         newMode = THEME.DARK
+    //     } else {
+    //         newMode = THEME.LIGHT
+    //     }
+    //     setThemeRequest(newMode)
+    //         .then(({ mode }) => {
+    //             const theme = { ...layoutSettings.themes[mode] }
+    //             generateStyles(theme)
+    //         })
+    // }
+
+    const handleClickProfile = () => {
+        history.push('/contacts')
     }
 
     const RenderLogoSwitch = () => {
@@ -89,30 +92,19 @@ const SideNavLeft = (props) => {
                         {username}
                     </span>
                     <div className="user__menu">
-                        <SimpleMenu
-                            menuButton={
-                                <Tooltip title="Settings">
-                                    <IconButtonWhite
-                                        aria-label="Delete"
-                                        className=""
-                                        size="small"
-                                    >
-                                        <IconSmall> settings </IconSmall>
-                                    </IconButtonWhite>
-                                </Tooltip>
-                            }>
-                            <MenuItem className="flex flex-middle" style={{ minWidth: 185 }}>
-                                <Icon> home </Icon>
-                                <span className="pl-16"> Home </span>
-                            </MenuItem>
-                            <MenuItem className="flex flex-middle" style={{ minWidth: 185 }}>
-                                <Icon> settings </Icon>
-                                <span className="pl-16"> Account Setting </span>
-                            </MenuItem>
-                        </SimpleMenu>
-
+                        <Tooltip title="Settings">
+                            <IconButtonWhite
+                                aria-label="Delete"
+                                size="small"
+                            >
+                                <IconSmall> settings </IconSmall>
+                            </IconButtonWhite>
+                        </Tooltip>
                         <Tooltip title="Profile">
-                            <IconButtonWhite aria-label="Delete" className="" size="small">
+                            <IconButtonWhite
+                                aria-label="Delete"
+                                size="small"
+                                onClick={handleClickProfile}>
                                 <IconSmall>person</IconSmall>
                             </IconButtonWhite>
                         </Tooltip>
@@ -140,7 +132,6 @@ const SideNavLeft = (props) => {
                     <RenderLogoSwitch />
                     <RenderUser />
                     <ChatSideNavTopBar />
-                    <Divider />
                     <SideNav />
                     <Divider />
                     <div className="flex flex-space-between px-4 py-4 flex-middle">

@@ -8,10 +8,11 @@ import { setLayoutSettings } from "./../../../store/settings/actions"
 import AppContext from "./../../../AppContext"
 import { isEqual, merge } from "lodash";
 import { isMdScreen } from "./../../../services/helper"
-import { Home } from "./../../../components"
+import { Login, Dashboard } from "./../../../components"
 
 const AppFrame = (props) => {
-    const { setLayoutSettings, layoutSettings, route } = props
+    const { setLayoutSettings, layoutSettings, route, user } = props
+    const { is_authenticated } = user
     const { pathname } = useLocation()
     const { routes } = route
 
@@ -48,7 +49,8 @@ const AppFrame = (props) => {
     return (
         <React.Fragment>
             <AppContext.Provider value={{ routes }}>
-                <Home />
+                {is_authenticated && <Dashboard />}
+                {!is_authenticated && <Login />}
             </AppContext.Provider>
             <NotificationBox />
         </React.Fragment>

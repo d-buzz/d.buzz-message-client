@@ -23,6 +23,7 @@ const ChatTextField = withStyles((theme) => ({
         '& .MuiOutlinedInput-root': {
             '&.Mui-focused fieldset': {
                 borderColor: 'gray',
+                borderRadius: "30px",
             },
         },
     },

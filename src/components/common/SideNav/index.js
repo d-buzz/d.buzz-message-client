@@ -30,8 +30,7 @@ const SideNav = (props) => {
 
     return (
         <Fragment>
-            <Scrollbar option={{ suppressScrollX: true }}
-                className="scrollable position-relative">
+            <Scrollbar className="scrollable position-relative">
                 <ChatList />
             </Scrollbar>
             {renderOverlay()}

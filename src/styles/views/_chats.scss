@@ -44,6 +44,7 @@
 }
 
 .chat-list {
+    min-height: 500px;
     width: 230px;
     z-index: 91;
     overflow: hidden;
@@ -128,6 +129,13 @@
     overflow: hidden;
     border-radius: 4px !important;
 }
+
+
+.border-radius-20 {
+    overflow: hidden;
+    border-radius: 20px !important;
+}
+
 
 .chat-form {
     height: inherit !important;

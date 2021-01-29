@@ -62,7 +62,7 @@ const Login = (props) => {
   const classes = useStyles();
   const {
     authenticateUserRequest,
-    broadcastNotification
+    broadcastNotification,
   } = props
 
   const [loading, setLoading] = useState(false)

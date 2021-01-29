@@ -67,3 +67,9 @@ export const getSavedUserFailure = (error, meta) => ({
     payload: error,
     meta
 })
+
+export const SET_FROM_LOGIN = "SET_FROM_LOGIN";
+export const setFromLogin = (status) => ({
+    type: SET_FROM_LOGIN,
+    payload: status,
+})

@@ -1,14 +1,14 @@
 import React from 'react';
-import { Typography, Link } from "@material-ui/core";
+import { Link } from "@material-ui/core";
 
 const Copyright = (props) => {
     return (
-        <Typography variant="body2" align="center">
-            {"© 2021 "}
-            <Link color="inherit" href="#">
+        <small className="text-muted mb-0">
+            © 2021{" "}
+            <Link color="inherit" href="/">
                 Dataloft, LLC
         </Link>{"."}
-        </Typography>
+        </small>
     )
 }
 export default Copyright;

@@ -1,14 +1,19 @@
 import React, { Fragment } from 'react';
 import { connect } from 'react-redux'
 import { ChatSideNavContact } from "./../../../components";
+import { List } from "@material-ui/core";
 
 const ChatList = (props) => {
     // const { user } = props
     // const { username } = user
     const contacts = [
         {
-            username: "missdarkstar06",
+            username: "riyuwe",
             online: 1
+        },
+        {
+            username: "missdarkstar06",
+            online: 0
         },
         {
             username: "psychkrhoz",
@@ -20,44 +25,26 @@ const ChatList = (props) => {
         },
         {
             username: "apitesting.girl",
-            online: 1
+            online: 0
         },
         {
             username: "executive-board",
             online: 0
         },
         {
-            username: "apitesting.girl",
+            username: "chrisrice",
             online: 1
         },
-        {
-            username: "executive-board",
-            online: 0
-        },
-        {
-            username: "psychkrhoz",
-            online: 0
-        },
-        {
-            username: "allaz",
-            online: 0
-        },
-        {
-            username: "missdarkstar06",
-            online: 1
-        },
-        {
-            username: "psychkrhoz",
-            online: 0
-        },
-
     ];
 
     const renderContacts = () => {
         return (
             contacts.map((item, index) => {
                 return (
-                    <ChatSideNavContact index={index} item={item} />
+                    <ChatSideNavContact
+                        key={`${index}-${item.username}`}
+                        index={index}
+                        item={item} />
                 )
             })
         )
@@ -66,7 +53,9 @@ const ChatList = (props) => {
     return (
         <Fragment>
             <div className="chat-list">
-                {renderContacts()}
+                <List className="navigation">
+                    {renderContacts()}
+                </List>
             </div>
         </Fragment>
     )
