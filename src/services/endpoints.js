@@ -4,6 +4,11 @@ export const endpoints = {
             post(payload) {
                 return "/auth"
             }
+        },
+        generateToken: {
+            post(payload) {
+                return "/auth/generate-token"
+            }
         }
     },
     message: {

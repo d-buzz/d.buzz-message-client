@@ -10,9 +10,9 @@ export const SIGNOUT_USER_REQUEST = "SIGNOUT_USER_REQUEST";
 export const SIGNOUT_USER_SUCCESS = "SIGNOUT_USER_SUCCESS";
 export const SIGNOUT_USER_FAILURE = "SIGNOUT_USER_FAILURE";
 
-export const authenticateUserRequest = (username, password) => ({
+export const authenticateUserRequest = (username, password, useKeychain) => ({
     type: AUTHENTICATE_USER_REQUEST,
-    payload: { username, password },
+    payload: { username, password, useKeychain },
     meta: {
         thunk: true,
     },

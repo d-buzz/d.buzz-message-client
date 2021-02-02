@@ -108,3 +108,12 @@ export const getQueryParam = (prop) => {
     });
     return prop && prop in params ? params[prop] : params;
 }
+
+export const hasCompatibleKeychain = () => {
+    return (
+        window.hive_keychain &&
+        window.hive_keychain.requestSignBuffer &&
+        window.hive_keychain.requestBroadcast &&
+        window.hive_keychain.requestSignedCall
+    )
+}

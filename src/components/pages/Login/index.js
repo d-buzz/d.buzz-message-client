@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { Fragment, useState, useEffect } from "react";
 import { bindActionCreators } from "redux";
 import { connect } from "react-redux";
 
@@ -8,7 +8,9 @@ import {
   Grid,
   Box,
   Typography,
-  Link
+  Link,
+  FormControlLabel,
+  Checkbox,
 } from "@material-ui/core"
 import { makeStyles } from "@material-ui/core/styles";
 
@@ -16,9 +18,11 @@ import logo from "../../../images/logo.png";
 import AccountCircle from '@material-ui/icons/AccountCircle';
 import VpnKey from '@material-ui/icons/VpnKey';
 import { TextFieldWithIcon, ContainedButton } from "../../elements";
-import { Copyright } from "../../../components";
+import { Copyright, HiveKeychainInstall } from "../../../components";
 import { authenticateUserRequest, setFromLogin } from "../../../store/auth/actions"
 import { broadcastNotification } from "../../../store/interfaces/actions"
+import { hasCompatibleKeychain } from "./../../../services/helper"
+import { isMobile } from 'react-device-detect'
 
 const useStyles = makeStyles((theme) => ({
   root: {
@@ -54,8 +58,21 @@ const useStyles = makeStyles((theme) => ({
     color: theme.palette.secondary.main
   },
   signinPaper: {
-    padding: "1rem"
-  }
+    paddingLeft: "1rem",
+    paddingRight: "1rem"
+  },
+  isHiveKeychain: {
+    "& .MuiFormControlLabel-label": {
+      fontSize: "13px"
+    }
+  },
+  browserExtension: {
+    borderColor: 'red !important',
+    '&:hover': {
+      color: '#e61b33 !important',
+      backgroundColor: 'pink !important',
+    },
+  },
 }));
 
 const Login = (props) => {
@@ -63,6 +80,7 @@ const Login = (props) => {
   const {
     authenticateUserRequest,
     broadcastNotification,
+    setFromLogin
   } = props
 
   const [loading, setLoading] = useState(false)
@@ -70,6 +88,21 @@ const Login = (props) => {
   const [password, setPassword] = useState("")
   const [isUsernameTouched, setIsIUsernameTouched] = useState(false)
   const [isPasswordTouched, setIsIPasswordTouched] = useState(false)
+  const [useHiveKeychain, setUseHiveKeychain] = useState(false)
+  const [hasKeyChain, setHasKeyChain] = useState(false)
+
+  useEffect(() => {
+    const isCompatible = hasCompatibleKeychain() ? true : false
+    setHasKeyChain(isCompatible)
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [])
+
+  const FormSpacer = () => {
+    return (
+      <div style={{ height: 15, width: '100%' }}></div>
+    )
+  }
+
 
   const onChangeInput = (e) => {
     const { target } = e;
@@ -89,9 +122,25 @@ const Login = (props) => {
   }
 
   const handLogin = () => {
-    if (username && password) {
+    let valid = false
+    if (!useHiveKeychain) {
+      if (username && password) {
+        valid = true;
+      } else {
+        setIsIUsernameTouched(true)
+        setIsIPasswordTouched(true)
+      }
+    } else {
+      if (username) {
+        valid = true;
+      } else {
+        setIsIUsernameTouched(true)
+      }
+    }
+
+    if (valid) {
       setLoading(true);
-      authenticateUserRequest(username, password).then(
+      authenticateUserRequest(username, password, useHiveKeychain).then(
         ({ is_authenticated }) => {
           setLoading(false);
           if (!is_authenticated) {
@@ -105,10 +154,8 @@ const Login = (props) => {
           }
         }
       );
-    } else {
-      setIsIUsernameTouched(true)
-      setIsIPasswordTouched(true)
     }
+
   }
 
   const handleClearInput = () => {
@@ -124,6 +171,23 @@ const Login = (props) => {
       e.preventDefault()
       handLogin();
     }
+  }
+
+  const handleClickCheckbox = (e) => {
+    const { target } = e
+    const { name, checked } = target
+    if (name === 'keychain') {
+      if (checked) {
+        const isCompatible = hasCompatibleKeychain() ? true : false
+        setHasKeyChain(isCompatible)
+        setPassword('')
+      }
+      setUseHiveKeychain(checked)
+    }
+  }
+
+  const isDisabled = () => {
+    return (loading || (useHiveKeychain && !hasKeyChain))
   }
 
   return (
@@ -162,23 +226,45 @@ const Login = (props) => {
                   required
                   fullWidth
                   autoFocus
+                  onKeyPress={handleKeypress}
                   error={isUsernameTouched && !username}
                   helperText={isUsernameTouched && !username ? "Username is required" : ""}
                 />
-                <TextFieldWithIcon
-                  id="password"
-                  label="Password"
-                  placeholder="Enter your password"
-                  value={password}
-                  icon={<VpnKey />}
-                  onChange={onChangeInput}
-                  type="password"
-                  required
-                  fullWidth
-                  onKeyPress={handleKeypress}
-                  error={isPasswordTouched && !password}
-                  helperText={isPasswordTouched && !password ? "Password is required" : ""}
-                />
+                {!useHiveKeychain &&
+                  <TextFieldWithIcon
+                    id="password"
+                    label="Password"
+                    placeholder="Enter your password"
+                    value={password}
+                    icon={<VpnKey />}
+                    onChange={onChangeInput}
+                    type="password"
+                    required
+                    fullWidth
+                    onKeyPress={handleKeypress}
+                    error={isPasswordTouched && !password}
+                    helperText={isPasswordTouched && !password ? "Password is required" : ""}
+                  />}
+                {!isMobile &&
+                  <FormControlLabel
+                    control={
+                      <Checkbox
+                        checked={useHiveKeychain}
+                        onChange={handleClickCheckbox}
+                        name="keychain"
+                      />}
+                    label="Login with Hive Keychain"
+                    className={classes.isHiveKeychain}
+                  />
+                }
+                {useHiveKeychain && !hasKeyChain && !isMobile &&
+                  <Fragment>
+                    <FormSpacer />
+                    <HiveKeychainInstall />
+                    <FormSpacer />
+                    <FormSpacer />
+                  </Fragment>
+                }
                 <ContainedButton
                   type="button"
                   color="secondary"
@@ -186,7 +272,7 @@ const Login = (props) => {
                   onClick={handLogin}
                   className={classes.submitBtn}
                   fullWidth
-                  disabled={loading}
+                  disabled={isDisabled()}
                   loading={loading}
                   loadType="circular"
                 />
@@ -220,6 +306,7 @@ const mapDispatchToProps = (dispatch) => ({
     {
       authenticateUserRequest,
       broadcastNotification,
+      setFromLogin
     },
     dispatch
   ),

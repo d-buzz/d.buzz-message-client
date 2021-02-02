@@ -15,21 +15,37 @@ import {
     getItemLocalStorage,
     removeItemLocalStorage
 } from "./../../services/helper";
-import { authenticateUser } from "./../../services/api";
+import { authenticateUser, keychainSignIn, generateToken } from "./../../services/api";
 
 function* authenticateUserRequest(payload, meta) {
     try {
-        const { username } = payload;
-        const user = { username, is_authenticated: false };
+        const { username, password, useKeychain } = payload;
+        const user = { username, useKeychain, is_authenticated: false };
 
-        const response = yield authenticateUser(payload);
-        const data = yield response.data;
-        if (data.code === 200) {
-            user.is_authenticated = true;
-            user.token = data.data;
+        if (useKeychain) {
+            const data = yield call(keychainSignIn, username)
+            if (data.success) {
+                const response = yield generateToken({ username });
+                const data = yield response.data;
+                if (data.code === 200) {
+                    user.is_authenticated = true;
+                    user.token = data.data;
+                }
+            }
+        } else {
+            const response = yield authenticateUser({ username, password });
+            const data = yield response.data;
+            if (data.code === 200) {
+                user.is_authenticated = true;
+                user.token = data.data;
+            }
+        }
+
+        if (user.is_authenticated) {
             const session = JSON.stringify(user);
             yield call(setItemLocalStorage, "user", session);
         }
+
         yield put(authenticateUserSuccess(user, meta));
     } catch (error) {
         console.log(error);
