@@ -81,13 +81,13 @@ const TopBar = (props) => {
                                         alt="user"
                                     />
                                 }>
-                                <MenuItem
+                                {/* <MenuItem
                                     className="flex flex-middle"
                                     style={{ minWidth: 185 }}
                                 >
                                     <Icon> settings </Icon>
                                     <span className="pl-16"> Settings </span>
-                                </MenuItem>
+                                </MenuItem> */}
                                 <MenuItem
                                     onClick={handleSignOut}
                                     className="flex flex-middle"

@@ -5,8 +5,8 @@ import SendIcon from '@material-ui/icons/Send';
 const SendButton = withStyles((theme) => ({
     root: {
         backgroundColor: "#e51c34",
-        width: "56px",
-        height: "56px",
+        width: "50px",
+        height: "50px",
         fontSize: "0.875rem",
         minWidth: 0,
         padding: 0,
@@ -26,6 +26,9 @@ const ChatTextField = withStyles((theme) => ({
                 borderRadius: "30px",
             },
         },
+        '& .MuiOutlinedInput-input': {
+            padding: "14px 14px"
+        }
     },
 }))(TextField);
 

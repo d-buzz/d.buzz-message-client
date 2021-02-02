@@ -16,7 +16,8 @@ const NoChatSelected = (props) => {
                                         <div className="h-220 w-220 rounded elevation-z6 bg-chat flex justify-center items-center">
                                             <ChatIcon style={{ fontSize: "4rem" }} />
                                         </div>
-                                        <p>No conversation selected</p>
+                                        <span style={{ fontSize: "1.2rem", paddingTop: "1rem" }}>Welcome to HivePM</span>
+                                        <p>Select a contact to start messaging.</p>
                                     </div>
                                 </ChatContainer>
                             </div>

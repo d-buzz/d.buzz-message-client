@@ -29,4 +29,17 @@ export const setChatUsersListFailure = (response, meta) => ({
     meta
 });
 
+export const CLEAR_USER_LIST = "CLEAR_USER_LIST";
+export const clearUserList = () => ({
+    type: CLEAR_USER_LIST,
+});
+
+
+export const SET_NEW_STATUS_USERS = "SET_NEW_STATUS_USERS";
+export const setNewStatusUsers = (users) => ({
+    type: SET_NEW_STATUS_USERS,
+    payload: users
+});
+
+
 

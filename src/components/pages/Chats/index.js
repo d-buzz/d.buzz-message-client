@@ -21,6 +21,7 @@ const Chats = (props) => {
     const { params } = match
     const { username } = params
     const [messages, setMessages] = useState([])
+    const [loading, setLoading] = useState(true)
 
     useEffect(() => {
         if (username) {
@@ -33,6 +34,7 @@ const Chats = (props) => {
                 if (index !== -1) {
                     let msgs = chatUsersList[index].messages;
                     setMessages(msgs)
+                    setLoading(false)
                 }
             }
         }
@@ -56,7 +58,7 @@ const Chats = (props) => {
                 <SimpleCard>
                     <div className="relative flex h-full">
                         <div className="relative flex-grow-1 h-full">
-                            <ChatMessages messages={messages} />
+                            <ChatMessages messages={messages} loading={loading} />
                         </div>
                     </div>
                 </SimpleCard >

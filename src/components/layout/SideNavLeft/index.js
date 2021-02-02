@@ -9,7 +9,6 @@ import {
     Tooltip,
     IconButton,
     MuiThemeProvider,
-    Divider
 } from "@material-ui/core";
 import {
     setThemeRequest,
@@ -17,6 +16,7 @@ import {
 } from '../../../store/settings/actions'
 import SidenavTheme from "../../../theme/SidenavTheme"
 import { SideNav, Brand, ChatSideNavTopBar, Copyright } from "./../../../components"
+import Skeleton, { SkeletonTheme } from 'react-loading-skeleton';
 
 // const THEME = {
 //     LIGHT: 'light',
@@ -41,6 +41,7 @@ const SideNavLeft = (props) => {
         // theme,
         layoutSettings,
         handleSignOut,
+        loading,
         // setThemeRequest,
         // generateStyles
     } = props
@@ -49,6 +50,7 @@ const SideNavLeft = (props) => {
     const history = useHistory()
     const userPic = `https://images.hive.blog/u/${username}/avatar/small`
     const sidenavTheme = layoutSettings.themes[layoutSettings.leftSidebar.theme]
+
 
     // const handleToggleTheme = () => {
     //     let newMode = mode
@@ -132,8 +134,14 @@ const SideNavLeft = (props) => {
                     <RenderLogoSwitch />
                     <RenderUser />
                     <ChatSideNavTopBar />
-                    <SideNav />
-                    <Divider />
+                    {!loading && <SideNav />}
+                    {loading &&
+                        (<div className="chat-list" style={{ marginLeft: "15px", lineHeight: 2, fontSize: 24 }}>
+                            <SkeletonTheme color="#303841" highlightColor="#444">
+                                <span><Skeleton count={8} width={500} /></span>
+                            </SkeletonTheme>
+                        </div>)
+                    }
                     <div className="flex flex-space-between px-4 py-4 flex-middle">
                         <div className="flex items-center" />
                         <div className="flex flex-middle">

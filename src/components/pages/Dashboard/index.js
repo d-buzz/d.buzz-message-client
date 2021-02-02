@@ -1,5 +1,5 @@
 
-import React, { Fragment, useContext, useEffect } from 'react';
+import React, { Fragment, useContext, useEffect, useState } from 'react';
 import { connect } from 'react-redux'
 import { bindActionCreators } from 'redux'
 import { renderRoutes } from "react-router-config";
@@ -10,7 +10,7 @@ import { SideNavLeft, TopBar } from "./../../../components"
 import AppContext from "./../../../AppContext"
 import { setLayoutSettings } from "./../../../store/settings/actions"
 import { signoutUserRequest } from "./../../../store/auth/actions"
-import { setChatUsersListRequest } from "./../../../store/chat/actions"
+import { setChatUsersListRequest, clearUserList } from "./../../../store/chat/actions"
 import ChatSocketServer from "../../../services/chatSocketServer"
 
 const styles = theme => {
@@ -30,11 +30,13 @@ const Dashboard = (props) => {
         signoutUserRequest,
         setLayoutSettings,
         setChatUsersListRequest,
+        clearUserList,
         classes,
     } = props
 
     const { username, token } = user
     const { routes } = useContext(AppContext)
+    const [loading, setLoading] = useState(false)
     const layoutClasses = {
         [classes.layout]: true,
         [`layout1 sidenav-${layoutSettings.leftSidebar.mode} theme-${theme.palette.type} flex`]: true,
@@ -51,6 +53,7 @@ const Dashboard = (props) => {
 
     const establishSocketConn = () => {
         if (username) {
+            setLoading(true)
             ChatSocketServer.establishSocketConnection(username)
             ChatSocketServer.getChatList(token)
             ChatSocketServer.eventEmitter.on('chat-list-response', createChatListUsers);
@@ -59,7 +62,9 @@ const Dashboard = (props) => {
 
 
     const createChatListUsers = (response) => {
-        setChatUsersListRequest(response)
+        setChatUsersListRequest(response).then((result) => {
+            setLoading(false)
+        })
     }
 
     const updateSidebarMode = (sideBarSettings) => {
@@ -72,14 +77,20 @@ const Dashboard = (props) => {
         })
     }
 
+    const handleClickLogout = () => {
+        signoutUserRequest()
+        clearUserList()
+    }
+
     return (
         <Fragment>
             <div className={classList(layoutClasses)}>
-                {layoutSettings.leftSidebar.show && <SideNavLeft handleSignOut={signoutUserRequest} />}
+                {layoutSettings.leftSidebar.show &&
+                    <SideNavLeft handleSignOut={handleClickLogout} loading={loading} />}
 
                 <div className="content-wrap position-relative">
                     {layoutSettings.topbar.show && layoutSettings.topbar.fixed && (
-                        <TopBar className="elevation-z8" handleSignOut={signoutUserRequest} />
+                        <TopBar className="elevation-z8" handleSignOut={handleClickLogout} />
                     )}
 
                     {layoutSettings.perfectScrollbar && (
@@ -113,7 +124,8 @@ const mapDispatchToProps = (dispatch) => ({
     ...bindActionCreators({
         setLayoutSettings,
         signoutUserRequest,
-        setChatUsersListRequest
+        setChatUsersListRequest,
+        clearUserList
     }, dispatch),
 })
 

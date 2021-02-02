@@ -1,14 +1,20 @@
-import React, { Fragment } from 'react';
+import React, { Fragment, useEffect, useState } from 'react';
 import { connect } from 'react-redux'
 import { ChatSideNavContact } from "./../../../components";
 import { List } from "@material-ui/core";
 
 const ChatList = (props) => {
-    const { chatUsersList } = props
+    const { chatUsersList, newStatusUsers } = props
+    const [chatUsers, setChatUsers] = useState(chatUsersList)
+
+    useEffect(() => {
+        setChatUsers(chatUsersList)
+        // eslint-disable-next-line react-hooks/exhaustive-deps
+    }, [newStatusUsers])
 
     const renderContacts = () => {
         return (
-            chatUsersList.map((item, index) => {
+            chatUsers.map((item, index) => {
                 return (
                     <ChatSideNavContact
                         key={`${index}-${item.username}`}
@@ -32,7 +38,8 @@ const ChatList = (props) => {
 }
 const mapStateToProps = (state) => ({
     user: state.auth.get('user'),
-    chatUsersList: state.chat.get('chatUsersList')
+    chatUsersList: state.chat.get('chatUsersList'),
+    newStatusUsers: state.chat.get('newStatusUsers')
 })
 
 export default connect(mapStateToProps)(ChatList);
