@@ -3,14 +3,16 @@ import {
     SET_SELECTED_CONTACT,
     SET_USERS_LIST_SUCCESS,
     CLEAR_USER_LIST,
-    SET_NEW_STATUS_USERS
+    SET_NEW_STATUS_USERS,
+    SET_IS_FETCHING_CHATS
 } from "./actions"
 
 
 const defaultState = fromJS({
     chatUsersList: [],
     selectedContact: {},
-    newStatusUsers: []
+    newStatusUsers: [],
+    isFetchingChats: true
 });
 
 export const chat = (state = defaultState, { type, payload }) => {
@@ -23,6 +25,8 @@ export const chat = (state = defaultState, { type, payload }) => {
             return state.set('chatUsersList', [])
         case SET_NEW_STATUS_USERS:
             return state.set('newStatusUsers', payload)
+        case SET_IS_FETCHING_CHATS:
+            return state.set('isFetchingChats', payload)
         default:
             return state;
     }

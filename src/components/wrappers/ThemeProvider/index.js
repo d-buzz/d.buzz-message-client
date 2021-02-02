@@ -2,6 +2,7 @@ import React from 'react'
 import { connect } from 'react-redux'
 import { MuiThemeProvider } from "@material-ui/core";
 import { Helmet } from "react-helmet";
+import { SkeletonTheme } from 'react-loading-skeleton';
 
 const ThemeProvider = (props) => {
     const {
@@ -45,7 +46,9 @@ const ThemeProvider = (props) => {
                                 }`}
                     </style>
                 </Helmet>
-                {children}
+                <SkeletonTheme color="#303841" highlightColor="#38444d">
+                    {children}
+                </SkeletonTheme>
             </MuiThemeProvider>
         </React.Fragment>
     )

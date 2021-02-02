@@ -4,11 +4,12 @@ import { bindActionCreators } from 'redux'
 import {
     ChatMessageTopBar,
     Message,
-    ChatContainer
+    ChatContainer,
+    Loading
 } from "./../../../components";
 
 const ChatMessages = (props) => {
-    const { selectedContact, user, messages } = props
+    const { selectedContact, user, messages, isFetchingChats } = props
     const { username: loginUser } = user
     const { username } = selectedContact
 
@@ -27,7 +28,8 @@ const ChatMessages = (props) => {
             <div className="flex-column relative chat-form">
                 <ChatMessageTopBar username={username} />
                 <ChatContainer>
-                    {renderMessages()}
+                    {isFetchingChats && <Loading />}
+                    {!isFetchingChats && renderMessages()}
                 </ChatContainer>
             </div>
         </Fragment>
@@ -36,6 +38,8 @@ const ChatMessages = (props) => {
 const mapStateToProps = (state) => ({
     user: state.auth.get("user"),
     selectedContact: state.chat.get('selectedContact'),
+    isFetchingChats: state.chat.get('isFetchingChats'),
+
 })
 
 const mapDispatchToProps = (dispatch) => ({

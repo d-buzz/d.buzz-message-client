@@ -3,7 +3,8 @@ import {
     SET_USERS_LIST_REQUEST,
     setChatUsersListSuccess,
     setChatUsersListFailure,
-    setNewStatusUsers
+    setNewStatusUsers,
+    setIsFetchingChats
 } from "./actions";
 
 import { clearLocalStorage } from "./../../services/helper";
@@ -18,6 +19,7 @@ function* setChatUsersListRequest(payload, meta) {
             userDisconnected = false,
             username: chatUser = ''
         } = payload
+
 
         let newUserStatus = []
         const user = yield select(state => state.auth.get('user'))
@@ -53,7 +55,7 @@ function* setChatUsersListRequest(payload, meta) {
                 window.location.reload()
             }
         }
-
+        yield put(setIsFetchingChats(false))
         yield put(setNewStatusUsers(newUserStatus))
         yield put(setChatUsersListSuccess(chatListUsers, meta))
     } catch (err) {

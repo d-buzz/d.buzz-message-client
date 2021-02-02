@@ -15,8 +15,7 @@ import {
     generateStyles
 } from '../../../store/settings/actions'
 import SidenavTheme from "../../../theme/SidenavTheme"
-import { SideNav, Brand, ChatSideNavTopBar, Copyright } from "./../../../components"
-import Skeleton, { SkeletonTheme } from 'react-loading-skeleton';
+import { SideNav, Brand, ChatSideNavTopBar, Copyright, ContactListSkeleton } from "./../../../components"
 
 // const THEME = {
 //     LIGHT: 'light',
@@ -135,13 +134,7 @@ const SideNavLeft = (props) => {
                     <RenderUser />
                     <ChatSideNavTopBar />
                     {!loading && <SideNav />}
-                    {loading &&
-                        (<div className="chat-list" style={{ marginLeft: "15px", lineHeight: 2, fontSize: 24 }}>
-                            <SkeletonTheme color="#303841" highlightColor="#444">
-                                <span><Skeleton count={8} width={500} /></span>
-                            </SkeletonTheme>
-                        </div>)
-                    }
+                    {loading && <ContactListSkeleton />}
                     <div className="flex flex-space-between px-4 py-4 flex-middle">
                         <div className="flex items-center" />
                         <div className="flex flex-middle">

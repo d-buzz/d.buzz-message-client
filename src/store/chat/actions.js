@@ -41,5 +41,12 @@ export const setNewStatusUsers = (users) => ({
     payload: users
 });
 
+export const SET_IS_FETCHING_CHATS = "SET_IS_FETCHING_CHATS";
+export const setIsFetchingChats = (status) => ({
+    type: SET_IS_FETCHING_CHATS,
+    payload: status
+});
+
+
 
 
