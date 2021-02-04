@@ -6,7 +6,7 @@
 
 .sidenav .scrollable {
   width: $sidenav-width;
-  // height: $sidenav-height;
+  height: inherit;
 }
 
 .layout1 {
@@ -41,12 +41,12 @@
       flex-direction: column;
       position: relative;
       flex: 1;
-      overflow-y: auto;
+      overflow-y: scroll;
       overflow-x: hidden;
+      scroll-behavior: smooth;
       .content {
         position: relative;
       }
-      
     }
   }
 
@@ -225,4 +225,7 @@
       }
     }
   }
+}
+.brand-big{
+  height: 160px;
 }

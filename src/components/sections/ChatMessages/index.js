@@ -5,7 +5,8 @@ import {
     ChatMessageTopBar,
     Message,
     ChatContainer,
-    Loading
+    Loading,
+    NoMessage
 } from "./../../../components";
 
 const ChatMessages = (props) => {
@@ -14,13 +15,17 @@ const ChatMessages = (props) => {
     const { username } = selectedContact
 
     const renderMessages = () => {
-        return (
-            messages.map((item, index) => {
-                return (
-                    <Message key={index} item={item} loginUser={loginUser} />
-                )
-            })
-        )
+        if (messages.length > 0) {
+            return (
+                messages.map((item, index) => {
+                    return (
+                        <Message key={index} item={item} loginUser={loginUser} />
+                    )
+                })
+            )
+        } else {
+            return (<NoMessage />)
+        }
     }
 
     return (
@@ -31,6 +36,7 @@ const ChatMessages = (props) => {
                     {isFetchingChats && <Loading />}
                     {!isFetchingChats && renderMessages()}
                 </ChatContainer>
+
             </div>
         </Fragment>
     )

@@ -38,7 +38,7 @@ class ChatSocketServer {
     }
 
     logout(username) {
-        this.socket.emit('logout', username);
+        this.socket.emit('logout', { username });
         this.socket.on('logout-response', (data) => {
             this.eventEmitter.emit('logout-response', data);
         });

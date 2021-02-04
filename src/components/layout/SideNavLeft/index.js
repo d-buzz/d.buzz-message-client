@@ -15,7 +15,7 @@ import {
     generateStyles
 } from '../../../store/settings/actions'
 import SidenavTheme from "../../../theme/SidenavTheme"
-import { SideNav, Brand, ChatSideNavTopBar, Copyright, ContactListSkeleton } from "./../../../components"
+import { SideNav, Brand, ChatSideNavTopBar, Copyright } from "./../../../components"
 
 // const THEME = {
 //     LIGHT: 'light',
@@ -133,8 +133,7 @@ const SideNavLeft = (props) => {
                     <RenderLogoSwitch />
                     <RenderUser />
                     <ChatSideNavTopBar />
-                    {!loading && <SideNav />}
-                    {loading && <ContactListSkeleton />}
+                    <SideNav loading={loading} />
                     <div className="flex flex-space-between px-4 py-4 flex-middle">
                         <div className="flex items-center" />
                         <div className="flex flex-middle">

@@ -1,7 +1,7 @@
 import React, { Fragment } from 'react';
-import { Avatar } from "@material-ui/core";
+import { Avatar, Chip } from "@material-ui/core";
 import moment from "moment";
-
+import { HiveIcon } from "./../../elements";
 const Message = (props) => {
     const { item, loginUser } = props
     const {
@@ -33,7 +33,13 @@ const Message = (props) => {
                             </span>
                         </div>
                         <small className="text-muted mb-0">{getDateAgo(time)} | </small>
-                        <small className="text-muted mb-0">{amount} {asset}</small>
+                        <Chip
+                            size="small"
+                            style={{ border: "none" }}
+                            icon={<HiveIcon />}
+                            label={`${amount} ${asset}`}
+                            variant="outlined" />
+
                     </div>
                 </div>}
             {(from === loginUser) &&
@@ -47,7 +53,12 @@ const Message = (props) => {
                                 </span>
                             </div>
                             <small className="text-muted mb-0">{getDateAgo(time)} | </small>
-                            <small className="text-muted mb-0">{amount} {asset}</small>
+                            <Chip
+                                size="small"
+                                style={{ border: "none" }}
+                                icon={<HiveIcon />}
+                                label={`${amount} ${asset}`}
+                                variant="outlined" />
                         </div>
                         <div className="relative">
                             <Avatar className="avatar borderWhite" src={userPic} />

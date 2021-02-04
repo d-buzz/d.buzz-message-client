@@ -3,12 +3,13 @@ import { connect } from "react-redux";
 import { bindActionCreators } from 'redux'
 import Scrollbar from "react-perfect-scrollbar";
 import { setLayoutSettings } from "./../../../store/settings/actions"
-import { ChatList } from "./../../../components"
+import { ChatList, ContactListSkeleton } from "./../../../components"
 
 const SideNav = (props) => {
     const {
         layoutSettings,
         setLayoutSettings,
+        loading
     } = props
 
     const updateSidebarMode = (sideBarSettings) => {
@@ -31,7 +32,8 @@ const SideNav = (props) => {
     return (
         <Fragment>
             <Scrollbar className="scrollable position-relative">
-                <ChatList />
+                {!loading && <ChatList />}
+                {loading && <ContactListSkeleton />}
             </Scrollbar>
             {renderOverlay()}
         </Fragment>

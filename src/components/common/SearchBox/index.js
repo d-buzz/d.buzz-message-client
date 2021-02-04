@@ -10,7 +10,7 @@ const styles = theme => ({
 
 
 const SearchBox = (props) => {
-    const { classes } = props
+    const { classes, value, handleChangeInput } = props
     const [open, setOpen] = useState(false)
 
     const toggle = () => {
@@ -29,9 +29,12 @@ const SearchBox = (props) => {
                     className={`flex flex-middle matx-search-box ${classes.root}`}
                 >
                     <input
+                        id="searchkey"
                         className={`px-16 search-box w-100 ${classes.root}`}
                         type="text"
                         placeholder="Search users"
+                        value={value}
+                        onChange={handleChangeInput}
                         autoFocus
                     />
                     <IconButton onClick={toggle} className="text-middle mx-4">

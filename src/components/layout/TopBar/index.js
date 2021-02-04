@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useState } from 'react';
 import { connect } from "react-redux";
 import { bindActionCreators } from 'redux'
 import {
@@ -6,13 +6,12 @@ import {
     IconButton,
     MenuItem,
     withStyles,
-    MuiThemeProvider,
+    MuiThemeProvider
 } from "@material-ui/core";
 import { setLayoutSettings } from "./../../../store/settings/actions"
 import { isMdScreen } from "./../../../services/helper"
 import { SimpleMenu } from "./../../elements"
 import { SearchBox } from "./../../../components"
-import logo from "../../../images/logo.png"
 
 const styles = theme => ({
     root: {
@@ -32,6 +31,7 @@ const TopBar = (props) => {
     const { username } = user
     const userPic = `https://images.hive.blog/u/${username}/avatar/small`
     const topbarTheme = layoutSettings.themes[layoutSettings.topbar.theme]
+    const [searchKey, setSearchKey] = useState("")
 
 
     const handleSidebarToggle = () => {
@@ -54,6 +54,15 @@ const TopBar = (props) => {
         })
     }
 
+    const handleChangeInput = (e) => {
+        const { target } = e;
+        const { id, value } = target;
+        if (id === "searchkey") {
+            setSearchKey(value)
+        }
+    }
+
+
     return (
         <MuiThemeProvider theme={topbarTheme}>
             <div className="topbar">
@@ -67,12 +76,8 @@ const TopBar = (props) => {
                                 <Icon>menu</Icon>
                             </IconButton>
                         </div>
-                        <div className="flex flex-middle hide-on-lg">
-                            <img src={logo} className="brand-logo-30" alt="company-logo" />
-                            <span className="brand__text p-1 font-size-18">HivePM</span>
-                        </div>
                         <div className="flex flex-middle">
-                            <SearchBox />
+                            <SearchBox value={searchKey} handleChangeInput={handleChangeInput} />
                             <SimpleMenu
                                 menuButton={
                                     <img
@@ -81,13 +86,6 @@ const TopBar = (props) => {
                                         alt="user"
                                     />
                                 }>
-                                {/* <MenuItem
-                                    className="flex flex-middle"
-                                    style={{ minWidth: 185 }}
-                                >
-                                    <Icon> settings </Icon>
-                                    <span className="pl-16"> Settings </span>
-                                </MenuItem> */}
                                 <MenuItem
                                     onClick={handleSignOut}
                                     className="flex flex-middle"

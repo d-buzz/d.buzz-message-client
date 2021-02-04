@@ -10,11 +10,11 @@ const useStyles = makeStyles(theme => ({
         right: 0,
         top: "calc(50% - 20px)",
         margin: "auto",
-        height: "40px",
+        height: "45px",
         width: "40px",
         "& img": {
             position: "absolute",
-            height: "25px",
+            height: "35px",
             width: "auto",
             top: 0,
             bottom: 0,

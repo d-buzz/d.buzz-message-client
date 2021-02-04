@@ -1,24 +1,39 @@
-import React, { Fragment } from 'react';
+import React, { createRef, Fragment, useEffect } from 'react';
 // import PerfectScrollbar from "react-perfect-scrollbar";
 import { ChatForm } from "./../../../components";
 import { Divider } from "@material-ui/core";
-import ScrollToBottom from 'react-scroll-to-bottom';
 
 
-const ChatContainer = ({ children }) => {
+const ChatContainer = (props) => {
+    const { children } = props
+    const messageContainer = createRef()
+
+    useEffect(() => {
+        if (children) {
+            scrollChatBottom()
+        }
+        // eslint-disable-next-line react-hooks/exhaustive-deps
+    }, [children])
+
+    const scrollChatBottom = () => {
+        if (messageContainer.current !== null) {
+            try {
+                messageContainer.current.scrollTop = messageContainer.current.scrollHeight
+            } catch (error) {
+                console.warn(error)
+            }
+        }
+    }
+
     return (
         <Fragment>
-            {/* <PerfectScrollbar id="chat-message-list"
-                options={{ suppressScrollX: false }}
-                className="chat-message-list flex-grow-1 relative"
-            >
-                {children}
-            </PerfectScrollbar> */}
-            <ScrollToBottom
-                className="chat-scroll flex-grow-1 relative"
-                option={{ behavior: "smooth" }}>
-                {children}
-            </ScrollToBottom>
+            <div id="chat-message-list"
+                ref={messageContainer}
+                className="scrollable-content">
+                <div className="content">
+                    {children}
+                </div>
+            </div>
             <Divider />
             <ChatForm />
         </Fragment>

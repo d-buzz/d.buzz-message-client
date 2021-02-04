@@ -60,7 +60,6 @@ const Dashboard = (props) => {
         }
     }
 
-
     const createChatListUsers = (response) => {
         setChatUsersListRequest(response).then((result) => {
             setLoading(false)
@@ -79,6 +78,7 @@ const Dashboard = (props) => {
 
     const handleClickLogout = () => {
         signoutUserRequest()
+        ChatSocketServer.logout(username)
         clearUserList()
     }
 

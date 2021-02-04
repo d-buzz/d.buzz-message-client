@@ -44,7 +44,7 @@ const useStyles = makeStyles((theme) => ({
     marginTop: theme.spacing(1),
   },
   logo: {
-    height: "40px",
+    height: "50px",
     marginBottom: "-7px",
     alignItems: "center",
   },

@@ -9,17 +9,20 @@ const TextFieldWithIcon = (props) => {
         label,
         className,
         icon,
-        iconPosition = "start"
+        iconPosition = "start",
+        otherInputProps = {},
+        variant = "outlined"
     } = props;
     return (
         <React.Fragment>
             <TextField
-                variant="outlined"
+                variant={variant}
                 margin="normal"
                 label={label}
                 className={className}
                 InputProps={{
                     startAdornment: <InputAdornment position={iconPosition}>{icon}</InputAdornment>,
+                    ...otherInputProps
                 }}
                 {...props}
             />
