@@ -14,7 +14,6 @@ export const setChatUsersListRequest = (response) => ({
     },
 });
 
-
 export const SET_USERS_LIST_SUCCESS = "SET_USERS_LIST_SUCCESS";
 export const setChatUsersListSuccess = (response, meta) => ({
     type: SET_USERS_LIST_SUCCESS,
@@ -47,6 +46,31 @@ export const setIsFetchingChats = (status) => ({
     payload: status
 });
 
+export const UPDATE_CHAT_DATA = "UPDATE_CHAT_DATA";
+export const updateChatData = (payload) => ({
+    type: UPDATE_CHAT_DATA,
+    payload: payload
+});
 
+export const SEND_MESSAGE_REQUEST = "SEND_MESSAGE_REQUEST";
+export const sendMessageRequest = (response) => ({
+    type: SEND_MESSAGE_REQUEST,
+    payload: response,
+    meta: {
+        thunk: true,
+    },
+});
 
+export const SEND_MESSAGE_SUCCESS = "SEND_MESSAGE_SUCCESS";
+export const sendMessageSuccess = (response, meta) => ({
+    type: SEND_MESSAGE_SUCCESS,
+    payload: response,
+    meta
+});
 
+export const SEND_MESSAGE_FAILURE = "SEND_MESSAGE_FAILURE";
+export const sendMessageFailure = (response, meta) => ({
+    type: SEND_MESSAGE_FAILURE,
+    payload: response,
+    meta
+});

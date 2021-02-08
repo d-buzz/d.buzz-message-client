@@ -4,10 +4,15 @@ import {
     setChatUsersListSuccess,
     setChatUsersListFailure,
     setNewStatusUsers,
-    setIsFetchingChats
+    setIsFetchingChats,
+    SEND_MESSAGE_REQUEST,
+    sendMessageSuccess,
+    sendMessageFailure,
+    updateChatData,
 } from "./actions";
 
 import { clearLocalStorage } from "./../../services/helper";
+import ChatSocketServer from "./../../services/chatSocketServer";
 
 function* setChatUsersListRequest(payload, meta) {
     try {
@@ -63,10 +68,46 @@ function* setChatUsersListRequest(payload, meta) {
     }
 }
 
+function* sendMessageRequest(payload, meta) {
+    try {
+        const { from } = payload
+
+        yield ChatSocketServer.sendMessage(payload)
+
+        const user = yield select(state => state.auth.get('user'))
+        const { username } = user;
+
+        const selectedContact = yield select(state => state.chat.get('selectedContact'))
+        const { username: main_user } = selectedContact
+
+        let chatListUsers = yield select(state => state.chat.get('chatUsersList'))
+
+        if (from === username) {
+            if (chatListUsers.length > 0) {
+                const index = chatListUsers.map(x => x.username).indexOf(main_user);
+                if (index !== -1) {
+                    chatListUsers[index].messages.push(payload)
+                }
+            }
+        }
+        yield put(updateChatData(chatListUsers))
+        yield put(sendMessageSuccess(payload, meta))
+    } catch (err) {
+        console.log(err)
+        yield put(sendMessageFailure(err, meta))
+
+    }
+}
+
 function* watchSetChatUsersListRequest({ payload, meta }) {
     yield call(setChatUsersListRequest, payload, meta)
 }
 
+function* watchSendMessageRequest({ payload, meta }) {
+    yield call(sendMessageRequest, payload, meta)
+}
+
 export default function* sagas() {
     yield takeEvery(SET_USERS_LIST_REQUEST, watchSetChatUsersListRequest)
+    yield takeEvery(SEND_MESSAGE_REQUEST, watchSendMessageRequest)
 }

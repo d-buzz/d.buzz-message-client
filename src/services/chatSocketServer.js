@@ -27,12 +27,13 @@ class ChatSocketServer {
         });
     }
 
-    sendMessage(message) {
-        this.socket.emit('add-message', message);
+    sendMessage(params) {
+        this.socket.emit('add-message', params);
     }
 
     receiveMessage() {
         this.socket.on('add-message-response', (data) => {
+            console.log(data)
             this.eventEmitter.emit('add-message-response', data);
         });
     }

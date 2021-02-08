@@ -39,15 +39,15 @@ const ChatForm = (props) => {
     const [message, setMessage] = useState(null)
 
     const handleClickChatOptionsDialog = () => {
-        if (message) {
+        if (message.trim()) {
             setOpenChatOptions(!openChatOptions)
         } else {
             broadcastNotification(
                 "error",
                 "Please write a message first..."
             );
+            setMessage("")
         }
-
     }
 
     const handleChangeInput = (e) => {
@@ -55,6 +55,17 @@ const ChatForm = (props) => {
         const { id, value } = target;
         if (id === "message") {
             setMessage(value)
+        }
+    }
+
+    const clearChatBox = () => {
+        setMessage("")
+    }
+
+    const handleEnterMessage = (e) => {
+        if (e.key === "Enter") {
+            e.preventDefault()
+            handleClickChatOptionsDialog()
         }
     }
 
@@ -68,6 +79,7 @@ const ChatForm = (props) => {
                     placeholder="Write a message..."
                     value={message}
                     onChange={handleChangeInput}
+                    onKeyPress={handleEnterMessage}
                     fullWidth
                     multiline
                     error={false}
@@ -84,7 +96,8 @@ const ChatForm = (props) => {
                 open={openChatOptions}
                 handleClose={handleClickChatOptionsDialog}
                 message={message}
-                handleChangeMessage={handleChangeInput} />
+                handleChangeMessage={handleChangeInput}
+                clearChatBox={clearChatBox} />
         </React.Fragment>
     )
 }

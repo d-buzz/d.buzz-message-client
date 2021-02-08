@@ -14,7 +14,6 @@ const Brand = (props) => {
         <div onClick={gotoHome} className="flex flex-middle flex-space-between brand-area cursor-pointer">
             <div className="flex flex-middle brand">
                 <img src={logo} alt="company-logo" />
-                {/* <span className="brand__text">HivePM</span> */}
             </div>
             {children}
         </div>

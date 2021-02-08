@@ -1,4 +1,6 @@
 import React, { useState } from "react";
+import { bindActionCreators } from "redux";
+import { connect } from "react-redux";
 import {
     Dialog,
     DialogActions,
@@ -19,6 +21,9 @@ import {
 } from "./../../elements";
 import { useTheme } from '@material-ui/core/styles';
 import MailOutlineIcon from '@material-ui/icons/MailOutline';
+import config from "./../../../config";
+import { sendMessageRequest } from "./../../../store/chat/actions";
+import moment from "moment";
 
 const assets = [
     {
@@ -31,17 +36,30 @@ const assets = [
     },
 ];
 
-const minAmount = 0.001;
+const minAmount = parseFloat(config.MIN_AMOUNT);
+const defaultAsset = config.DEFAULT_ASSET;
+
 const ChatSubmitOptionsModal = (props) => {
-    const { open, handleClose, message, handleChangeMessage } = props
+    const {
+        open,
+        user,
+        selectedContact,
+        handleClose,
+        message,
+        handleChangeMessage,
+        sendMessageRequest,
+        clearChatBox
+    } = props
     const [isEncrypted, setIsEncrypted] = useState(true)
-    const [currency, setCurrency] = useState('HIVE');
-    const [amount, setAmount] = useState("")
+    const [currency, setCurrency] = useState(defaultAsset);
+    const [amount, setAmount] = useState(minAmount)
     const [isAmountTouched, setIsAmountTouched] = useState(false)
     const [loading, setLoading] = useState(false)
-    const [disabled, setDisabled] = useState(true)
+    const [disabled, setDisabled] = useState(false)
     const theme = useTheme();
     const fullScreen = useMediaQuery(theme.breakpoints.down('sm'));
+    const { username } = user
+    const { username: main_user } = selectedContact
 
     const handleChangeAsset = (e) => {
         setCurrency(e.target.value);
@@ -80,18 +98,39 @@ const ChatSubmitOptionsModal = (props) => {
     const handleClickClose = () => {
         handleClearInput()
         handleClose()
-
+        clearChatBox()
     }
 
     const handleClearInput = () => {
-        setCurrency('HIVE')
-        setAmount("")
+        setCurrency(defaultAsset)
+        setAmount(minAmount)
         setIsEncrypted(true)
         setIsAmountTouched(false)
     }
 
-    const handleSubmit = () => {
-        setLoading(false)
+    const handleSubmitMessage = () => {
+        setLoading(true)
+        const trimmedMsg = message.trim()
+        let date = moment().utc().format()
+        date = `${date}`.replace('Z', '')
+        const params = {
+            message: trimmedMsg,
+            decoded: isEncrypted ? `# ${trimmedMsg}` : trimmedMsg,
+            from: username,
+            to: main_user,
+            use_encrypt: isEncrypted ? 1 : 0,
+            amount,
+            asset: currency,
+            trx_id: `temp__${Math.random()}`,
+            time: date,
+            number: 0
+        }
+        sendMessageRequest(params).then((res) => {
+            setLoading(false)
+            if (res) {
+                handleClickClose()
+            }
+        })
     }
 
     return (
@@ -161,7 +200,7 @@ const ChatSubmitOptionsModal = (props) => {
                         type="button"
                         color="secondary"
                         label="Proceed"
-                        onClick={handleSubmit}
+                        onClick={handleSubmitMessage}
                         fullWidth
                         disabled={disabled}
                         loading={loading}
@@ -172,4 +211,19 @@ const ChatSubmitOptionsModal = (props) => {
         </React.Fragment >
     );
 };
-export default ChatSubmitOptionsModal
+
+const mapStateToProps = (state) => ({
+    user: state.auth.get('user'),
+    selectedContact: state.chat.get('selectedContact')
+});
+
+const mapDispatchToProps = (dispatch) => ({
+    ...bindActionCreators(
+        {
+            sendMessageRequest
+        },
+        dispatch
+    ),
+});
+
+export default connect(mapStateToProps, mapDispatchToProps)(ChatSubmitOptionsModal);

@@ -57,7 +57,13 @@ const Dashboard = (props) => {
             ChatSocketServer.establishSocketConnection(username)
             ChatSocketServer.getChatList(token)
             ChatSocketServer.eventEmitter.on('chat-list-response', createChatListUsers);
+            ChatSocketServer.receiveMessage()
+            ChatSocketServer.eventEmitter.on('add-message-response', receiveSocketMessages);
         }
+    }
+
+    const receiveSocketMessages = (response) => {
+        console.log(response)
     }
 
     const createChatListUsers = (response) => {

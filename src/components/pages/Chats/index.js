@@ -16,7 +16,8 @@ const Chats = (props) => {
         setSelectedContact,
         layoutSettings,
         setLayoutSettings,
-        chatUsersList
+        chatUsersList,
+        newChat
     } = props
     const { params } = match
     const { username } = params
@@ -39,8 +40,7 @@ const Chats = (props) => {
             }
         }
         // eslint-disable-next-line react-hooks/exhaustive-deps
-    }, [username, chatUsersList])
-
+    }, [username, chatUsersList, newChat])
 
     const updateSidebarMode = (sideBarSettings) => {
         setLayoutSettings({
@@ -68,7 +68,8 @@ const Chats = (props) => {
 }
 const mapStateToProps = (state) => ({
     layoutSettings: state.settings.get('layoutSettings'),
-    chatUsersList: state.chat.get('chatUsersList')
+    chatUsersList: state.chat.get('chatUsersList'),
+    newChat: state.chat.get('newChat'),
 })
 
 const mapDispatchToProps = (dispatch) => ({

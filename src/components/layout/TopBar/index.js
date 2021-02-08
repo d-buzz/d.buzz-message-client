@@ -12,6 +12,7 @@ import { setLayoutSettings } from "./../../../store/settings/actions"
 import { isMdScreen } from "./../../../services/helper"
 import { SimpleMenu } from "./../../elements"
 import { SearchBox } from "./../../../components"
+import logo from "../../../images/hivepm_brand_white.png"
 
 const styles = theme => ({
     root: {
@@ -75,6 +76,9 @@ const TopBar = (props) => {
                             <IconButton onClick={handleSidebarToggle} className="hide-on-lg">
                                 <Icon>menu</Icon>
                             </IconButton>
+                        </div>
+                        <div className="brand-logo-topbar hide-on-lg">
+                            <img src={logo} alt="company-logo" />
                         </div>
                         <div className="flex flex-middle">
                             <SearchBox value={searchKey} handleChangeInput={handleChangeInput} />
