@@ -2,6 +2,8 @@ import React, { Fragment } from 'react';
 import { Avatar, Chip } from "@material-ui/core";
 import moment from "moment";
 import { HiveIcon } from "./../../elements";
+import TimeAgo from 'react-timeago'
+
 const Message = (props) => {
     const { item, loginUser } = props
     const {
@@ -16,7 +18,17 @@ const Message = (props) => {
     const contactPic = `https://images.hive.blog/u/${from}/avatar/small`
 
     const getDateAgo = (date) => {
-        return moment(`${date}Z`).local().fromNow();
+        const x = new moment()
+        const y = moment(`${date}Z`).local()
+        const duration = moment.duration(x.diff(y)).years()
+        if (parseInt(duration) >= 1) {
+            return y.format("MMM DD YYYY hh:mm A").toString();
+        } else {
+            const formatted = moment(`${date}Z`).local().toString()
+            return (
+                <TimeAgo date={formatted} live={true} />
+            )
+        }
     }
 
     return (

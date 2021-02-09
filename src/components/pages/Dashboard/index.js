@@ -10,7 +10,7 @@ import { SideNavLeft, TopBar } from "./../../../components"
 import AppContext from "./../../../AppContext"
 import { setLayoutSettings } from "./../../../store/settings/actions"
 import { signoutUserRequest } from "./../../../store/auth/actions"
-import { setChatUsersListRequest, clearUserList } from "./../../../store/chat/actions"
+import { setChatUsersListRequest, clearUserList, receiveMessageRequest } from "./../../../store/chat/actions"
 import ChatSocketServer from "../../../services/chatSocketServer"
 
 const styles = theme => {
@@ -30,6 +30,7 @@ const Dashboard = (props) => {
         signoutUserRequest,
         setLayoutSettings,
         setChatUsersListRequest,
+        receiveMessageRequest,
         clearUserList,
         classes,
     } = props
@@ -63,7 +64,10 @@ const Dashboard = (props) => {
     }
 
     const receiveSocketMessages = (response) => {
-        console.log(response)
+        if (response) {
+            console.log(response)
+            receiveMessageRequest(response)
+        }
     }
 
     const createChatListUsers = (response) => {
@@ -131,7 +135,8 @@ const mapDispatchToProps = (dispatch) => ({
         setLayoutSettings,
         signoutUserRequest,
         setChatUsersListRequest,
-        clearUserList
+        clearUserList,
+        receiveMessageRequest
     }, dispatch),
 })
 

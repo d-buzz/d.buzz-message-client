@@ -46,11 +46,35 @@ export const setIsFetchingChats = (status) => ({
     payload: status
 });
 
-export const UPDATE_CHAT_DATA = "UPDATE_CHAT_DATA";
-export const updateChatData = (payload) => ({
-    type: UPDATE_CHAT_DATA,
+export const UPDATE_CHATS_DATA = "UPDATE_CHATS_DATA";
+export const updateChatsData = (payload) => ({
+    type: UPDATE_CHATS_DATA,
     payload: payload
+})
+
+export const RECEIVE_MESSAGE_REQUEST = "RECEIVE_MESSAGE_REQUEST";
+export const receiveMessageRequest = (payload) => ({
+    type: RECEIVE_MESSAGE_REQUEST,
+    payload: payload,
+    meta: {
+        thunk: true,
+    },
 });
+
+export const RECEIVE_MESSAGE_SUCCESS = "RECEIVE_MESSAGE_SUCCESS";
+export const receiveMessageSuccess = (payload, meta) => ({
+    type: RECEIVE_MESSAGE_SUCCESS,
+    payload: payload,
+    meta
+});
+
+export const RECEIVE_MESSAGE_FAILURE = "RECEIVE_MESSAGE_FAILURE";
+export const receiveMessageFailure = (payload, meta) => ({
+    type: RECEIVE_MESSAGE_FAILURE,
+    payload: payload,
+    meta
+});
+
 
 export const SEND_MESSAGE_REQUEST = "SEND_MESSAGE_REQUEST";
 export const sendMessageRequest = (response) => ({

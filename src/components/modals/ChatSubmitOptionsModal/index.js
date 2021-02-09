@@ -110,6 +110,7 @@ const ChatSubmitOptionsModal = (props) => {
 
     const handleSubmitMessage = () => {
         setLoading(true)
+        setDisabled(true)
         const trimmedMsg = message.trim()
         let date = moment().utc().format()
         date = `${date}`.replace('Z', '')
@@ -131,6 +132,13 @@ const ChatSubmitOptionsModal = (props) => {
                 handleClickClose()
             }
         })
+    }
+
+    const handleKeyPress = (e) => {
+        if (e.key === "Enter") {
+            e.preventDefault()
+            handleSubmitMessage()
+        }
     }
 
     return (
@@ -169,6 +177,7 @@ const ChatSubmitOptionsModal = (props) => {
                         icon={<HiveIcon />}
                         type="number"
                         onChange={handleInputChange}
+                        onKeyPress={handleKeyPress}
                         otherInputProps={{
                             endAdornment: (
                                 <InputAdornment position="end">{currency}</InputAdornment>

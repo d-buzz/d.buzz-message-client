@@ -33,7 +33,6 @@ class ChatSocketServer {
 
     receiveMessage() {
         this.socket.on('add-message-response', (data) => {
-            console.log(data)
             this.eventEmitter.emit('add-message-response', data);
         });
     }

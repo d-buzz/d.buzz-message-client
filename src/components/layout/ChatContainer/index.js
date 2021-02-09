@@ -1,5 +1,4 @@
 import React, { createRef, Fragment, useEffect } from 'react';
-// import PerfectScrollbar from "react-perfect-scrollbar";
 import { ChatForm } from "./../../../components";
 import { Divider } from "@material-ui/core";
 
