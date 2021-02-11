@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React from 'react';
 import { connect } from "react-redux";
 import { bindActionCreators } from 'redux'
 import {
@@ -32,8 +32,6 @@ const TopBar = (props) => {
     const { username } = user
     const userPic = `https://images.hive.blog/u/${username}/avatar/small`
     const topbarTheme = layoutSettings.themes[layoutSettings.topbar.theme]
-    const [searchKey, setSearchKey] = useState("")
-
 
     const handleSidebarToggle = () => {
         let mode;
@@ -55,15 +53,6 @@ const TopBar = (props) => {
         })
     }
 
-    const handleChangeInput = (e) => {
-        const { target } = e;
-        const { id, value } = target;
-        if (id === "searchkey") {
-            setSearchKey(value)
-        }
-    }
-
-
     return (
         <MuiThemeProvider theme={topbarTheme}>
             <div className="topbar">
@@ -81,7 +70,7 @@ const TopBar = (props) => {
                             <img src={logo} alt="company-logo" />
                         </div>
                         <div className="flex flex-middle">
-                            <SearchBox value={searchKey} handleChangeInput={handleChangeInput} />
+                            <SearchBox />
                             <SimpleMenu
                                 menuButton={
                                     <img

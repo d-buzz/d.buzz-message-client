@@ -3,6 +3,7 @@ import { Avatar, Chip } from "@material-ui/core";
 import moment from "moment";
 import { HiveIcon } from "./../../elements";
 import TimeAgo from 'react-timeago'
+import Linkify from 'react-linkify';
 
 const Message = (props) => {
     const { item, loginUser } = props
@@ -31,6 +32,14 @@ const Message = (props) => {
         }
     }
 
+    const linkComponentDecorator = (decoratedHref, decoratedText, key) => {
+        return (
+            <a target="blank" href={decoratedHref} key={key}>
+                {decoratedText}
+            </a>
+        )
+    }
+
     return (
         <Fragment>
             {(from !== loginUser) &&
@@ -40,8 +49,10 @@ const Message = (props) => {
                     </div>
                     <div className="ml-4">
                         <div className="px-4 py-2 mb-2 border-radius-20 chat-bubble bg-sender">
-                            <span className="whitespace-pre-wrap">
-                                {message || memo}
+                            <span className="whitespace-pre-wrap message-content">
+                                <Linkify componentDecorator={linkComponentDecorator}>
+                                    {message || memo}
+                                </Linkify>
                             </span>
                         </div>
                         <small className="text-muted mb-0">{getDateAgo(time)} | </small>
@@ -60,8 +71,10 @@ const Message = (props) => {
                     <div className="flex items-start flex-middle">
                         <div className="mr-4 text-align-right">
                             <div className="px-4 py-2 mb-2 border-radius-20 text-align-left chat-bubble bg-secondary">
-                                <span className="whitespace-pre-wrap">
-                                    {message || memo}
+                                <span className="whitespace-pre-wrap message-content">
+                                    <Linkify componentDecorator={linkComponentDecorator}>
+                                        {message || memo}
+                                    </Linkify>
                                 </span>
                             </div>
                             <small className="text-muted mb-0">{getDateAgo(time)} | </small>

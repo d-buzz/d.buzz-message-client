@@ -15,9 +15,10 @@ const ChatContainer = (props) => {
     }, [children])
 
     const scrollChatBottom = () => {
-        if (messageContainer.current !== null) {
+        if (messageContainer.current) {
             try {
                 messageContainer.current.scrollTop = messageContainer.current.scrollHeight
+                messageContainer.current.scrollIntoView({ behaviour: "smooth" })
             } catch (error) {
                 console.warn(error)
             }

@@ -11,11 +11,18 @@ import {
     RECEIVE_MESSAGE_REQUEST,
     receiveMessageSuccess,
     receiveMessageFailure,
-    updateChatsData
+    updateChatsData,
+    SEARCH_ACCOUNT_REQUEST,
+    searchAccountSuccess,
+    searchAccountFailure
 } from "./actions";
 
 import { clearLocalStorage } from "./../../services/helper";
-import { sendMessage } from "./../../services/api";
+import {
+    sendMessage,
+    searchAccounts,
+    keychainRequestTransfer,
+} from "./../../services/api";
 import ChatSocketServer from "./../../services/chatSocketServer";
 
 function* setChatUsersListRequest(payload, meta) {
@@ -28,7 +35,6 @@ function* setChatUsersListRequest(payload, meta) {
             userDisconnected = false,
             username: chatUser = ''
         } = payload
-
 
         let newUserStatus = []
         const user = yield select(state => state.auth.get('user'))
@@ -64,6 +70,7 @@ function* setChatUsersListRequest(payload, meta) {
                 window.location.reload()
             }
         }
+
         yield put(setIsFetchingChats(false))
         yield put(setNewStatusUsers(newUserStatus))
         yield put(setChatUsersListSuccess(chatListUsers, meta))
@@ -99,15 +106,20 @@ function* sendMessageRequest(payload, meta) {
             account_from,
             currency
         }
-
-        console.log(params)
         let sendSuccess = false
         if (is_authenticated) {
             if (!useKeychain) {
                 const response = yield sendMessage(params)
                 const data = yield response.data;
-                console.log(data)
                 if (data.code === 200) {
+                    yield ChatSocketServer.sendMessage(payload)
+                    sendSuccess = true
+                }
+            } else {
+                // implement keychain transfer here...
+                const memo = use_encrypt === 1 ? `# ${message}` : message
+                const response = yield keychainRequestTransfer(username, main_user, amount, memo, currency)
+                if (response.success) {
                     yield ChatSocketServer.sendMessage(payload)
                     sendSuccess = true
                 }
@@ -125,7 +137,6 @@ function* sendMessageRequest(payload, meta) {
         yield put(updateChatsData(chatListUsers))
         yield put(sendMessageSuccess(payload, meta))
     } catch (err) {
-        console.log(err)
         yield put(sendMessageFailure(err, meta))
     }
 }
@@ -134,7 +145,6 @@ function* receiveMessageRequest(payload, meta) {
     try {
         const { to } = payload
 
-        console.log(to)
         const user = yield select(state => state.auth.get('user'))
         const { username } = user;
 
@@ -158,6 +168,22 @@ function* receiveMessageRequest(payload, meta) {
     }
 }
 
+function* searchAccountRequest(payload, meta) {
+    try {
+        const { account, limit } = payload
+        const q = account.trim()
+        let accounts = []
+        const response = yield searchAccounts({ account: q, limit })
+        const data = yield response.data
+        if (data.code === 200) {
+            accounts = data.data
+        }
+        yield put(searchAccountSuccess(accounts, meta))
+    } catch (err) {
+        yield put(searchAccountFailure(err, meta))
+    }
+}
+
 function* watchSetChatUsersListRequest({ payload, meta }) {
     yield call(setChatUsersListRequest, payload, meta)
 }
@@ -170,8 +196,14 @@ function* watchReceiveMessageRequest({ payload, meta }) {
     yield call(receiveMessageRequest, payload, meta)
 }
 
+function* watchSearchAccountRequest({ payload, meta }) {
+    yield call(searchAccountRequest, payload, meta)
+}
+
+
 export default function* sagas() {
     yield takeEvery(SET_USERS_LIST_REQUEST, watchSetChatUsersListRequest)
     yield takeEvery(SEND_MESSAGE_REQUEST, watchSendMessageRequest)
     yield takeEvery(RECEIVE_MESSAGE_REQUEST, watchReceiveMessageRequest)
+    yield takeEvery(SEARCH_ACCOUNT_REQUEST, watchSearchAccountRequest)
 }

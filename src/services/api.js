@@ -18,16 +18,47 @@ export const getTransfers = (payload) => fetchApi(
 export const getTAllransfersTo = (payload) => fetchApi(
     ep.endpoints.message.transferTo.post(payload), payload, 'post')
 
+export const searchAccounts = (payload) => fetchApi(
+    ep.endpoints.account.search.get(payload), payload, 'get')
+
 
 // HIVE keychain API
-export const keychainSignIn = (username) => {
+export const keychainSignIn = (account) => {
     const challenge = { token: uuidv4() }
     const buffer = JSON.stringify(challenge, null, 0)
     return new Promise((resolve) => {
         window.hive_keychain.requestSignBuffer(
-            username,
+            account,
             buffer,
             'Posting',
+            response => {
+                resolve(response)
+            },
+        )
+    })
+}
+
+export const keychainDecodeMemos = (account, memo) => {
+    return new Promise((resolve) => {
+        window.hive_keychain.requestVerifyKey(
+            account,
+            memo,
+            'Memo',
+            response => {
+                resolve(response)
+            },
+        )
+    })
+}
+
+export const keychainRequestTransfer = (account, to, amount, memo, currency) => {
+    return new Promise((resolve) => {
+        window.hive_keychain.requestTransfer(
+            account,
+            to,
+            amount,
+            memo,
+            currency,
             response => {
                 resolve(response)
             },

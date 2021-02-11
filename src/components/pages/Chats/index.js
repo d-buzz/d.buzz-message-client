@@ -7,6 +7,7 @@ import { SimpleCard } from "./../../../components/elements";
 import { setSelectedContact } from "./../../../store/chat/actions"
 import { setLayoutSettings } from "./../../../store/settings/actions"
 import { isMdScreen } from "./../../../services/helper"
+import { useHistory } from 'react-router-dom'
 
 const styles = theme => ({});
 
@@ -23,20 +24,24 @@ const Chats = (props) => {
     const { username } = params
     const [messages, setMessages] = useState([])
     const [loading, setLoading] = useState(true)
+    const history = useHistory()
 
     useEffect(() => {
         if (username) {
-            setSelectedContact(username)
             if (isMdScreen()) {
                 updateSidebarMode({ mode: "close" })
             }
             if (chatUsersList.length > 0) {
                 const index = chatUsersList.map(x => x.username).indexOf(username);
+                let msgs = []
                 if (index !== -1) {
-                    let msgs = chatUsersList[index].messages;
+                    setSelectedContact(username)
+                    msgs = chatUsersList[index].messages;
                     setMessages(msgs)
-                    setLoading(false)
+                } else {
+                    history.push(`/chats`)
                 }
+                setLoading(false)
             }
         }
         // eslint-disable-next-line react-hooks/exhaustive-deps

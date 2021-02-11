@@ -109,29 +109,34 @@ const ChatSubmitOptionsModal = (props) => {
     }
 
     const handleSubmitMessage = () => {
-        setLoading(true)
-        setDisabled(true)
-        const trimmedMsg = message.trim()
-        let date = moment().utc().format()
-        date = `${date}`.replace('Z', '')
-        const params = {
-            message: trimmedMsg,
-            decoded: isEncrypted ? `# ${trimmedMsg}` : trimmedMsg,
-            from: username,
-            to: main_user,
-            use_encrypt: isEncrypted ? 1 : 0,
-            amount,
-            asset: currency,
-            trx_id: `temp__${Math.random()}`,
-            time: date,
-            number: 0
-        }
-        sendMessageRequest(params).then((res) => {
-            setLoading(false)
-            if (res) {
-                handleClickClose()
+        if (parseFloat(amount) < minAmount) {
+            setDisabled(true)
+        } else {
+            setLoading(true)
+            setDisabled(true)
+            const trimmedMsg = message.trim()
+            let date = moment().utc().format()
+            date = `${date}`.replace('Z', '')
+            const params = {
+                message: trimmedMsg,
+                decoded: isEncrypted ? `# ${trimmedMsg}` : trimmedMsg,
+                from: username,
+                to: main_user,
+                use_encrypt: isEncrypted ? 1 : 0,
+                amount,
+                asset: currency,
+                trx_id: `temp__${Math.random()}`,
+                time: date,
+                number: 0
             }
-        })
+            sendMessageRequest(params).then((res) => {
+                setLoading(false)
+                if (res) {
+                    handleClickClose()
+                }
+            })
+        }
+
     }
 
     const handleKeyPress = (e) => {

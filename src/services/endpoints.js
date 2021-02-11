@@ -27,5 +27,12 @@ export const endpoints = {
                 return "/message/transfers-to"
             }
         }
-    }
+    },
+    account: {
+        search: {
+            get(payload) {
+                return `/account/search/@${payload.account}/${payload.limit}`
+            }
+        },
+    },
 };

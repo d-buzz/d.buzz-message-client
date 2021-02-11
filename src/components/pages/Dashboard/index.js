@@ -65,7 +65,6 @@ const Dashboard = (props) => {
 
     const receiveSocketMessages = (response) => {
         if (response) {
-            console.log(response)
             receiveMessageRequest(response)
         }
     }

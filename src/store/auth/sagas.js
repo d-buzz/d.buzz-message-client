@@ -23,7 +23,7 @@ function* authenticateUserRequest(payload, meta) {
         const user = { username, useKeychain, is_authenticated: false };
 
         if (useKeychain) {
-            const data = yield call(keychainSignIn, username)
+            const data = yield keychainSignIn(username)
             if (data.success) {
                 const response = yield generateToken({ username });
                 const data = yield response.data;

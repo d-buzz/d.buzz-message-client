@@ -7,7 +7,9 @@ import {
     SET_IS_FETCHING_CHATS,
     SEND_MESSAGE_SUCCESS,
     RECEIVE_MESSAGE_SUCCESS,
-    UPDATE_CHATS_DATA
+    UPDATE_CHATS_DATA,
+    SEARCH_ACCOUNT_SUCCESS,
+    CLEAR_SEARCH_RESULT
 } from "./actions"
 
 const defaultState = fromJS({
@@ -15,7 +17,8 @@ const defaultState = fromJS({
     selectedContact: {},
     newStatusUsers: [],
     isFetchingChats: true,
-    newChat: {}
+    newChat: {},
+    searchResults: []
 });
 
 export const chat = (state = defaultState, { type, payload }) => {
@@ -36,6 +39,10 @@ export const chat = (state = defaultState, { type, payload }) => {
             return state.set('newChat', payload)
         case RECEIVE_MESSAGE_SUCCESS:
             return state.set('newChat', payload)
+        case SEARCH_ACCOUNT_SUCCESS:
+            return state.set('searchResults', payload)
+        case CLEAR_SEARCH_RESULT:
+            return state.set('searchResults', payload)
         default:
             return state;
     }

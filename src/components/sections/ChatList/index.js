@@ -10,7 +10,7 @@ const ChatList = (props) => {
     useEffect(() => {
         setChatUsers(chatUsersList)
         // eslint-disable-next-line react-hooks/exhaustive-deps
-    }, [newStatusUsers])
+    }, [chatUsersList, newStatusUsers])
 
     const renderContacts = () => {
         return (
