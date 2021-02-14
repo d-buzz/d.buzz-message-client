@@ -6,7 +6,7 @@ import { Icon, IconButton, withStyles, TextField, CircularProgress } from "@mate
 import Autocomplete from '@material-ui/lab/Autocomplete';
 import SearchIcon from '@material-ui/icons/Search';
 import { searchAccountRequest, updateChatsData, clearSearchResult } from "./../../../store/chat/actions";
-import { broadcastNotification } from "./../../../store/interfaces/actions";
+import { broadcastNotification, setSearchBoxStatus } from "./../../../store/interfaces/actions";
 import { pending } from 'redux-saga-thunk'
 import parse from 'autosuggest-highlight/parse';
 import match from 'autosuggest-highlight/match';
@@ -28,10 +28,11 @@ const SearchBox = (props) => {
         chatUsersList,
         updateChatsData,
         user,
-        clearSearchResult
+        clearSearchResult,
+        searchBoxStatus,
+        setSearchBoxStatus
     } = props
     const { username } = user
-    const [open, setOpen] = useState(false)
     const [searchkey, setSearchkey] = useState("")
     const [openOptions, setOpenOptions] = useState(false)
     const history = useHistory()
@@ -45,7 +46,7 @@ const SearchBox = (props) => {
     }
 
     const toggle = () => {
-        setOpen(!open)
+        setSearchBoxStatus(!searchBoxStatus)
     }
 
     const handleKeypress = (e) => {
@@ -114,7 +115,7 @@ const SearchBox = (props) => {
     const clearSearch = () => {
         setSearchkey("")
         clearSearchResult()
-        setOpen(false)
+        setSearchBoxStatus(false)
     }
 
     const renderOption = (option, { inputValue }) => {
@@ -134,12 +135,12 @@ const SearchBox = (props) => {
 
     return (
         <Fragment>
-            {!open && (
+            {!searchBoxStatus && (
                 <IconButton onClick={toggle}>
                     <Icon>search</Icon>
                 </IconButton>
             )}
-            {open && (
+            {searchBoxStatus && (
                 <div
                     className={`flex flex-middle matx-search-box ${classes.root}`}
                 >
@@ -200,6 +201,7 @@ const mapStateToProps = (state) => ({
     loading: pending(state, 'SEARCH_ACCOUNT_REQUEST'),
     chatUsersList: state.chat.get('chatUsersList'),
     user: state.auth.get('user'),
+    searchBoxStatus: state.interfaces.get('searchBoxStatus')
 })
 
 const mapDispatchToProps = (dispatch) => ({
@@ -207,7 +209,8 @@ const mapDispatchToProps = (dispatch) => ({
         searchAccountRequest,
         broadcastNotification,
         updateChatsData,
-        clearSearchResult
+        clearSearchResult,
+        setSearchBoxStatus
     }, dispatch),
 })
 

@@ -39,7 +39,7 @@ const ChatForm = (props) => {
     const [message, setMessage] = useState(null)
 
     const handleClickChatOptionsDialog = () => {
-        if (message.trim()) {
+        if (message && message.trim()) {
             setOpenChatOptions(!openChatOptions)
         } else {
             broadcastNotification(
@@ -48,6 +48,10 @@ const ChatForm = (props) => {
             );
             setMessage("")
         }
+    }
+
+    const handleClose = () => {
+        setOpenChatOptions(false)
     }
 
     const handleChangeInput = (e) => {
@@ -94,7 +98,7 @@ const ChatForm = (props) => {
             </div>
             <ChatSubmitOptionsModal
                 open={openChatOptions}
-                handleClose={handleClickChatOptionsDialog}
+                handleClose={handleClose}
                 message={message}
                 handleChangeMessage={handleChangeInput}
                 clearChatBox={clearChatBox} />

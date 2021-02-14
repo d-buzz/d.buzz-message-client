@@ -2,7 +2,7 @@
 import React from 'react';
 import { connect } from "react-redux";
 import { bindActionCreators } from 'redux'
-import { withRouter, useHistory } from 'react-router-dom'
+import { withRouter } from 'react-router-dom'
 import {
     Icon,
     withStyles,
@@ -46,7 +46,7 @@ const SideNavLeft = (props) => {
     } = props
     const { username } = user
     // const { mode } = theme
-    const history = useHistory()
+    // const history = useHistory()
     const userPic = `https://images.hive.blog/u/${username}/avatar/small`
     const sidenavTheme = layoutSettings.themes[layoutSettings.leftSidebar.theme]
 
@@ -65,9 +65,9 @@ const SideNavLeft = (props) => {
     //         })
     // }
 
-    const handleClickProfile = () => {
-        history.push('/contacts')
-    }
+    // const handleClickProfile = () => {
+    //     history.push('/contacts')
+    // }
 
     const RenderLogoSwitch = () => {
         return (
@@ -93,7 +93,7 @@ const SideNavLeft = (props) => {
                         {username}
                     </span>
                     <div className="user__menu">
-                        <Tooltip title="Settings">
+                        {/* <Tooltip title="Settings">
                             <IconButtonWhite
                                 aria-label="Delete"
                                 size="small"
@@ -108,10 +108,10 @@ const SideNavLeft = (props) => {
                                 onClick={handleClickProfile}>
                                 <IconSmall>person</IconSmall>
                             </IconButtonWhite>
-                        </Tooltip>
+                        </Tooltip> */}
                         <Tooltip title="Sign out">
                             <IconButtonWhite
-                                aria-label="Delete"
+                                aria-label="signout"
                                 className=""
                                 size="small"
                                 onClick={handleSignOut}

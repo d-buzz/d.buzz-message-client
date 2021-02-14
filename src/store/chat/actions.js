@@ -126,3 +126,26 @@ export const CLEAR_SEARCH_RESULT = "CLEAR_SEARCH_RESULT";
 export const clearSearchResult = () => ({
     type: CLEAR_SEARCH_RESULT,
 });
+
+export const DECRYPT_MESSAGE_REQUEST = "DECRYPT_MESSAGE_REQUEST";
+export const decryptMessageRquest = (transfer_number, memo) => ({
+    type: DECRYPT_MESSAGE_REQUEST,
+    payload: { transfer_number, memo },
+    meta: {
+        thunk: true,
+    },
+});
+
+export const DECRYPT_MESSAGE_SUCCESS = "DECRYPT_MESSAGE_SUCCESS";
+export const decryptMessageSuccess = (response, meta) => ({
+    type: DECRYPT_MESSAGE_SUCCESS,
+    payload: response,
+    meta
+});
+
+export const DECRYPT_MESSAGE_FAILURE = "DECRYPT_MESSAGE_FAILURE";
+export const decryptMessageFailure = (response, meta) => ({
+    type: DECRYPT_MESSAGE_FAILURE,
+    payload: response,
+    meta
+});

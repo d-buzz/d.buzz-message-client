@@ -5,16 +5,23 @@ import {
     setChatUsersListFailure,
     setNewStatusUsers,
     setIsFetchingChats,
+
     SEND_MESSAGE_REQUEST,
     sendMessageSuccess,
     sendMessageFailure,
+
     RECEIVE_MESSAGE_REQUEST,
     receiveMessageSuccess,
     receiveMessageFailure,
     updateChatsData,
+
     SEARCH_ACCOUNT_REQUEST,
     searchAccountSuccess,
-    searchAccountFailure
+    searchAccountFailure,
+
+    DECRYPT_MESSAGE_REQUEST,
+    decryptMessageSuccess,
+    decryptMessageFailure
 } from "./actions";
 
 import { clearLocalStorage } from "./../../services/helper";
@@ -22,6 +29,7 @@ import {
     sendMessage,
     searchAccounts,
     keychainRequestTransfer,
+    keychainDecodeMemos
 } from "./../../services/api";
 import ChatSocketServer from "./../../services/chatSocketServer";
 
@@ -152,7 +160,6 @@ function* receiveMessageRequest(payload, meta) {
         const { username: main_user } = selectedContact
 
         let chatListUsers = yield select(state => state.chat.get('chatUsersList'))
-
         if (to === username) {
             if (chatListUsers.length > 0) {
                 const index = chatListUsers.map(x => x.username).indexOf(main_user);
@@ -184,6 +191,45 @@ function* searchAccountRequest(payload, meta) {
     }
 }
 
+function* decryptMessageRequest(payload, meta) {
+    try {
+        const { transfer_number, memo } = payload
+
+        const user = yield select(state => state.auth.get('user'))
+        const { username, useKeychain } = user;
+
+        const selectedContact = yield select(state => state.chat.get('selectedContact'))
+        const { username: main_user } = selectedContact
+
+        let result = { success: false, error: null }
+        let decoded = ""
+        if (useKeychain) {
+            result = yield keychainDecodeMemos(username, memo)
+            if (result.success) {
+                decoded = result.result
+            }
+        }
+
+        let chatListUsers = yield select(state => state.chat.get('chatUsersList'))
+        if (chatListUsers.length > 0) {
+            const index = chatListUsers.findIndex(x => x.username === main_user);
+            if (index !== -1) {
+                const messages = chatListUsers[index].messages
+                const _index = messages.findIndex((x) => x.number === transfer_number)
+                if (_index !== -1 && decoded) {
+                    chatListUsers[index].messages[_index].decoded = decoded
+                }
+            }
+        }
+
+        yield put(updateChatsData(chatListUsers))
+        yield put(decryptMessageSuccess(result, meta))
+
+    } catch (err) {
+        yield put(decryptMessageFailure(err, meta))
+    }
+}
+
 function* watchSetChatUsersListRequest({ payload, meta }) {
     yield call(setChatUsersListRequest, payload, meta)
 }
@@ -200,10 +246,14 @@ function* watchSearchAccountRequest({ payload, meta }) {
     yield call(searchAccountRequest, payload, meta)
 }
 
+function* watchDecryptMessageRequest({ payload, meta }) {
+    yield call(decryptMessageRequest, payload, meta)
+}
 
 export default function* sagas() {
     yield takeEvery(SET_USERS_LIST_REQUEST, watchSetChatUsersListRequest)
     yield takeEvery(SEND_MESSAGE_REQUEST, watchSendMessageRequest)
     yield takeEvery(RECEIVE_MESSAGE_REQUEST, watchReceiveMessageRequest)
     yield takeEvery(SEARCH_ACCOUNT_REQUEST, watchSearchAccountRequest)
+    yield takeEvery(DECRYPT_MESSAGE_REQUEST, watchDecryptMessageRequest)
 }

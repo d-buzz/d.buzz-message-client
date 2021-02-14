@@ -23,9 +23,12 @@ const ChatSideNavContact = (props) => {
                 <div className={`onlineStatus bg-${bgStatus}`} />
             </div>
             <ListItemText
-                className="ml-15"
+                className="ml-10"
                 primary={`${username}`}
             />
+            {/* <div className={`badge bg-secondary`}>
+                30+
+            </div> */}
         </ListItem >
     )
 }

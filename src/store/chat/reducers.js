@@ -9,7 +9,8 @@ import {
     RECEIVE_MESSAGE_SUCCESS,
     UPDATE_CHATS_DATA,
     SEARCH_ACCOUNT_SUCCESS,
-    CLEAR_SEARCH_RESULT
+    CLEAR_SEARCH_RESULT,
+    DECRYPT_MESSAGE_SUCCESS
 } from "./actions"
 
 const defaultState = fromJS({
@@ -39,10 +40,12 @@ export const chat = (state = defaultState, { type, payload }) => {
             return state.set('newChat', payload)
         case RECEIVE_MESSAGE_SUCCESS:
             return state.set('newChat', payload)
+        case DECRYPT_MESSAGE_SUCCESS:
+            return state.set('newChat', payload)
         case SEARCH_ACCOUNT_SUCCESS:
             return state.set('searchResults', payload)
         case CLEAR_SEARCH_RESULT:
-            return state.set('searchResults', payload)
+            return state.set('searchResults', [])
         default:
             return state;
     }

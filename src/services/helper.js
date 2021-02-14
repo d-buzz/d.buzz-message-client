@@ -117,3 +117,7 @@ export const hasCompatibleKeychain = () => {
         window.hive_keychain.requestSignedCall
     )
 }
+
+export const isMemoEncrypted = (memo) => {
+    return memo && memo.charAt(0) === "#"
+}
