@@ -46,7 +46,7 @@ const Message = (props) => {
         if (parseInt(duration) >= 1) {
             return y.format("MMM DD YYYY hh:mm A").toString();
         } else {
-            const formatted = moment(`${date}Z`).local().toString()
+            const formatted = y.toString()
             return (
                 <TimeAgo date={formatted} live={true} />
             )

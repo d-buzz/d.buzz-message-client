@@ -3,12 +3,23 @@ import { ListItem, ListItemText, Avatar } from "@material-ui/core";
 import { NavLink } from "react-router-dom";
 
 const ChatSideNavContact = (props) => {
-    const { username, online, index } = props
-
+    const { username, online, index, totalChats } = props
     const userPic = `https://images.hive.blog/u/${username}/avatar/small`
     let bgStatus = "secondary"
     if (online === 1) {
         bgStatus = "green"
+    }
+
+    const renderTotalChats = () => {
+        let unread = ""
+        if (parseInt(totalChats) > 0) {
+            if (parseInt(totalChats) > 100) {
+                unread = "100+";
+            } else {
+                unread = totalChats
+            }
+        }
+        return unread;
     }
 
     return (
@@ -17,18 +28,19 @@ const ChatSideNavContact = (props) => {
             button
             component={NavLink}
             to={`/chats/@${username}`}
-            className="nav-item">
+            className="nav-item pl-10">
             <div className="relative">
                 <Avatar className="avatar borderWhite" src={userPic} border="true" />
                 <div className={`onlineStatus bg-${bgStatus}`} />
             </div>
             <ListItemText
-                className="ml-10"
+                className="ml-15"
                 primary={`${username}`}
             />
-            {/* <div className={`badge bg-secondary`}>
-                30+
-            </div> */}
+            {/* {totalChats > 0 &&
+                <div className={`badge bg-secondary`}>
+                    {renderTotalChats()}
+                </div>} */}
         </ListItem >
     )
 }

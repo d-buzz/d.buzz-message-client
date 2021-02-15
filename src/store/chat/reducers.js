@@ -10,7 +10,10 @@ import {
     UPDATE_CHATS_DATA,
     SEARCH_ACCOUNT_SUCCESS,
     CLEAR_SEARCH_RESULT,
-    DECRYPT_MESSAGE_SUCCESS
+    DECRYPT_MESSAGE_SUCCESS,
+    REFRESH_CHATS_SUCCESS,
+    SET_LATEST_CHAT,
+    GET_ONLINE_STATUS_SUCCESS,
 } from "./actions"
 
 const defaultState = fromJS({
@@ -19,7 +22,9 @@ const defaultState = fromJS({
     newStatusUsers: [],
     isFetchingChats: true,
     newChat: {},
-    searchResults: []
+    searchResults: [],
+    latestChat: {},
+    selectedUserOnlineStatus: {}
 });
 
 export const chat = (state = defaultState, { type, payload }) => {
@@ -42,10 +47,16 @@ export const chat = (state = defaultState, { type, payload }) => {
             return state.set('newChat', payload)
         case DECRYPT_MESSAGE_SUCCESS:
             return state.set('newChat', payload)
+        case REFRESH_CHATS_SUCCESS:
+            return state.set('newChat', payload)
         case SEARCH_ACCOUNT_SUCCESS:
             return state.set('searchResults', payload)
         case CLEAR_SEARCH_RESULT:
             return state.set('searchResults', [])
+        case SET_LATEST_CHAT:
+            return state.set('latestChat', payload)
+        case GET_ONLINE_STATUS_SUCCESS:
+            return state.set('selectedUserOnlineStatus', payload)
         default:
             return state;
     }

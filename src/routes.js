@@ -2,7 +2,6 @@ import {
     AppFrame,
     Login,
     Chats,
-    Contacts,
     NoChatSelected
 } from './components';
 
@@ -24,11 +23,6 @@ const routes = [
                 path: '/chats/@:username',
                 exact: true,
                 component: Chats,
-            },
-            {
-                path: '/contacts',
-                exact: true,
-                component: Contacts
             },
         ],
     },

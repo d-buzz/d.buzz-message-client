@@ -5,6 +5,7 @@ import {
     setChatUsersListFailure,
     setNewStatusUsers,
     setIsFetchingChats,
+    setLatestChat,
 
     SEND_MESSAGE_REQUEST,
     sendMessageSuccess,
@@ -21,15 +22,25 @@ import {
 
     DECRYPT_MESSAGE_REQUEST,
     decryptMessageSuccess,
-    decryptMessageFailure
+    decryptMessageFailure,
+
+    REFRESH_CHATS_REQUEST,
+    refreshChatsSuccess,
+    refreshChatsFailure,
+
+    GET_ONLINE_STATUS_REQUEST,
+    getOnlineStatusSuccess,
+    getOnlineStatusFailure
 } from "./actions";
 
-import { clearLocalStorage } from "./../../services/helper";
+import { clearLocalStorage, sortArrayObject } from "./../../services/helper";
 import {
     sendMessage,
     searchAccounts,
+    getTransfers,
     keychainRequestTransfer,
-    keychainDecodeMemos
+    keychainDecodeMemos,
+    getAccountOnlineStatus
 } from "./../../services/api";
 import ChatSocketServer from "./../../services/chatSocketServer";
 
@@ -45,21 +56,14 @@ function* setChatUsersListRequest(payload, meta) {
         } = payload
 
         let newUserStatus = []
-        const user = yield select(state => state.auth.get('user'))
-        const { username } = user;
         let chatListUsers = yield select(state => state.chat.get('chatUsersList'))
         if (!error) {
             if (singleUser) {
                 if (chatListUsers.length > 0) {
-                    const index = chatListUsers.map(x => x.username).indexOf(newChatList[0].username);
+                    const index = chatListUsers.findIndex(x => x.username === newChatList[0].username);
                     if (index !== -1) {
                         chatListUsers[index].online = 1;
                         newUserStatus.push(chatListUsers[index])
-                    } else {
-                        /* Adding new online user into chat list array */
-                        if (newChatList[0].username !== username) {
-                            chatListUsers = [...chatListUsers, ...newChatList];
-                        }
                     }
                 }
             } else if (userDisconnected && chatUser) {
@@ -79,6 +83,13 @@ function* setChatUsersListRequest(payload, meta) {
             }
         }
 
+        const len = chatListUsers.length
+        const latestChat = {
+            lastNumber: len > 0 ? chatListUsers[0].lastNumber : 0,
+            lastDate: len > 0 ? chatListUsers[0].lastDate : null
+        }
+
+        yield put(setLatestChat(latestChat.lastNumber, latestChat.lastDate))
         yield put(setIsFetchingChats(false))
         yield put(setNewStatusUsers(newUserStatus))
         yield put(setChatUsersListSuccess(chatListUsers, meta))
@@ -95,7 +106,8 @@ function* sendMessageRequest(payload, meta) {
             message,
             use_encrypt,
             amount,
-            asset: currency
+            asset: currency,
+            time
         } = payload
 
         const user = yield select(state => state.auth.get('user'))
@@ -114,6 +126,7 @@ function* sendMessageRequest(payload, meta) {
             account_from,
             currency
         }
+        let sendResponse = { success: false, message: "Failed to transfer", payload }
         let sendSuccess = false
         if (is_authenticated) {
             if (!useKeychain) {
@@ -122,7 +135,9 @@ function* sendMessageRequest(payload, meta) {
                 if (data.code === 200) {
                     yield ChatSocketServer.sendMessage(payload)
                     sendSuccess = true
+                    sendResponse.success = true
                 }
+                sendResponse.message = data.message
             } else {
                 // implement keychain transfer here...
                 const memo = use_encrypt === 1 ? `# ${message}` : message
@@ -130,20 +145,24 @@ function* sendMessageRequest(payload, meta) {
                 if (response.success) {
                     yield ChatSocketServer.sendMessage(payload)
                     sendSuccess = true
+                    sendResponse.success = true
                 }
+                sendResponse.message = response.message
             }
         }
 
-        if (sendSuccess && account_from === username) {
-            if (chatListUsers.length > 0) {
+        if (sendSuccess) {
+            if (account_from === username && chatListUsers.length > 0) {
                 const index = chatListUsers.map(x => x.username).indexOf(main_user);
                 if (index !== -1) {
                     chatListUsers[index].messages.push(payload)
                 }
             }
+            yield put(setLatestChat(0, time))
         }
+
         yield put(updateChatsData(chatListUsers))
-        yield put(sendMessageSuccess(payload, meta))
+        yield put(sendMessageSuccess(sendResponse, meta))
     } catch (err) {
         yield put(sendMessageFailure(err, meta))
     }
@@ -224,9 +243,71 @@ function* decryptMessageRequest(payload, meta) {
 
         yield put(updateChatsData(chatListUsers))
         yield put(decryptMessageSuccess(result, meta))
-
     } catch (err) {
         yield put(decryptMessageFailure(err, meta))
+    }
+}
+
+function* refreshChatsRequest(payload, meta) {
+    try {
+        const user = yield select(state => state.auth.get('user'))
+        const { username } = user;
+
+        const latestChat = yield select(state => state.chat.get('latestChat'))
+        const { lastDate, lastNumber } = latestChat
+
+        let chatListUsers = yield select(state => state.chat.get('chatUsersList'))
+
+        let newChats = []
+        const response = yield getTransfers({ account: username })
+        const data = yield response.data
+        if (data.code === 200) {
+            if (parseInt(lastNumber) > 0) {
+                newChats = data.data.filter((x) => parseInt(x.number) > parseInt(lastNumber))
+            } else {
+                if (lastDate) {
+                    newChats = data.data.filter((x) => new Date(x.time) > new Date(lastDate))
+                }
+            }
+            if (newChats.length > 0) {
+                const unique_users = [
+                    ...new Set(newChats.map((item) => item.main_user)),
+                ];
+
+                unique_users.forEach((user) => {
+                    const messages = newChats.filter((x) => x.main_user === user)
+                    const index = chatListUsers.findIndex(x => x.username === user)
+                    if (index !== -1) {
+                        let newMessages = [...chatListUsers[index].messages, ...messages]
+                        newMessages = newMessages.filter((obj, pos, arr) => {
+                            return arr.map(mapObj => mapObj['number']).indexOf(obj['number']) === pos
+                        })
+                        const sortedData = sortArrayObject(newMessages, "number", "asc")
+                        chatListUsers[index].messages = sortedData
+                    }
+                })
+            }
+        }
+        yield put(updateChatsData(chatListUsers))
+        yield put(refreshChatsSuccess(data, meta))
+    } catch (err) {
+        yield put(refreshChatsFailure(err, meta))
+    }
+}
+
+function* getOnlineStatusRequest(payload, meta) {
+    try {
+        const { account } = payload
+
+        let result = { username: account, online: 0 }
+        const response = yield getAccountOnlineStatus({ account })
+        const data = yield response.data
+        if (data.code === 200) {
+            result = data.data
+        }
+        yield put(getOnlineStatusSuccess(result, meta))
+    } catch (err) {
+        yield put(getOnlineStatusFailure(err, meta))
     }
 }
 
@@ -250,10 +331,20 @@ function* watchDecryptMessageRequest({ payload, meta }) {
     yield call(decryptMessageRequest, payload, meta)
 }
 
+function* watchRefreshChatsRequest({ payload, meta }) {
+    yield call(refreshChatsRequest, payload, meta)
+}
+
+function* watchGetOnlineStatusRequest({ payload, meta }) {
+    yield call(getOnlineStatusRequest, payload, meta)
+}
+
 export default function* sagas() {
     yield takeEvery(SET_USERS_LIST_REQUEST, watchSetChatUsersListRequest)
     yield takeEvery(SEND_MESSAGE_REQUEST, watchSendMessageRequest)
     yield takeEvery(RECEIVE_MESSAGE_REQUEST, watchReceiveMessageRequest)
     yield takeEvery(SEARCH_ACCOUNT_REQUEST, watchSearchAccountRequest)
     yield takeEvery(DECRYPT_MESSAGE_REQUEST, watchDecryptMessageRequest)
+    yield takeEvery(REFRESH_CHATS_REQUEST, watchRefreshChatsRequest)
+    yield takeEvery(GET_ONLINE_STATUS_REQUEST, watchGetOnlineStatusRequest)
 }

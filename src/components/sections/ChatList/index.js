@@ -12,7 +12,7 @@ const ChatList = (props) => {
         // eslint-disable-next-line react-hooks/exhaustive-deps
     }, [chatUsersList, newStatusUsers])
 
-    const renderContacts = () => {
+    const RenderContacts = () => {
         return (
             chatUsers.map((item, index) => {
                 return (
@@ -20,7 +20,8 @@ const ChatList = (props) => {
                         key={`${index}-${item.username}`}
                         index={index}
                         username={item.username}
-                        online={item.online} />
+                        online={item.online}
+                        totalChats={item.messages.length} />
                 )
             })
         )
@@ -30,7 +31,7 @@ const ChatList = (props) => {
         <Fragment>
             <div className="chat-list">
                 <List className="navigation">
-                    {renderContacts()}
+                    <RenderContacts />
                 </List>
             </div>
         </Fragment>

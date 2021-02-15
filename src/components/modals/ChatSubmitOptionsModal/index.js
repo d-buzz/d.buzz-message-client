@@ -24,6 +24,7 @@ import MailOutlineIcon from '@material-ui/icons/MailOutline';
 import config from "./../../../config";
 import { sendMessageRequest } from "./../../../store/chat/actions";
 import moment from "moment";
+import { broadcastNotification } from "./../../../store/interfaces/actions";
 
 const assets = [
     {
@@ -48,7 +49,8 @@ const ChatSubmitOptionsModal = (props) => {
         message,
         handleChangeMessage,
         sendMessageRequest,
-        clearChatBox
+        clearChatBox,
+        broadcastNotification
     } = props
     const [isEncrypted, setIsEncrypted] = useState(true)
     const [currency, setCurrency] = useState(defaultAsset);
@@ -131,9 +133,13 @@ const ChatSubmitOptionsModal = (props) => {
             }
             sendMessageRequest(params).then((res) => {
                 setLoading(false)
-                if (res) {
-                    handleClickClose()
+                const payload = res.payload
+                if (res.success) {
+                    broadcastNotification("success", `Successfully transferred ${payload.amount} ${payload.asset} to ${payload.to}`)
+                } else {
+                    broadcastNotification("error", res.message)
                 }
+                handleClickClose()
             })
         }
 
@@ -234,7 +240,8 @@ const mapStateToProps = (state) => ({
 const mapDispatchToProps = (dispatch) => ({
     ...bindActionCreators(
         {
-            sendMessageRequest
+            sendMessageRequest,
+            broadcastNotification
         },
         dispatch
     ),

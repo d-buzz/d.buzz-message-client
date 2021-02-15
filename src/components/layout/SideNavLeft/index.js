@@ -1,5 +1,5 @@
 
-import React from 'react';
+import React, { useState } from 'react';
 import { connect } from "react-redux";
 import { bindActionCreators } from 'redux'
 import { withRouter } from 'react-router-dom'
@@ -9,13 +9,18 @@ import {
     Tooltip,
     IconButton,
     MuiThemeProvider,
+    Link,
+    Divider,
+    CircularProgress
 } from "@material-ui/core";
 import {
     setThemeRequest,
     generateStyles
 } from '../../../store/settings/actions'
 import SidenavTheme from "../../../theme/SidenavTheme"
-import { SideNav, Brand, ChatSideNavTopBar, Copyright } from "./../../../components"
+import { SideNav, Brand, ChatSideNavTopBar } from "./../../../components"
+import RefreshIcon from '@material-ui/icons/Refresh';
+import { refreshChatsRequest } from "./../../../store/chat/actions";
 
 // const THEME = {
 //     LIGHT: 'light',
@@ -41,6 +46,7 @@ const SideNavLeft = (props) => {
         layoutSettings,
         handleSignOut,
         loading,
+        refreshChatsRequest
         // setThemeRequest,
         // generateStyles
     } = props
@@ -49,6 +55,7 @@ const SideNavLeft = (props) => {
     // const history = useHistory()
     const userPic = `https://images.hive.blog/u/${username}/avatar/small`
     const sidenavTheme = layoutSettings.themes[layoutSettings.leftSidebar.theme]
+    const [refreshLoading, setRefreshLoading] = useState(false)
 
 
     // const handleToggleTheme = () => {
@@ -69,6 +76,13 @@ const SideNavLeft = (props) => {
     //     history.push('/contacts')
     // }
 
+    const handleRefreshChats = () => {
+        setRefreshLoading(true)
+        refreshChatsRequest().then((res) => {
+            setRefreshLoading(false)
+        })
+    }
+
     const RenderLogoSwitch = () => {
         return (
             <Brand>
@@ -80,6 +94,17 @@ const SideNavLeft = (props) => {
                 </IconButton> */}
             </Brand>
         );
+    }
+
+    const AboutLink = () => {
+        return (
+            <small className="text-muted mb-0">
+                About{" "}
+                <Link color="inherit" href="/">
+                    HIVE.PM
+                </Link>
+            </small>
+        )
     }
 
     const RenderUser = () => {
@@ -134,10 +159,18 @@ const SideNavLeft = (props) => {
                     <RenderUser />
                     <ChatSideNavTopBar />
                     <SideNav loading={loading} />
-                    <div className="flex flex-space-between px-4 py-4 flex-middle">
-                        <div className="flex items-center" />
+                    <Divider />
+                    <div className="flex flex-space-between px-4 py-2 flex-middle">
+                        <div className="flex items-center">
+                            <Tooltip title="Refresh chats">
+                                <IconButton aria-label="refresh" size="small" onClick={handleRefreshChats}>
+                                    {!refreshLoading && <RefreshIcon />}
+                                    {refreshLoading && <CircularProgress color="inherit" size={20} />}
+                                </IconButton>
+                            </Tooltip>
+                        </div>
                         <div className="flex flex-middle">
-                            <Copyright />
+                            <AboutLink />
                         </div>
                     </div>
                 </div>
@@ -155,7 +188,8 @@ const mapStateToProps = (state) => ({
 const mapDispatchToProps = (dispatch) => ({
     ...bindActionCreators({
         setThemeRequest,
-        generateStyles
+        generateStyles,
+        refreshChatsRequest
     }, dispatch),
 })
 

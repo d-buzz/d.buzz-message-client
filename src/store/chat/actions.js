@@ -149,3 +149,56 @@ export const decryptMessageFailure = (response, meta) => ({
     payload: response,
     meta
 });
+
+export const REFRESH_CHATS_REQUEST = "REFRESH_CHATS_REQUEST";
+export const refreshChatsRequest = (payload) => ({
+    type: REFRESH_CHATS_REQUEST,
+    payload,
+    meta: {
+        thunk: true,
+    },
+});
+
+export const REFRESH_CHATS_SUCCESS = "REFRESH_CHATS_SUCCESS";
+export const refreshChatsSuccess = (response, meta) => ({
+    type: REFRESH_CHATS_SUCCESS,
+    payload: response,
+    meta
+});
+
+export const REFRESH_CHATS_FAILURE = "REFRESH_CHATS_FAILURE";
+export const refreshChatsFailure = (response, meta) => ({
+    type: REFRESH_CHATS_FAILURE,
+    payload: response,
+    meta
+});
+
+export const SET_LATEST_CHAT = "SET_LATEST_CHAT";
+export const setLatestChat = (lastNumber = 0, lastDate = null) => ({
+    type: SET_LATEST_CHAT,
+    payload: { lastNumber, lastDate }
+});
+
+
+export const GET_ONLINE_STATUS_REQUEST = "GET_ONLINE_STATUS_REQUEST";
+export const getOnlineStatusRequest = (account) => ({
+    type: GET_ONLINE_STATUS_REQUEST,
+    payload: { account },
+    meta: {
+        thunk: true,
+    },
+});
+
+export const GET_ONLINE_STATUS_SUCCESS = "GET_ONLINE_STATUS_SUCCESS";
+export const getOnlineStatusSuccess = (response, meta) => ({
+    type: GET_ONLINE_STATUS_SUCCESS,
+    payload: response,
+    meta
+});
+
+export const GET_ONLINE_STATUS_FAILURE = "GET_ONLINE_STATUS_FAILURE";
+export const getOnlineStatusFailure = (response, meta) => ({
+    type: GET_ONLINE_STATUS_FAILURE,
+    payload: response,
+    meta
+});

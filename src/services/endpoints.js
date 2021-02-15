@@ -34,5 +34,10 @@ export const endpoints = {
                 return `/account/search/@${payload.account}/${payload.limit}`
             }
         },
+        isOnline: {
+            get(payload) {
+                return `/account/is-online/@${payload.account}`
+            }
+        }
     },
 };

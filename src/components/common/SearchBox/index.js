@@ -5,7 +5,7 @@ import { useHistory } from 'react-router-dom'
 import { Icon, IconButton, withStyles, TextField, CircularProgress } from "@material-ui/core";
 import Autocomplete from '@material-ui/lab/Autocomplete';
 import SearchIcon from '@material-ui/icons/Search';
-import { searchAccountRequest, updateChatsData, clearSearchResult } from "./../../../store/chat/actions";
+import { searchAccountRequest, updateChatsData, clearSearchResult, getOnlineStatusRequest } from "./../../../store/chat/actions";
 import { broadcastNotification, setSearchBoxStatus } from "./../../../store/interfaces/actions";
 import { pending } from 'redux-saga-thunk'
 import parse from 'autosuggest-highlight/parse';
@@ -30,7 +30,8 @@ const SearchBox = (props) => {
         user,
         clearSearchResult,
         searchBoxStatus,
-        setSearchBoxStatus
+        setSearchBoxStatus,
+        getOnlineStatusRequest,
     } = props
     const { username } = user
     const [searchkey, setSearchkey] = useState("")
@@ -58,14 +59,14 @@ const SearchBox = (props) => {
                 const newValue = target.value.trim()
                 const len = newValue.length
                 setSearchkey(newValue)
-                if (len >= 5) {
+                if (len >= 3) {
                     if (!checkValidAccount(newValue)) {
                         handleSearch()
                     } else {
                         updateChatList(newValue)
                     }
                 } else {
-                    broadcastNotification("warning", "Type atleast 5 characters...")
+                    broadcastNotification("warning", "Type atleast 3 characters...")
                 }
             }
         }
@@ -94,10 +95,10 @@ const SearchBox = (props) => {
             const index = chatUsersList.findIndex((obj) => obj.username === chatUser);
             if (index === -1) {
                 addNewContact(chatUsersList, chatUser)
+            } else {
+                clearSearch()
+                history.push(`/chats/@${chatUser}`)
             }
-
-            clearSearch()
-            history.push(`/chats/@${chatUser}`)
         }
     }
 
@@ -108,8 +109,15 @@ const SearchBox = (props) => {
             messages: [],
             online: 0,
         }
-        newContacts.splice(0, 0, chatInterface);
-        updateChatsData(newContacts)
+        getOnlineStatusRequest(newChatUser).then(res => {
+            const online = res.online
+            chatInterface.online = online;
+
+            newContacts.splice(0, 0, chatInterface);
+            updateChatsData(newContacts)
+            clearSearch()
+            history.push(`/chats/@${newChatUser}`)
+        })
     }
 
     const clearSearch = () => {
@@ -165,6 +173,7 @@ const SearchBox = (props) => {
                         }}
                         onChange={handleOptionSelect}
                         defaultValue={searchkey}
+                        // getOptionSelected={handleOptionSelect}
                         renderInput={(params) => (
                             <TextField
                                 {...params}
@@ -201,7 +210,7 @@ const mapStateToProps = (state) => ({
     loading: pending(state, 'SEARCH_ACCOUNT_REQUEST'),
     chatUsersList: state.chat.get('chatUsersList'),
     user: state.auth.get('user'),
-    searchBoxStatus: state.interfaces.get('searchBoxStatus')
+    searchBoxStatus: state.interfaces.get('searchBoxStatus'),
 })
 
 const mapDispatchToProps = (dispatch) => ({
@@ -210,7 +219,8 @@ const mapDispatchToProps = (dispatch) => ({
         broadcastNotification,
         updateChatsData,
         clearSearchResult,
-        setSearchBoxStatus
+        setSearchBoxStatus,
+        getOnlineStatusRequest
     }, dispatch),
 })
 

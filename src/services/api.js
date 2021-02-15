@@ -21,6 +21,9 @@ export const getTAllransfersTo = (payload) => fetchApi(
 export const searchAccounts = (payload) => fetchApi(
     ep.endpoints.account.search.get(payload), payload, 'get')
 
+export const getAccountOnlineStatus = (payload) => fetchApi(
+    ep.endpoints.account.isOnline.get(payload), payload, 'get')
+
 
 // HIVE keychain API
 export const keychainSignIn = (account) => {

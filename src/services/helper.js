@@ -121,3 +121,17 @@ export const hasCompatibleKeychain = () => {
 export const isMemoEncrypted = (memo) => {
     return memo && memo.charAt(0) === "#"
 }
+
+export const sortArrayObject = (arr, key, sort = "desc") => {
+    if (sort === "desc") {
+        arr = arr.sort(function (a, b) {
+            return b[key] - a[key];
+        });
+    } else if (sort === "asc") {
+        arr = arr.sort(function (a, b) {
+            return a[key] - b[key];
+        });
+    }
+
+    return arr;
+};

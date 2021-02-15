@@ -1,5 +1,5 @@
 import React, { Fragment } from 'react';
-import { IconButton } from "@material-ui/core";
+import { IconButton, Tooltip } from "@material-ui/core";
 import { connect } from "react-redux";
 import { bindActionCreators } from 'redux'
 import AddCircleOutlineIcon from '@material-ui/icons/AddCircleOutline';
@@ -38,11 +38,14 @@ const ChatSideNavTopBar = (props) => {
                 <div className="flex items-center">
                     <h5 className="pr-45 white-space-pre mb-0 font-medium text-18 text-white">Conversations</h5>
                 </div>
-                <div className="flex flex-middle">
+                <div className="flex flex-middle pl-4">
                     <div className="relative">
-                        <IconButton component="button" onClick={handleOpenSearchBox}>
-                            <AddCircleOutlineIcon style={{ fontSize: 30 }} />
-                        </IconButton>
+                        <Tooltip title="Add new contact">
+                            <IconButton component="button" onClick={handleOpenSearchBox}>
+                                <AddCircleOutlineIcon style={{ fontSize: 30 }} />
+                            </IconButton>
+                        </Tooltip>
+
                     </div>
                 </div>
             </div>

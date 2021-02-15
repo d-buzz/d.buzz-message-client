@@ -108,6 +108,8 @@
     border-radius: 4px;
     margin-bottom: .5rem;
     justify-content: space-between;
+    padding-left: 0px;
+    padding-right: 0px;
     button {
       padding: 0 16px;
     }
@@ -125,6 +127,7 @@
     > button {
       justify-content: flex-start;
     }
+    
     .item-icon {
       font-size: 18px;
     }
@@ -166,11 +169,16 @@
 }
 .badge {
   height: 20px;
-  padding: 0 6px;
+  padding: 0 8px;
+  margin: 0 4px 0 auto;
   border-radius: 12px;
   line-height: 20px;
   font-weight: 500;
   &.bg-primary, &.bg-error {
     color: $white !important;
   }
+}
+
+.contacts {
+  padding-left: 10px;
 }

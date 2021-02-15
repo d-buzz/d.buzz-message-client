@@ -45,7 +45,6 @@ const mapStateToProps = (state) => ({
     user: state.auth.get("user"),
     selectedContact: state.chat.get('selectedContact'),
     isFetchingChats: state.chat.get('isFetchingChats'),
-
 })
 
 const mapDispatchToProps = (dispatch) => ({
