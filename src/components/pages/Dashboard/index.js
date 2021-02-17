@@ -1,17 +1,16 @@
 
-import React, { Fragment, useContext, useEffect, useState } from 'react';
+import React, { Fragment, useEffect, useState, useContext } from 'react';
 import { connect } from 'react-redux'
 import { bindActionCreators } from 'redux'
 import { renderRoutes } from "react-router-config";
-import Scrollbar from "react-perfect-scrollbar";
 import { withStyles } from '@material-ui/core/styles';
 import { classList, isMdScreen } from "./../../../services/helper"
 import { SideNavLeft, TopBar } from "./../../../components"
-import AppContext from "./../../../AppContext"
 import { setLayoutSettings } from "./../../../store/settings/actions"
 import { signoutUserRequest } from "./../../../store/auth/actions"
 import { setChatUsersListRequest, clearUserList, receiveMessageRequest } from "./../../../store/chat/actions"
 import ChatSocketServer from "../../../services/chatSocketServer"
+import AppContext from "./../../../AppContext"
 
 const styles = theme => {
     return {
@@ -36,13 +35,13 @@ const Dashboard = (props) => {
     } = props
 
     const { username, token } = user
-    const { routes } = useContext(AppContext)
     const [loading, setLoading] = useState(false)
     const layoutClasses = {
         [classes.layout]: true,
         [`layout1 sidenav-${layoutSettings.leftSidebar.mode} theme-${theme.palette.type} flex`]: true,
         "topbar-fixed": layoutSettings.topbar.fixed
     }
+    const { routes } = useContext(AppContext)
 
     useEffect(() => {
         if (isMdScreen()) {
@@ -96,27 +95,11 @@ const Dashboard = (props) => {
             <div className={classList(layoutClasses)}>
                 {layoutSettings.leftSidebar.show &&
                     <SideNavLeft handleSignOut={handleClickLogout} loading={loading} />}
-
                 <div className="content-wrap position-relative">
-                    {layoutSettings.topbar.show && layoutSettings.topbar.fixed && (
-                        <TopBar className="elevation-z8" handleSignOut={handleClickLogout} />
-                    )}
-
-                    {layoutSettings.perfectScrollbar && (
-                        <Scrollbar className="scrollable-content">
-                            {layoutSettings.topbar.show &&
-                                !layoutSettings.topbar.fixed && <TopBar style={{ height: '80px' }} />}
-                            <div className="content">{renderRoutes(routes)}</div>
-                        </Scrollbar>
-                    )}
-
-                    {!layoutSettings.perfectScrollbar && (
-                        <div className="scrollable-content">
-                            {layoutSettings.topbar.show &&
-                                !layoutSettings.topbar.fixed && <TopBar />}
-                            <div className="content">{renderRoutes(routes)}</div>
-                        </div>
-                    )}
+                    <TopBar className="elevation-z8" />
+                    <div className="relative">
+                        {renderRoutes(routes)}
+                    </div>
                 </div>
             </div>
         </Fragment>

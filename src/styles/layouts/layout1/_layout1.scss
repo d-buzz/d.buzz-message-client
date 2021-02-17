@@ -28,7 +28,7 @@
         rgba(255, 255, 255, 0)
       );
       .topbar-hold {
-        position: relative;
+        position: sticky;
         // box-shadow: $elevation-z8;
         height: $topbar-height;
         border-radius: inherit;
@@ -44,6 +44,17 @@
       overflow-y: scroll;
       overflow-x: hidden;
       scroll-behavior: smooth;
+      .content {
+        position: relative;
+      }
+    }
+
+    .main-content {
+      display: flex;
+      flex-direction: column;
+      position: relative;
+      flex: 1;
+      overflow-x: hidden;
       .content {
         position: relative;
       }
@@ -228,4 +239,10 @@
 }
 .brand-big{
   height: 160px;
+}
+.message_hold {
+  display: flex;
+  flex-direction: column;
+  position: relative;
+  height: 75%;
 }

@@ -36,7 +36,7 @@ const ChatTextField = withStyles((theme) => ({
 const ChatForm = (props) => {
     const { broadcastNotification } = props
     const [openChatOptions, setOpenChatOptions] = useState(false)
-    const [message, setMessage] = useState(null)
+    const [message, setMessage] = useState("")
 
     const handleClickChatOptionsDialog = () => {
         if (message && message.trim()) {
@@ -75,11 +75,10 @@ const ChatForm = (props) => {
 
     return (
         <React.Fragment>
-            <div className="flex items-center chat-textbox">
+            <div className="flex items-center compose chat-textbox">
                 <ChatTextField
                     id="message"
                     variant="outlined"
-                    margin="normal"
                     placeholder="Write a message..."
                     value={message}
                     onChange={handleChangeInput}

@@ -2,7 +2,7 @@ import React, { Fragment, useEffect, useState } from 'react';
 import { connect } from 'react-redux'
 import { bindActionCreators } from 'redux'
 import { withStyles } from "@material-ui/core";
-import { ChatMessages } from "./../../../components";
+import { ChatMessages, ChatMessageTopBar } from "./../../../components";
 import { SimpleCard } from "./../../../components/elements";
 import { setSelectedContact } from "./../../../store/chat/actions"
 import { setLayoutSettings } from "./../../../store/settings/actions"
@@ -59,15 +59,12 @@ const Chats = (props) => {
 
     return (
         <Fragment>
-            <div className="relative flex-grow-1">
-                <SimpleCard>
-                    <div className="relative flex h-full">
-                        <div className="relative flex-grow-1 h-full">
-                            <ChatMessages messages={messages} loading={loading} />
-                        </div>
-                    </div>
-                </SimpleCard >
-            </div>
+            <SimpleCard>
+                <ChatMessageTopBar username={username} />
+                <div className="message_hold">
+                    <ChatMessages messages={messages} loading={loading} />
+                </div>
+            </SimpleCard >
         </Fragment>
     )
 }

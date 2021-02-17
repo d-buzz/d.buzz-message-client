@@ -2,17 +2,15 @@ import React, { Fragment } from 'react';
 import { connect } from 'react-redux'
 import { bindActionCreators } from 'redux'
 import {
-    ChatMessageTopBar,
     Message,
     ChatContainer,
     Loading,
-    NoMessage
+    NoMessage,
 } from "./../../../components";
 
 const ChatMessages = (props) => {
-    const { selectedContact, user, messages, isFetchingChats } = props
+    const { user, messages, isFetchingChats } = props
     const { username: loginUser } = user
-    const { username } = selectedContact
 
     const renderMessages = () => {
         if (messages.length > 0) {
@@ -30,20 +28,15 @@ const ChatMessages = (props) => {
 
     return (
         <Fragment>
-            <div className="flex-column relative chat-form">
-                <ChatMessageTopBar username={username} />
-                <ChatContainer>
-                    {isFetchingChats && <Loading />}
-                    {!isFetchingChats && renderMessages()}
-                </ChatContainer>
-
-            </div>
+            <ChatContainer>
+                {isFetchingChats && <Loading />}
+                {!isFetchingChats && renderMessages()}
+            </ChatContainer>
         </Fragment>
     )
 }
 const mapStateToProps = (state) => ({
     user: state.auth.get("user"),
-    selectedContact: state.chat.get('selectedContact'),
     isFetchingChats: state.chat.get('isFetchingChats'),
 })
 

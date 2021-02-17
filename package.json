@@ -13,7 +13,7 @@
     "axios": "^0.21.1",
     "classnames": "^2.2.6",
     "events": "^3.2.0",
-    "history": "^4.10.0",
+    "history": "^4.10.1",
     "immutable": "^4.0.0-rc.12",
     "lodash": "^4.17.20",
     "moment": "^2.29.1",

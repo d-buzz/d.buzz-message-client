@@ -13,6 +13,9 @@ import { isMdScreen } from "./../../../services/helper"
 import { SimpleMenu } from "./../../elements"
 import { SearchBox } from "./../../../components"
 import logo from "../../../images/hivepm_brand_white.png"
+import { signoutUserRequest } from "./../../../store/auth/actions"
+import ChatSocketServer from "../../../services/chatSocketServer"
+import { clearUserList } from "./../../../store/chat/actions"
 
 const styles = theme => ({
     root: {
@@ -25,9 +28,9 @@ const TopBar = (props) => {
         user,
         layoutSettings,
         setLayoutSettings,
-        handleSignOut,
-        className,
-        style
+        style,
+        signoutUserRequest,
+        clearUserList
     } = props
     const { username } = user
     const userPic = `https://images.hive.blog/u/${username}/avatar/small`
@@ -53,14 +56,20 @@ const TopBar = (props) => {
         })
     }
 
+    const handleClickLogout = () => {
+        signoutUserRequest()
+        ChatSocketServer.logout(username)
+        clearUserList()
+    }
+
     return (
         <MuiThemeProvider theme={topbarTheme}>
             <div className="topbar">
                 <div
-                    className={`topbar-hold ${className}`}
+                    className={`topbar-hold fixed`}
                     style={Object.assign({}, { backgroundColor: topbarTheme.palette.background.paper }, style)}
                 >
-                    <div className="flex flex-space-between flex-middle h-100">
+                    <div className="flex flex-space-between flex-middle h-full">
                         <div className="flex">
                             <IconButton onClick={handleSidebarToggle} className="hide-on-lg">
                                 <Icon>menu</Icon>
@@ -80,7 +89,7 @@ const TopBar = (props) => {
                                     />
                                 }>
                                 <MenuItem
-                                    onClick={handleSignOut}
+                                    onClick={handleClickLogout}
                                     className="flex flex-middle"
                                     style={{ minWidth: 185 }}
                                 >
@@ -103,7 +112,9 @@ const mapStateToProps = (state) => ({
 
 const mapDispatchToProps = (dispatch) => ({
     ...bindActionCreators({
-        setLayoutSettings
+        setLayoutSettings,
+        signoutUserRequest,
+        clearUserList
     }, dispatch),
 })
 

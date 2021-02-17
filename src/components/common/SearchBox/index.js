@@ -21,11 +21,11 @@ const styles = theme => ({
 const SearchBox = (props) => {
     const {
         classes,
-        searchResults = [],
         searchAccountRequest,
         broadcastNotification,
         loading,
         chatUsersList,
+        searchResults,
         updateChatsData,
         user,
         clearSearchResult,
@@ -173,7 +173,6 @@ const SearchBox = (props) => {
                         }}
                         onChange={handleOptionSelect}
                         defaultValue={searchkey}
-                        // getOptionSelected={handleOptionSelect}
                         renderInput={(params) => (
                             <TextField
                                 {...params}
