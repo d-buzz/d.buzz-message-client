@@ -9,9 +9,8 @@ const ContactListSkeleton = ({ len = 10 }) => {
         return (
             rows.map((item, index) => {
                 return (
-                    <div className="nav-item skeleton" key={index}>
+                    <div className="nav-item" key={index}>
                         <div className="relative">
-
                             <Skeleton circle={true} height={45} width={45} />
                         </div>
                         <div className="contact-skeleton"><Skeleton height={20} width={200} /></div>

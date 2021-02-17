@@ -14,11 +14,11 @@ const ChatMessageTopBar = (props) => {
                         {username}
                     </h5>
                 </div>
-                <div className="flex flex-middle">
+                {/* <div className="flex flex-middle">
                     <IconButton>
                         <Icon>more_vert</Icon>
                     </IconButton>
-                </div>
+                </div> */}
             </div>
         </Fragment>
     )

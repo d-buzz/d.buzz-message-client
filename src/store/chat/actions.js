@@ -64,14 +64,14 @@ export const receiveMessageRequest = (payload) => ({
 export const RECEIVE_MESSAGE_SUCCESS = "RECEIVE_MESSAGE_SUCCESS";
 export const receiveMessageSuccess = (response, meta) => ({
     type: RECEIVE_MESSAGE_SUCCESS,
-    response,
+    payload: response,
     meta
 });
 
 export const RECEIVE_MESSAGE_FAILURE = "RECEIVE_MESSAGE_FAILURE";
 export const receiveMessageFailure = (response, meta) => ({
     type: RECEIVE_MESSAGE_FAILURE,
-    response,
+    payload: response,
     meta
 });
 

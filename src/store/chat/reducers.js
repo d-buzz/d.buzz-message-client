@@ -22,7 +22,7 @@ const defaultState = fromJS({
     newStatusUsers: [],
     isFetchingChats: true,
     newChat: {},
-    searchResults: [],
+    searchResults: null,
     latestChat: {},
     selectedUserOnlineStatus: {}
 });

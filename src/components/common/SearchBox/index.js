@@ -73,7 +73,7 @@ const SearchBox = (props) => {
     }
 
     const checkValidAccount = (account) => {
-        return (searchResults.indexOf(account) !== -1);
+        return (searchResults && searchResults.indexOf(account) !== -1);
     }
 
     const handleSearch = () => {
@@ -159,7 +159,7 @@ const SearchBox = (props) => {
                         id="searchkey"
                         value={searchkey}
                         freeSolo
-                        options={searchResults}
+                        options={searchResults || []}
                         style={{ width: "100%" }}
                         getOptionLabel={(option) => option}
                         renderOption={renderOption}

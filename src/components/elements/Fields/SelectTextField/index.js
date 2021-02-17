@@ -9,7 +9,6 @@ const SelectTextField = (props) => {
         value,
         label,
         options,
-        handleChange
     } = props
 
     return (
@@ -18,7 +17,6 @@ const SelectTextField = (props) => {
                 select
                 label={label}
                 value={value}
-                onChange={handleChange}
                 {...props}
             >
                 {options.map((option) => (

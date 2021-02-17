@@ -34,6 +34,7 @@ const Dashboard = (props) => {
         classes,
     } = props
 
+    const { routes } = useContext(AppContext)
     const { username, token } = user
     const [loading, setLoading] = useState(false)
     const layoutClasses = {
@@ -41,7 +42,6 @@ const Dashboard = (props) => {
         [`layout1 sidenav-${layoutSettings.leftSidebar.mode} theme-${theme.palette.type} flex`]: true,
         "topbar-fixed": layoutSettings.topbar.fixed
     }
-    const { routes } = useContext(AppContext)
 
     useEffect(() => {
         if (isMdScreen()) {

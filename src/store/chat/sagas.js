@@ -153,9 +153,17 @@ function* sendMessageRequest(payload, meta) {
 
         if (sendSuccess) {
             if (account_from === username && chatListUsers.length > 0) {
-                const index = chatListUsers.map(x => x.username).indexOf(main_user);
+                const index = chatListUsers.findIndex(x => x.username === main_user)
                 if (index !== -1) {
                     chatListUsers[index].messages.push(payload)
+                    // push to top contact with latest messages
+                    if (index !== 0) {
+                        const temp = chatListUsers[0]
+                        const newChatist = [...chatListUsers]
+                        newChatist[0] = chatListUsers[index]
+                        newChatist[index] = temp;
+                        chatListUsers = newChatist
+                    }
                 }
             }
             yield put(setLatestChat(0, time))
@@ -170,23 +178,38 @@ function* sendMessageRequest(payload, meta) {
 
 function* receiveMessageRequest(payload, meta) {
     try {
-        const { to } = payload
+        const { to, from } = payload
 
         const user = yield select(state => state.auth.get('user'))
         const { username } = user;
 
-        const selectedContact = yield select(state => state.chat.get('selectedContact'))
-        const { username: main_user } = selectedContact
-
         let chatListUsers = yield select(state => state.chat.get('chatUsersList'))
         if (to === username) {
             if (chatListUsers.length > 0) {
-                const index = chatListUsers.map(x => x.username).indexOf(main_user);
+                const index = chatListUsers.findIndex(x => x.username === from)
                 if (index !== -1) {
                     chatListUsers[index].messages.push(payload)
+                    // push to top contact with latest messages
+                    if (index !== 0) {
+                        const temp = chatListUsers[0]
+                        const newChatist = [...chatListUsers]
+                        newChatist[0] = chatListUsers[index]
+                        newChatist[index] = temp;
+                        chatListUsers = newChatist
+                    }
+                } else {
+                    const newContacts = [...chatListUsers];
+                    const chatInterface = {
+                        username: from,
+                        messages: [payload],
+                        online: 1,
+                    }
+                    newContacts.splice(0, 0, chatInterface);
+                    chatListUsers = newContacts
                 }
             }
         }
+
         yield put(updateChatsData(chatListUsers))
         yield put(receiveMessageSuccess(payload, meta))
     } catch (err) {
@@ -197,7 +220,7 @@ function* receiveMessageRequest(payload, meta) {
 function* searchAccountRequest(payload, meta) {
     try {
         const { account, limit } = payload
-        const q = account.trim()
+        const q = account.trim().toLowerCase()
         let accounts = []
         const response = yield searchAccounts({ account: q, limit })
         const data = yield response.data

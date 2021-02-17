@@ -10,7 +10,7 @@ const TextFieldWithIcon = (props) => {
         className,
         icon,
         iconPosition = "start",
-        otherInputProps = {},
+        otherinputprops = {},
         variant = "outlined"
     } = props;
     return (
@@ -22,7 +22,7 @@ const TextFieldWithIcon = (props) => {
                 className={className}
                 InputProps={{
                     startAdornment: <InputAdornment position={iconPosition}>{icon}</InputAdornment>,
-                    ...otherInputProps
+                    ...otherinputprops
                 }}
                 {...props}
             />

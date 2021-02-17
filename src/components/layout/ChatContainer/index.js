@@ -1,19 +1,18 @@
 import React, { Fragment } from 'react';
-import ScrollToBottom from 'react-scroll-to-bottom';
 import { ChatForm } from "./../../../components";
+import { Divider } from "@material-ui/core";
+import ScrollToBottom from 'react-scroll-to-bottom';
 
 const ChatContainer = (props) => {
     const { children } = props
-
     return (
         <Fragment>
-            <ScrollToBottom className="main-content"
+            <ScrollToBottom className="chat-scroll flex-grow-1 relative"
                 option={{ behavior: "smooth" }}>
-                <div className="content">
-                    {children}
-                </div>
+                {children}
                 <div className="pb-80" />
             </ScrollToBottom>
+            <Divider />
             <ChatForm />
         </Fragment>
     )

@@ -1,13 +1,30 @@
 import React from "react";
 import logo from "../../../images/hivepm_brand_white.png"
 import { useHistory } from 'react-router-dom'
+import { setLayoutSettings } from "./../../../store/settings/actions"
+import { connect } from "react-redux";
+import { bindActionCreators } from 'redux'
+import { isMdScreen } from "./../../../services/helper"
 
 const Brand = (props) => {
-    const { children } = props
+    const { children, layoutSettings, setLayoutSettings } = props
     const history = useHistory()
 
     const gotoHome = () => {
         history.push("/")
+        if (isMdScreen()) {
+            updateSidebarMode({ mode: "close" })
+        }
+    }
+
+    const updateSidebarMode = (sideBarSettings) => {
+        setLayoutSettings({
+            ...layoutSettings,
+            leftSidebar: {
+                ...layoutSettings.leftSidebar,
+                ...sideBarSettings
+            }
+        })
     }
 
     return (
@@ -20,4 +37,14 @@ const Brand = (props) => {
     )
 }
 
-export default Brand;
+
+const mapStateToProps = (state) => ({
+    layoutSettings: state.settings.get('layoutSettings'),
+})
+
+const mapDispatchToProps = (dispatch) => ({
+    ...bindActionCreators({
+        setLayoutSettings
+    }, dispatch),
+})
+export default connect(mapStateToProps, mapDispatchToProps)(Brand);

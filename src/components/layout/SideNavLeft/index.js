@@ -9,7 +9,6 @@ import {
     Tooltip,
     IconButton,
     MuiThemeProvider,
-    Link,
     Divider,
     CircularProgress
 } from "@material-ui/core";
@@ -18,7 +17,7 @@ import {
     generateStyles
 } from '../../../store/settings/actions'
 import SidenavTheme from "../../../theme/SidenavTheme"
-import { SideNav, Brand, ChatSideNavTopBar } from "./../../../components"
+import { SideNav, Brand, ChatSideNavTopBar, Copyright } from "./../../../components"
 import RefreshIcon from '@material-ui/icons/Refresh';
 import { refreshChatsRequest } from "./../../../store/chat/actions";
 
@@ -96,16 +95,16 @@ const SideNavLeft = (props) => {
         );
     }
 
-    const AboutLink = () => {
-        return (
-            <small className="text-muted mb-0">
-                About{" "}
-                <Link color="inherit" href="/">
-                    HIVE.PM
-                </Link>
-            </small>
-        )
-    }
+    // const AboutLink = () => {
+    //     return (
+    //         <small className="text-muted mb-0">
+    //             About{" "}
+    //             <Link color="inherit" href="/">
+    //                 HIVE.PM
+    //             </Link>
+    //         </small>
+    //     )
+    // }
 
     const RenderUser = () => {
         return (
@@ -158,10 +157,12 @@ const SideNavLeft = (props) => {
                     <RenderLogoSwitch />
                     <RenderUser />
                     <ChatSideNavTopBar />
-                    <SideNav loading={loading} />
+                    <div className="sidenav_bottom_hold">
+                        <SideNav loading={loading} />
+                    </div>
                     <Divider />
-                    <div className="flex flex-space-between px-4 py-2 flex-middle">
-                        <div className="flex items-center">
+                    <div className="flex flex-space-between px-4 py-2 flex-middle sidenav_bottom">
+                        <div className="flex items-center pr-5">
                             <Tooltip title="Refresh chats">
                                 <IconButton aria-label="refresh" size="small" onClick={handleRefreshChats}>
                                     {!refreshLoading && <RefreshIcon />}
@@ -170,7 +171,7 @@ const SideNavLeft = (props) => {
                             </Tooltip>
                         </div>
                         <div className="flex flex-middle">
-                            <AboutLink />
+                            <Copyright />
                         </div>
                     </div>
                 </div>

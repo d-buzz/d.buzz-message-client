@@ -37,10 +37,10 @@ const ChatSideNavContact = (props) => {
                 className="ml-15"
                 primary={`${username}`}
             />
-            {totalChats > 0 &&
+            {/* {totalChats > 0 &&
                 <div className={`badge bg-secondary`}>
                     {renderTotalChats()}
-                </div>}
+                </div>} */}
         </ListItem >
     )
 }

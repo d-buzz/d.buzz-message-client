@@ -5,7 +5,7 @@ const Copyright = (props) => {
     return (
         <small className="text-muted mb-0">
             © 2021{" "}
-            <Link color="inherit" href="/">
+            <Link color="inherit" target="_blank" href="https://dataloft.llc">
                 Dataloft, LLC
         </Link>{"."}
         </small>

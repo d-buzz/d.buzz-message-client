@@ -1,4 +1,4 @@
-import React, { Fragment } from 'react';
+import React, { Fragment, useEffect } from 'react';
 import { connect } from 'react-redux'
 import { bindActionCreators } from 'redux'
 import {
@@ -9,8 +9,12 @@ import {
 } from "./../../../components";
 
 const ChatMessages = (props) => {
-    const { user, messages, isFetchingChats } = props
+    const { user, messages, isFetchingChats, newChat } = props
     const { username: loginUser } = user
+
+    useEffect(() => {
+        // eslint-disable-next-line react-hooks/exhaustive-deps
+    }, [newChat])
 
     const renderMessages = () => {
         if (messages.length > 0) {
@@ -38,6 +42,7 @@ const ChatMessages = (props) => {
 const mapStateToProps = (state) => ({
     user: state.auth.get("user"),
     isFetchingChats: state.chat.get('isFetchingChats'),
+    newChat: state.chat.get('newChat'),
 })
 
 const mapDispatchToProps = (dispatch) => ({

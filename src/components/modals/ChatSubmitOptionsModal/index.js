@@ -108,6 +108,7 @@ const ChatSubmitOptionsModal = (props) => {
         setAmount(minAmount)
         setIsEncrypted(true)
         setIsAmountTouched(false)
+        setDisabled(false)
     }
 
     const handleSubmitMessage = () => {
@@ -189,7 +190,7 @@ const ChatSubmitOptionsModal = (props) => {
                         type="number"
                         onChange={handleInputChange}
                         onKeyPress={handleKeyPress}
-                        otherInputProps={{
+                        otherinputprops={{
                             endAdornment: (
                                 <InputAdornment position="end">{currency}</InputAdornment>
                             ),
@@ -206,7 +207,7 @@ const ChatSubmitOptionsModal = (props) => {
                         value={currency}
                         label="Asset"
                         options={assets}
-                        handleChange={handleChangeAsset}
+                        onChange={handleChangeAsset}
                         fullWidth
                         variant="outlined"
                         required
