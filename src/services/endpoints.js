@@ -26,6 +26,11 @@ export const endpoints = {
             post(payload) {
                 return "/message/transfers-to"
             }
+        },
+        transfersGroup: {
+            post(payload) {
+                return "/message/transfers-group"
+            }
         }
     },
     account: {

@@ -18,6 +18,9 @@ export const getTransfers = (payload) => fetchApi(
 export const getTAllransfersTo = (payload) => fetchApi(
     ep.endpoints.message.transferTo.post(payload), payload, 'post')
 
+export const getTransfersByGroup = (payload) => fetchApi(
+    ep.endpoints.message.transfersGroup.post(payload), payload, 'post')
+
 export const searchAccounts = (payload) => fetchApi(
     ep.endpoints.account.search.get(payload), payload, 'get')
 

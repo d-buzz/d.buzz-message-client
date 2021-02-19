@@ -9,12 +9,13 @@ import {
 } from "./../../../components";
 
 const ChatMessages = (props) => {
-    const { user, messages, isFetchingChats, newChat } = props
+    const { user, messages, isFetchingChats, receivedNewChat } = props
     const { username: loginUser } = user
 
     useEffect(() => {
+        console.log({ receivedNewChat })
         // eslint-disable-next-line react-hooks/exhaustive-deps
-    }, [newChat])
+    }, [receivedNewChat])
 
     const renderMessages = () => {
         if (messages.length > 0) {
@@ -42,7 +43,7 @@ const ChatMessages = (props) => {
 const mapStateToProps = (state) => ({
     user: state.auth.get("user"),
     isFetchingChats: state.chat.get('isFetchingChats'),
-    newChat: state.chat.get('newChat'),
+    receivedNewChat: state.chat.get('receivedNewChat'),
 })
 
 const mapDispatchToProps = (dispatch) => ({

@@ -6,9 +6,9 @@ const NoChatSelected = (props) => {
     return (
         <Fragment>
             <SimpleCard>
-                <div className="relative flex h-full">
-                    <div className="relative flex-grow-1 h-full">
-                        <div className="flex-column relative chat-form">
+                <div className="flex h-full">
+                    <div className="flex-grow-1 h-full">
+                        <div className="flex-column chat-form">
                             <div className="flex-column justify-center items-center h-full">
                                 <div className="h-220 w-220 rounded elevation-z6 bg-chat flex justify-center items-center">
                                     <ChatIcon style={{ fontSize: "4rem" }} />

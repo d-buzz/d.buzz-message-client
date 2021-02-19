@@ -20,6 +20,7 @@ import SidenavTheme from "../../../theme/SidenavTheme"
 import { SideNav, Brand, ChatSideNavTopBar, Copyright } from "./../../../components"
 import RefreshIcon from '@material-ui/icons/Refresh';
 import { refreshChatsRequest } from "./../../../store/chat/actions";
+import { broadcastNotification } from "./../../../store/interfaces/actions";
 
 // const THEME = {
 //     LIGHT: 'light',
@@ -45,7 +46,8 @@ const SideNavLeft = (props) => {
         layoutSettings,
         handleSignOut,
         loading,
-        refreshChatsRequest
+        refreshChatsRequest,
+        broadcastNotification
         // setThemeRequest,
         // generateStyles
     } = props
@@ -79,6 +81,11 @@ const SideNavLeft = (props) => {
         setRefreshLoading(true)
         refreshChatsRequest().then((res) => {
             setRefreshLoading(false)
+            if (res.code === 200) {
+                broadcastNotification("success", "Successfully synced chats...")
+            } else {
+                broadcastNotification("error", "Something went wrong.. Failed to sync chats")
+            }
         })
     }
 
@@ -190,7 +197,8 @@ const mapDispatchToProps = (dispatch) => ({
     ...bindActionCreators({
         setThemeRequest,
         generateStyles,
-        refreshChatsRequest
+        refreshChatsRequest,
+        broadcastNotification
     }, dispatch),
 })
 

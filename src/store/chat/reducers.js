@@ -22,6 +22,7 @@ const defaultState = fromJS({
     newStatusUsers: [],
     isFetchingChats: true,
     newChat: {},
+    receivedNewChat: {},
     searchResults: null,
     latestChat: {},
     selectedUserOnlineStatus: {}
@@ -44,7 +45,7 @@ export const chat = (state = defaultState, { type, payload }) => {
         case SEND_MESSAGE_SUCCESS:
             return state.set('newChat', payload)
         case RECEIVE_MESSAGE_SUCCESS:
-            return state.set('newChat', payload)
+            return state.set('receivedNewChat', payload)
         case DECRYPT_MESSAGE_SUCCESS:
             return state.set('newChat', payload)
         case REFRESH_CHATS_SUCCESS:

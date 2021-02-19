@@ -40,7 +40,8 @@ import {
     getTransfers,
     keychainRequestTransfer,
     keychainDecodeMemos,
-    getAccountOnlineStatus
+    getAccountOnlineStatus,
+    getTransfersByGroup
 } from "./../../services/api";
 import ChatSocketServer from "./../../services/chatSocketServer";
 
@@ -126,36 +127,37 @@ function* sendMessageRequest(payload, meta) {
             account_from,
             currency
         }
-        let sendResponse = { success: false, message: "Failed to transfer", payload }
-        let sendSuccess = false
+        const sendResponse = { success: false, message: "Failed to transfer", payload }
         if (is_authenticated) {
             if (!useKeychain) {
-                const response = yield sendMessage(params)
+                const response = yield call(sendMessage, params)
                 const data = yield response.data;
                 if (data.code === 200) {
-                    yield ChatSocketServer.sendMessage(payload)
-                    sendSuccess = true
                     sendResponse.success = true
                 }
                 sendResponse.message = data.message
             } else {
                 // implement keychain transfer here...
                 const memo = use_encrypt === 1 ? `# ${message}` : message
-                const response = yield keychainRequestTransfer(username, main_user, amount, memo, currency)
+                const response = yield call(keychainRequestTransfer, username, main_user, amount, memo, currency)
                 if (response.success) {
-                    yield ChatSocketServer.sendMessage(payload)
-                    sendSuccess = true
                     sendResponse.success = true
                 }
                 sendResponse.message = response.message
             }
+        } else {
+            yield call(clearLocalStorage)
+            window.location.reload()
         }
 
-        if (sendSuccess) {
+        if (sendResponse.success) {
+            yield ChatSocketServer.sendMessage(payload)
             if (account_from === username && chatListUsers.length > 0) {
                 const index = chatListUsers.findIndex(x => x.username === main_user)
                 if (index !== -1) {
-                    chatListUsers[index].messages.push(payload)
+                    const oldMessages = chatListUsers[index].messages
+                    const newMessages = [...oldMessages, payload]
+                    chatListUsers[index].messages = newMessages
                     // push to top contact with latest messages
                     if (index !== 0) {
                         const temp = chatListUsers[0]
@@ -167,9 +169,8 @@ function* sendMessageRequest(payload, meta) {
                 }
             }
             yield put(setLatestChat(0, time))
+            yield put(updateChatsData(chatListUsers))
         }
-
-        yield put(updateChatsData(chatListUsers))
         yield put(sendMessageSuccess(sendResponse, meta))
     } catch (err) {
         yield put(sendMessageFailure(err, meta))
@@ -184,33 +185,34 @@ function* receiveMessageRequest(payload, meta) {
         const { username } = user;
 
         let chatListUsers = yield select(state => state.chat.get('chatUsersList'))
-        if (to === username) {
-            if (chatListUsers.length > 0) {
-                const index = chatListUsers.findIndex(x => x.username === from)
-                if (index !== -1) {
-                    chatListUsers[index].messages.push(payload)
-                    // push to top contact with latest messages
-                    if (index !== 0) {
-                        const temp = chatListUsers[0]
-                        const newChatist = [...chatListUsers]
-                        newChatist[0] = chatListUsers[index]
-                        newChatist[index] = temp;
-                        chatListUsers = newChatist
-                    }
-                } else {
-                    const newContacts = [...chatListUsers];
-                    const chatInterface = {
-                        username: from,
-                        messages: [payload],
-                        online: 1,
-                    }
-                    newContacts.splice(0, 0, chatInterface);
-                    chatListUsers = newContacts
+        if (to === username && chatListUsers.length > 0) {
+            const index = chatListUsers.findIndex(x => x.username === from)
+            if (index !== -1) {
+                const oldMessages = chatListUsers[index].messages
+                const newMessages = [...oldMessages, payload]
+                chatListUsers[index].messages = newMessages
+                // push to top contact with latest messages
+                if (index !== 0) {
+                    const temp = chatListUsers[0]
+                    const newChatist = [...chatListUsers]
+                    newChatist[0] = chatListUsers[index]
+                    newChatist[index] = temp;
+                    chatListUsers = newChatist
                 }
+            } else {
+                const newContacts = [...chatListUsers];
+                const chatInterface = {
+                    username: from,
+                    messages: [payload],
+                    online: 1,
+                }
+                newContacts.splice(0, 0, chatInterface);
+                chatListUsers = newContacts
             }
+
+            yield put(updateChatsData(chatListUsers))
         }
 
-        yield put(updateChatsData(chatListUsers))
         yield put(receiveMessageSuccess(payload, meta))
     } catch (err) {
         yield put(receiveMessageFailure(err, meta))
@@ -222,7 +224,7 @@ function* searchAccountRequest(payload, meta) {
         const { account, limit } = payload
         const q = account.trim().toLowerCase()
         let accounts = []
-        const response = yield searchAccounts({ account: q, limit })
+        const response = yield call(searchAccounts, { account: q, limit })
         const data = yield response.data
         if (data.code === 200) {
             accounts = data.data
@@ -246,7 +248,7 @@ function* decryptMessageRequest(payload, meta) {
         let result = { success: false, error: null }
         let decoded = ""
         if (useKeychain) {
-            result = yield keychainDecodeMemos(username, memo)
+            result = yield call(keychainDecodeMemos, username, memo)
             if (result.success) {
                 decoded = result.result
             }
@@ -260,11 +262,11 @@ function* decryptMessageRequest(payload, meta) {
                 const _index = messages.findIndex((x) => x.number === transfer_number)
                 if (_index !== -1 && decoded) {
                     chatListUsers[index].messages[_index].decoded = decoded
+                    yield put(updateChatsData(chatListUsers))
                 }
             }
         }
 
-        yield put(updateChatsData(chatListUsers))
         yield put(decryptMessageSuccess(result, meta))
     } catch (err) {
         yield put(decryptMessageFailure(err, meta))
@@ -276,42 +278,14 @@ function* refreshChatsRequest(payload, meta) {
         const user = yield select(state => state.auth.get('user'))
         const { username } = user;
 
-        const latestChat = yield select(state => state.chat.get('latestChat'))
-        const { lastDate, lastNumber } = latestChat
-
-        let chatListUsers = yield select(state => state.chat.get('chatUsersList'))
-
-        let newChats = []
-        const response = yield getTransfers({ account: username })
+        const response = yield getTransfersByGroup({ account: username })
         const data = yield response.data
         if (data.code === 200) {
-            if (parseInt(lastNumber) > 0) {
-                newChats = data.data.filter((x) => parseInt(x.number) > parseInt(lastNumber))
-            } else {
-                if (lastDate) {
-                    newChats = data.data.filter((x) => new Date(x.time) > new Date(lastDate))
-                }
-            }
+            const newChats = data.data
             if (newChats.length > 0) {
-                const unique_users = [
-                    ...new Set(newChats.map((item) => item.main_user)),
-                ];
-
-                unique_users.forEach((user) => {
-                    const messages = newChats.filter((x) => x.main_user === user)
-                    const index = chatListUsers.findIndex(x => x.username === user)
-                    if (index !== -1) {
-                        let newMessages = [...chatListUsers[index].messages, ...messages]
-                        newMessages = newMessages.filter((obj, pos, arr) => {
-                            return arr.map(mapObj => mapObj['number']).indexOf(obj['number']) === pos
-                        })
-                        const sortedData = sortArrayObject(newMessages, "number", "asc")
-                        chatListUsers[index].messages = sortedData
-                    }
-                })
+                yield put(updateChatsData(newChats))
             }
         }
-        yield put(updateChatsData(chatListUsers))
         yield put(refreshChatsSuccess(data, meta))
     } catch (err) {
         yield put(refreshChatsFailure(err, meta))
