@@ -15,7 +15,7 @@ const Message = (props) => {
         item,
         loginUser,
         decryptMessageRquest,
-        newChat,
+        newDecrypted,
         broadcastNotification
     } = props
     const {
@@ -36,7 +36,7 @@ const Message = (props) => {
     useEffect(() => {
         setDisplayedMsg(message || memo)
         // eslint-disable-next-line react-hooks/exhaustive-deps
-    }, [newChat, message, memo])
+    }, [newDecrypted, message, memo])
 
 
     const getDateAgo = (date) => {
@@ -171,7 +171,7 @@ const Message = (props) => {
 }
 
 const mapStateToProps = (state) => ({
-    newChat: state.chat.get('newChat'),
+    newDecrypted: state.chat.get('newDecrypted'),
 })
 
 const mapDispatchToProps = (dispatch) => ({
