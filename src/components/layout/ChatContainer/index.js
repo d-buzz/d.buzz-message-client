@@ -10,7 +10,7 @@ const ChatContainer = (props) => {
             <ScrollToBottom className="chat-scroll flex-grow-1 relative"
                 option={{ behavior: "smooth" }}>
                 {children}
-                <div className="pb-80" />
+                <div className="pb-100" />
             </ScrollToBottom>
             <Divider />
             <ChatForm />

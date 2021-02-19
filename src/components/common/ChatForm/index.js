@@ -79,6 +79,7 @@ const ChatForm = (props) => {
                 <ChatTextField
                     id="message"
                     variant="outlined"
+                    margin="normal"
                     placeholder="Write a message..."
                     value={message}
                     onChange={handleChangeInput}

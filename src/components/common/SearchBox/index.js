@@ -58,7 +58,6 @@ const SearchBox = (props) => {
             if (target.value) {
                 const newValue = target.value.trim()
                 const len = newValue.length
-                setSearchkey(newValue)
                 if (len >= 3) {
                     if (!checkValidAccount(newValue)) {
                         handleSearch()
@@ -86,7 +85,6 @@ const SearchBox = (props) => {
     }
 
     const handleOptionSelect = (e, newValue) => {
-        setSearchkey(newValue)
         updateChatList(newValue)
     }
 
@@ -157,7 +155,7 @@ const SearchBox = (props) => {
                     </IconButton>
                     <Autocomplete
                         id="searchkey"
-                        value={searchkey}
+                        value={""}
                         freeSolo
                         options={searchResults || []}
                         style={{ width: "100%" }}
@@ -172,16 +170,14 @@ const SearchBox = (props) => {
                             setOpenOptions(false);
                         }}
                         onChange={handleOptionSelect}
-                        defaultValue={searchkey}
                         renderInput={(params) => (
                             <TextField
                                 {...params}
-                                value={searchkey}
                                 type="text"
                                 className={`search-box w-100 ${classes.root}`}
                                 placeholder="Search users"
-                                onChange={handleChangeInput}
                                 onKeyPress={handleKeypress}
+                                onChange={handleChangeInput}
                                 autoFocus
                                 InputProps={{
                                     ...params.InputProps,
