@@ -87,7 +87,7 @@ const ChatForm = (props) => {
                     fullWidth
                     multiline
                     error={false}
-                    autoFocus
+                    // autoFocus
                     focused
                 />
                 <div className="pl-2">

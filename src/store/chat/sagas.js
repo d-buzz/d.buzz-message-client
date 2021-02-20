@@ -33,11 +33,10 @@ import {
     getOnlineStatusFailure
 } from "./actions";
 
-import { clearLocalStorage, sortArrayObject } from "./../../services/helper";
+import { clearLocalStorage } from "./../../services/helper";
 import {
     sendMessage,
     searchAccounts,
-    getTransfers,
     keychainRequestTransfer,
     keychainDecodeMemos,
     getAccountOnlineStatus,

@@ -11,7 +11,7 @@ const Brand = (props) => {
     const history = useHistory()
 
     const gotoHome = () => {
-        history.push("/")
+        history.push("/chats")
         if (isMdScreen()) {
             updateSidebarMode({ mode: "close" })
         }
