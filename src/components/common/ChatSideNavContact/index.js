@@ -3,24 +3,24 @@ import { ListItem, ListItemText, Avatar } from "@material-ui/core";
 import { NavLink } from "react-router-dom";
 
 const ChatSideNavContact = (props) => {
-    const { username, online, index, totalChats } = props
+    const { username, online, index, /** totalChats **/ } = props
     const userPic = `https://images.hive.blog/u/${username}/avatar/small`
     let bgStatus = "secondary"
     if (online === 1) {
         bgStatus = "green"
     }
 
-    const renderTotalChats = () => {
-        let unread = ""
-        if (parseInt(totalChats) > 0) {
-            if (parseInt(totalChats) > 100) {
-                unread = "100+";
-            } else {
-                unread = totalChats
-            }
-        }
-        return unread;
-    }
+    // const renderTotalChats = () => {
+    //     let unread = ""
+    //     if (parseInt(totalChats) > 0) {
+    //         if (parseInt(totalChats) > 100) {
+    //             unread = "100+";
+    //         } else {
+    //             unread = totalChats
+    //         }
+    //     }
+    //     return unread;
+    // }
 
     return (
         <ListItem
