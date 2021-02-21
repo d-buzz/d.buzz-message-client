@@ -41,8 +41,8 @@ const PasswordWall = (props) => {
       submit()
     } else {
       setPasscode(e.target.value)
+      setFailed(false)
     }
-    setFailed(false)
   }
 
   const submit = () => {
