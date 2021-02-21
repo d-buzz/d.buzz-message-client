@@ -37,7 +37,11 @@ const PasswordWall = (props) => {
   const [disabled, setDisabled] = useState(PASSWORD_PROTECTED)
 
   const onChange = (e) => {
-    setPasscode(e.target.value)
+    if(e.keyCode === 13) {
+      submit()
+    } else {
+      setPasscode(e.target.value)
+    }
     setFailed(false)
   }
 
@@ -57,6 +61,7 @@ const PasswordWall = (props) => {
             <TextField 
               className={classes.field}
               onChange={onChange}
+              onKeyDown={onChange}
               value={passcode}
               type="password"
               label="Passcode"
