@@ -13,7 +13,6 @@ const ChatMessages = (props) => {
     const { username: loginUser } = user
 
     useEffect(() => {
-        console.log({ receivedNewChat })
         // eslint-disable-next-line react-hooks/exhaustive-deps
     }, [receivedNewChat])
 

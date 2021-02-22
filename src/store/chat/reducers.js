@@ -14,6 +14,7 @@ import {
     REFRESH_CHATS_SUCCESS,
     SET_LATEST_CHAT,
     GET_ONLINE_STATUS_SUCCESS,
+    SET_IS_ENCRYPTED_ALL
 } from "./actions"
 
 const defaultState = fromJS({
@@ -26,7 +27,8 @@ const defaultState = fromJS({
     newDecrypted: {},
     searchResults: null,
     latestChat: {},
-    selectedUserOnlineStatus: {}
+    selectedUserOnlineStatus: {},
+    isEncryptedAll: false
 });
 
 export const chat = (state = defaultState, { type, payload }) => {
@@ -59,6 +61,8 @@ export const chat = (state = defaultState, { type, payload }) => {
             return state.set('latestChat', payload)
         case GET_ONLINE_STATUS_SUCCESS:
             return state.set('selectedUserOnlineStatus', payload)
+        case SET_IS_ENCRYPTED_ALL:
+            return state.set('isEncryptedAll', payload)
         default:
             return state;
     }

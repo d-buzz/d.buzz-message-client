@@ -1,5 +1,5 @@
 import React, { useState } from 'react'
-import { 
+import {
   Container,
   Typography,
   TextField,
@@ -11,7 +11,7 @@ import config from './../../../config'
 
 const { PASSWORD_PROTECTED, PASSWORD_PROTECTED_KEY } = config
 
-console.log({ PASSWORD_PROTECTED })
+// console.log({ PASSWORD_PROTECTED })
 
 const styles = theme => ({
   root: {
@@ -21,7 +21,7 @@ const styles = theme => ({
     textAlign: 'center',
     width: '100%',
     '& h5': { paddingTop: 50 },
-    '& button' : { marginTop: 15, textTransform: 'uppercase' },
+    '& button': { marginTop: 15, textTransform: 'uppercase' },
     '& p': { color: 'red' },
   },
   field: {
@@ -31,13 +31,13 @@ const styles = theme => ({
 
 const PasswordWall = (props) => {
   const { classes, children } = props
-  
+
   const [failed, setFailed] = useState(false)
-  const [passcode, setPasscode] = useState()
+  const [passcode, setPasscode] = useState("")
   const [disabled, setDisabled] = useState(PASSWORD_PROTECTED)
 
   const onChange = (e) => {
-    if(e.keyCode === 13) {
+    if (e.keyCode === 13) {
       submit()
     } else {
       setPasscode(e.target.value)
@@ -58,7 +58,7 @@ const PasswordWall = (props) => {
           <Container maxWidth="sm">
             <Typography variant="h5">Welcome to Hive.pm</Typography>
             <Typography variant="h6">Please enter password to participate in beta testing</Typography>
-            <TextField 
+            <TextField
               className={classes.field}
               onChange={onChange}
               onKeyDown={onChange}
@@ -66,14 +66,14 @@ const PasswordWall = (props) => {
               type="password"
               label="Passcode"
               variant="outlined"
-              fullWidth 
+              fullWidth
             />
-            {failed && <Typography component="p" variant="subtitle2">You've entered a wrong password, please try again</Typography>} 
+            {failed && <Typography component="p" variant="subtitle2">You've entered a wrong password, please try again</Typography>}
             <Button onClick={submit} variant="contained" color="primary">
               Submit
             </Button>
           </Container>
-        </div> 
+        </div>
       )}
       {!disabled && children}
     </React.Fragment>

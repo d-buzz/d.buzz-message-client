@@ -11,6 +11,6 @@ const CONFIG = {
     PASSWORD_PROTECTED_KEY: ENV.REACT_APP_WALL_PASS,
 }
 
-console.log({ CONFIG })
+// console.log({ CONFIG })
 
 export default CONFIG;

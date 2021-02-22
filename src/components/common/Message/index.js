@@ -16,7 +16,8 @@ const Message = (props) => {
         loginUser,
         decryptMessageRquest,
         newDecrypted,
-        broadcastNotification
+        broadcastNotification,
+        isEncryptedAll
     } = props
     const {
         from,
@@ -34,9 +35,13 @@ const Message = (props) => {
 
 
     useEffect(() => {
-        setDisplayedMsg(message || memo)
+        if (!isEncryptedAll) {
+            setDisplayedMsg(message || memo)
+        } else {
+            setDisplayedMsg(memo)
+        }
         // eslint-disable-next-line react-hooks/exhaustive-deps
-    }, [newDecrypted, message, memo])
+    }, [newDecrypted, isEncryptedAll, message, memo])
 
 
     const getDateAgo = (date) => {
@@ -74,7 +79,11 @@ const Message = (props) => {
             decryptMessageRquest(number, memo).then((res) => {
                 handleCloseOptions()
                 if (!res.success) {
-                    broadcastNotification('error', res.error)
+                    if (res.error) {
+                        broadcastNotification('error', res.error)
+                    } else {
+                        broadcastNotification('error', "Failed to decrypt memo")
+                    }
                 }
             })
         } else {
@@ -172,6 +181,7 @@ const Message = (props) => {
 
 const mapStateToProps = (state) => ({
     newDecrypted: state.chat.get('newDecrypted'),
+    isEncryptedAll: state.chat.get('isEncryptedAll'),
 })
 
 const mapDispatchToProps = (dispatch) => ({

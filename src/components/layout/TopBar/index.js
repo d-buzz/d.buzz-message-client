@@ -15,7 +15,7 @@ import { SearchBox } from "./../../../components"
 import logo from "../../../images/hivepm_brand_white.png"
 import { signoutUserRequest } from "./../../../store/auth/actions"
 import ChatSocketServer from "../../../services/chatSocketServer"
-import { clearUserList } from "./../../../store/chat/actions"
+import { clearUserList, setIsEncryptedAll } from "./../../../store/chat/actions"
 
 const styles = theme => ({
     root: {
@@ -30,9 +30,11 @@ const TopBar = (props) => {
         setLayoutSettings,
         style,
         signoutUserRequest,
-        clearUserList
+        clearUserList,
+        isEncryptedAll,
+        setIsEncryptedAll
     } = props
-    const { username } = user
+    const { username, useKeychain } = user
     const userPic = `https://images.hive.blog/u/${username}/avatar/small`
     const topbarTheme = layoutSettings.themes[layoutSettings.topbar.theme]
 
@@ -62,6 +64,11 @@ const TopBar = (props) => {
         clearUserList()
     }
 
+
+    const handleEncryptMessage = () => {
+        setIsEncryptedAll(!isEncryptedAll)
+    }
+
     return (
         <MuiThemeProvider theme={topbarTheme}>
             <div className="topbar">
@@ -88,6 +95,16 @@ const TopBar = (props) => {
                                         alt="user"
                                     />
                                 }>
+
+                                {!useKeychain &&
+                                    <MenuItem
+                                        onClick={handleEncryptMessage}
+                                        className="flex flex-middle"
+                                        style={{ minWidth: 185 }}>
+                                        <Icon> {isEncryptedAll ? "lock_open" : "lock"} </Icon>
+                                        <span className="pl-16">{isEncryptedAll ? "Decrypt" : "Encrypt"} messages</span>
+                                    </MenuItem>
+                                }
                                 <MenuItem
                                     onClick={handleClickLogout}
                                     className="flex flex-middle"
@@ -108,13 +125,15 @@ const TopBar = (props) => {
 const mapStateToProps = (state) => ({
     user: state.auth.get('user'),
     layoutSettings: state.settings.get('layoutSettings'),
+    isEncryptedAll: state.chat.get('isEncryptedAll'),
 })
 
 const mapDispatchToProps = (dispatch) => ({
     ...bindActionCreators({
         setLayoutSettings,
         signoutUserRequest,
-        clearUserList
+        clearUserList,
+        setIsEncryptedAll
     }, dispatch),
 })
 

@@ -202,3 +202,9 @@ export const getOnlineStatusFailure = (response, meta) => ({
     payload: response,
     meta
 });
+
+export const SET_IS_ENCRYPTED_ALL = "SET_IS_ENCRYPTED_ALL";
+export const setIsEncryptedAll = (status) => ({
+    type: SET_IS_ENCRYPTED_ALL,
+    payload: status,
+});
