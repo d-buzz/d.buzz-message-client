@@ -233,8 +233,8 @@ const Login = (props) => {
                 {!useHiveKeychain &&
                   <TextFieldWithIcon
                     id="password"
-                    label="Password"
-                    placeholder="Enter your password"
+                    label="Master Password"
+                    placeholder="Enter your master password"
                     value={password}
                     icon={<VpnKey />}
                     onChange={onChangeInput}
@@ -243,7 +243,7 @@ const Login = (props) => {
                     fullWidth
                     onKeyPress={handleKeypress}
                     error={isPasswordTouched && !password}
-                    helperText={isPasswordTouched && !password ? "Password is required" : ""}
+                    helperText={isPasswordTouched && !password ? "Master password is required" : ""}
                   />}
                 {!isMobile &&
                   <FormControlLabel
