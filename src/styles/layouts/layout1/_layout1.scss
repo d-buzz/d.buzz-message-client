@@ -244,11 +244,10 @@
   display: flex;
   flex-direction: column;
   position: relative;
-  height: calc(100% - 230px);
-  @media screen and (min-width: 1200px) {
-    height: calc(100% - 200px);
+  height: calc(100% - 200px);
+  @include media(767px) {
+    height: calc(100% - 240px);
   }
-  
 }
 
 .sidenav_bottom_hold {
