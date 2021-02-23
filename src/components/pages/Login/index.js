@@ -233,7 +233,7 @@ const Login = (props) => {
                 {!useHiveKeychain &&
                   <TextFieldWithIcon
                     id="password"
-                    label="Password"
+                    label="Master Password"
                     placeholder="Enter your password"
                     value={password}
                     icon={<VpnKey />}
