@@ -62,9 +62,7 @@ const Chats = (props) => {
         <Fragment>
             <SimpleCard>
                 <ChatMessageTopBar username={username} />
-                <div className="message_hold">
-                    <ChatMessages messages={messages} loading={loading} />
-                </div>
+                <ChatMessages messages={messages} loading={loading} />
             </SimpleCard >
         </Fragment>
     )
