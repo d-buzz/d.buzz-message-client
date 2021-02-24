@@ -6,14 +6,11 @@ const ChatContainer = (props) => {
     const { children } = props
     return (
         <Fragment>
-            <div className="message_hold">
-                <ScrollToBottom className="chat-scroll flex-grow-1 relative"
-                    option={{ behavior: "smooth" }}>
-                    {children}
-                </ScrollToBottom>
-                <ChatForm />
-            </div>
-
+            <ScrollToBottom className="message_hold"
+                option={{ behavior: "smooth" }}>
+                {children}
+            </ScrollToBottom>
+            <ChatForm />
         </Fragment>
     )
 }

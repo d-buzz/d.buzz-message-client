@@ -42,8 +42,8 @@ const Chats = (props) => {
 
     return (
         <Fragment>
+            <ChatMessageTopBar username={username} />
             <SimpleCard>
-                <ChatMessageTopBar username={username} />
                 <ChatMessages username={username} />
             </SimpleCard >
         </Fragment>
