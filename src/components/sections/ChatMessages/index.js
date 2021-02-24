@@ -1,4 +1,4 @@
-import React, { Fragment, useEffect } from 'react';
+import React, { Fragment, useEffect, useState } from 'react';
 import { connect } from 'react-redux'
 import { bindActionCreators } from 'redux'
 import {
@@ -9,12 +9,26 @@ import {
 } from "./../../../components";
 
 const ChatMessages = (props) => {
-    const { user, messages, isFetchingChats, receivedNewChat } = props
+    const {
+        user,
+        username: selectedContact,
+        chatUsersList,
+        isFetchingChats,
+        newChat,
+        receivedNewChat
+    } = props
     const { username: loginUser } = user
+    const [messages, setMessages] = useState([])
 
     useEffect(() => {
+        const index = chatUsersList.findIndex(x => x.username === selectedContact);
+        let msgs = []
+        if (index !== -1) {
+            msgs = [...chatUsersList[index].messages]
+            setMessages(msgs)
+        }
         // eslint-disable-next-line react-hooks/exhaustive-deps
-    }, [receivedNewChat])
+    }, [selectedContact, newChat, receivedNewChat])
 
     const renderMessages = () => {
         if (messages.length > 0) {
@@ -42,7 +56,9 @@ const ChatMessages = (props) => {
 const mapStateToProps = (state) => ({
     user: state.auth.get("user"),
     isFetchingChats: state.chat.get('isFetchingChats'),
+    newChat: state.chat.get('newChat'),
     receivedNewChat: state.chat.get('receivedNewChat'),
+    chatUsersList: state.chat.get('chatUsersList'),
 })
 
 const mapDispatchToProps = (dispatch) => ({

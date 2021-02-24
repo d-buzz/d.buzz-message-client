@@ -38,7 +38,7 @@ const Message = (props) => {
         if (!isEncryptedAll) {
             setDisplayedMsg(message || memo)
         } else {
-            setDisplayedMsg(memo)
+            setDisplayedMsg(memo || message)
         }
         // eslint-disable-next-line react-hooks/exhaustive-deps
     }, [newDecrypted, isEncryptedAll, message, memo])
