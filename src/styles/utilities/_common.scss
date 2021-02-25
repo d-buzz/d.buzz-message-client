@@ -12,6 +12,8 @@
 }
 .card {
   transition: all 0.3s ease;
+  height: 100vh;
+  max-height: 100vh;
   &:hover {
     box-shadow: $elevation-z12;
   }

@@ -97,9 +97,7 @@ const Dashboard = (props) => {
                     <SideNavLeft handleSignOut={handleClickLogout} loading={loading} />}
                 <div className="content-wrap position-relative">
                     <TopBar className="elevation-z8" />
-                    <div className="relative">
-                        {renderRoutes(routes)}
-                    </div>
+                    {renderRoutes(routes)}
                 </div>
             </div>
         </Fragment>

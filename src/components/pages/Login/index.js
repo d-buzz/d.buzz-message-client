@@ -234,7 +234,7 @@ const Login = (props) => {
                   <TextFieldWithIcon
                     id="password"
                     label="Master Password"
-                    placeholder="Enter your password"
+                    placeholder="Enter your master password"
                     value={password}
                     icon={<VpnKey />}
                     onChange={onChangeInput}
@@ -243,7 +243,7 @@ const Login = (props) => {
                     fullWidth
                     onKeyPress={handleKeypress}
                     error={isPasswordTouched && !password}
-                    helperText={isPasswordTouched && !password ? "Password is required" : ""}
+                    helperText={isPasswordTouched && !password ? "Master password is required" : ""}
                   />}
                 {!isMobile &&
                   <FormControlLabel

@@ -36,6 +36,11 @@
         // z-index: 15;
       }
     }
+    .chat-top-bar {
+      position: sticky;
+      height: $chat-topbar-height
+    }
+
     .scrollable-content {
       display: flex;
       flex-direction: column;
@@ -241,10 +246,12 @@
   height: 160px;
 }
 .message_hold {
-  display: flex;
-  flex-direction: column;
-  position: relative;
-  height: 75%;
+  flex: auto;
+  overflow: auto;
+  height: calc(100vh - 210px);
+  @include media(767px) {
+    height: calc(100vh - 240px);
+  }
 }
 
 .sidenav_bottom_hold {

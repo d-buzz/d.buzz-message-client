@@ -38,7 +38,7 @@ const Message = (props) => {
         if (!isEncryptedAll) {
             setDisplayedMsg(message || memo)
         } else {
-            setDisplayedMsg(memo)
+            setDisplayedMsg(memo || message)
         }
         // eslint-disable-next-line react-hooks/exhaustive-deps
     }, [newDecrypted, isEncryptedAll, message, memo])
@@ -125,7 +125,7 @@ const Message = (props) => {
     return (
         <Fragment>
             {(from !== loginUser) &&
-                <div className="flex items-start px-4 py-3">
+                <div className="flex items-start px-4 py-1">
                     <div className="relative">
                         <Avatar className="avatar borderWhite" src={contactPic} />
                     </div>
@@ -149,7 +149,7 @@ const Message = (props) => {
                     </div>
                 </div>}
             {(from === loginUser) &&
-                <div className="flex flex-space-between flex-middle px-4 py-3">
+                <div className="flex flex-space-between flex-middle px-4 py-1">
                     <div className="flex items-center" />
                     <div className="flex items-start flex-middle">
                         <div className="mr-4 text-align-right">

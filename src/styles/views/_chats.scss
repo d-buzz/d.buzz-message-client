@@ -153,12 +153,6 @@
     height: inherit !important;
 }
 
-.chat-bottom {
-    position: absolute;
-    bottom: 60px;
-    width: -webkit-fill-available;
-}
-
 .chat-textbox {
     padding-left: 5px;
     padding-right: 8px;
@@ -197,7 +191,6 @@
 .compose {
     position: fixed;
     bottom: 0px;
-    background: #303841;
     width: 100%;
     @media screen and (min-width: 1200px) {
         width: calc(100% - 260px);

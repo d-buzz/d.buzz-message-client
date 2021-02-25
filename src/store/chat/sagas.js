@@ -126,6 +126,8 @@ function* sendMessageRequest(payload, meta) {
             account_from,
             currency
         }
+
+        let encryptedMemo = "";
         const sendResponse = { success: false, message: "Failed to transfer", payload }
         if (is_authenticated) {
             if (!useKeychain) {
@@ -133,6 +135,7 @@ function* sendMessageRequest(payload, meta) {
                 const data = yield response.data;
                 if (data.code === 200) {
                     sendResponse.success = true
+                    encryptedMemo = data.data.memo
                 }
                 sendResponse.message = data.message
             } else {
@@ -141,6 +144,11 @@ function* sendMessageRequest(payload, meta) {
                 const response = yield call(keychainRequestTransfer, username, main_user, amount, memo, currency)
                 if (response.success) {
                     sendResponse.success = true
+                    const { result } = response
+                    const operations = result.operations[0][1]
+                    if (operations && ("memo" in operations)) {
+                        encryptedMemo = operations.memo
+                    }
                 }
                 sendResponse.message = response.message
             }
@@ -149,13 +157,14 @@ function* sendMessageRequest(payload, meta) {
             window.location.reload()
         }
 
+        const alterPayload = { ...payload, memo: encryptedMemo }
         if (sendResponse.success) {
-            yield ChatSocketServer.sendMessage(payload)
+            yield ChatSocketServer.sendMessage(alterPayload)
             if (account_from === username && chatListUsers.length > 0) {
                 const index = chatListUsers.findIndex(x => x.username === main_user)
                 if (index !== -1) {
                     const oldMessages = chatListUsers[index].messages
-                    const newMessages = [...oldMessages, payload]
+                    const newMessages = [...oldMessages, alterPayload]
                     chatListUsers[index].messages = newMessages
                     // push to top contact with latest messages
                     if (index !== 0) {
@@ -166,9 +175,9 @@ function* sendMessageRequest(payload, meta) {
                         chatListUsers = newChatist
                     }
                 }
+                yield put(setLatestChat(0, time))
+                yield put(updateChatsData(chatListUsers))
             }
-            yield put(setLatestChat(0, time))
-            yield put(updateChatsData(chatListUsers))
         }
         yield put(sendMessageSuccess(sendResponse, meta))
     } catch (err) {

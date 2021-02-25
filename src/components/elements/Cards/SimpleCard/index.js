@@ -10,7 +10,7 @@ const CardGray = withStyles((theme) => ({
 
 const SimpleCard = ({ children, title = "", subtitle = "" }) => {
     return (
-        <CardGray elevation={6} className="h-100vh">
+        <CardGray elevation={6} className="card">
             { title !== "" && (<div className="card-title">{title}</div>)}
             { subtitle !== "" && (<div className="card-subtitle mb-24">{subtitle}</div>)}
             {children}
