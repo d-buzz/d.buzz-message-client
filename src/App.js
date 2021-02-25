@@ -3,19 +3,17 @@ import React from "react";
 import { renderRoutes } from 'react-router-config'
 import { withRouter } from 'react-router'
 import routes from "./routes";
-import { AuthGuard, Init, ThemeLoader, PasswordWall } from "./components"
+import { AuthGuard, Init, ThemeLoader } from "./components"
 
 
 function App() {
   return (
     <ThemeLoader>
-      <PasswordWall>
-        <Init>
-          <AuthGuard>
-            {renderRoutes(routes)}
-          </AuthGuard>
-        </Init>
-      </PasswordWall>
+      <Init>
+        <AuthGuard>
+          {renderRoutes(routes)}
+        </AuthGuard>
+      </Init>
     </ThemeLoader>
   );
 }

@@ -3,8 +3,9 @@ import appConfig from "./../config"
 
 export const fetchApi = async (
     endPoints,
-    payload = {},
+    payload = {}, 
     methodParams = "POST",
+    customHost = null,
     errorFull = false,
     header = {
         "Content-Type": "application/json;charset=UTF-8",
@@ -12,19 +13,23 @@ export const fetchApi = async (
         "Access-Control-Allow-Headers": "X-Custom-Header",
     }
 ) => {
-    axios.defaults.baseURL = appConfig.API_HOST;
-    axios.interceptors.request.use((request) => {
-        const token = getUserToken();
-        if (token) {
-            request.headers.common.Authorization = token;
-        }
-        return request;
-    });
+    const HOST = customHost || appConfig.API_HOST;
+    axios.defaults.baseURL = HOST;
+
+    if(!customHost) {
+        axios.interceptors.request.use((request) => {
+            const token = getUserToken();
+            if (token) {
+                request.headers.common.Authorization = token;
+            }
+            return request;
+        });
+    }
 
     switch (methodParams.toUpperCase()) {
         case "GET":
             return axios
-                .get(appConfig.API_HOST + endPoints, { header })
+                .get(HOST + endPoints, { header })
                 .then(function (response) {
                     return response;
                 })

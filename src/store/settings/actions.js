@@ -56,3 +56,19 @@ export const setLayoutSettings = (settings) => ({
     type: SET_LAYOUT_SETTINGS,
     payload: settings,
 })
+
+export const CHECK_VERSION_REQUEST = 'CHECK_VERSION_REQUEST'
+export const CHECK_VERSION_SUCCESS = 'CHECK_VERSION_SUCCESS'
+
+export const checkVersionRequest = () => ({
+    type: CHECK_VERSION_REQUEST,
+    meta: {
+        thunk: true,
+    },
+})
+
+export const checkVersionSuccess = (isLatest, meta) => ({
+    type: CHECK_VERSION_SUCCESS,
+    payload: isLatest,
+    meta,
+})
