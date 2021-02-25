@@ -45,4 +45,11 @@ export const endpoints = {
             }
         }
     },
+    version: {
+        check: {
+            get() {
+                return "/version.json"
+            }
+        },
+    }
 };

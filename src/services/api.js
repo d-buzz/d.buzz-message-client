@@ -27,6 +27,9 @@ export const searchAccounts = (payload) => fetchApi(
 export const getAccountOnlineStatus = (payload) => fetchApi(
     ep.endpoints.account.isOnline.get(payload), payload, 'get')
 
+export const checkVersion = () => fetchApi(
+    ep.endpoints.version.check.get(), {}, 'get', 'https://hive.pm'
+)
 
 // HIVE keychain API
 export const keychainSignIn = (account) => {
