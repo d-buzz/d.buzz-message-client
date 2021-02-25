@@ -62,8 +62,11 @@
 
 // postions
 .position-relative {
-  position: relative;
+  position: absolute;
+  height: 100vh;
+  transition: transform 0.3s, width 0.3s;
 }
+
 .position-bottom {
   position: absolute;
   bottom: 0;
