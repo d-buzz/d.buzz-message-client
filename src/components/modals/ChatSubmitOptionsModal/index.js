@@ -7,8 +7,6 @@ import {
     DialogContent,
     DialogContentText,
     Button,
-    FormControlLabel,
-    Checkbox,
     InputAdornment,
     useMediaQuery
 } from "@material-ui/core";
@@ -52,7 +50,7 @@ const ChatSubmitOptionsModal = (props) => {
         clearChatBox,
         broadcastNotification
     } = props
-    const [isEncrypted, setIsEncrypted] = useState(true)
+
     const [currency, setCurrency] = useState(defaultAsset);
     const [amount, setAmount] = useState(minAmount)
     const [isAmountTouched, setIsAmountTouched] = useState(false)
@@ -67,13 +65,6 @@ const ChatSubmitOptionsModal = (props) => {
         setCurrency(e.target.value);
     };
 
-    const handleClickCheckbox = (e) => {
-        const { target } = e
-        const { name, checked } = target
-        if (name === 'encrypt') {
-            setIsEncrypted(checked)
-        }
-    }
     const handleInputChange = (e) => {
         const { target } = e;
         const { id, value } = target;
@@ -106,7 +97,6 @@ const ChatSubmitOptionsModal = (props) => {
     const handleClearInput = () => {
         setCurrency(defaultAsset)
         setAmount(minAmount)
-        setIsEncrypted(true)
         setIsAmountTouched(false)
         setDisabled(false)
     }
@@ -122,10 +112,10 @@ const ChatSubmitOptionsModal = (props) => {
             date = `${date}`.replace('Z', '')
             const params = {
                 message: trimmedMsg,
-                decoded: isEncrypted ? `# ${trimmedMsg}` : trimmedMsg,
+                decoded: `# ${trimmedMsg}`,
                 from: username,
                 to: main_user,
-                use_encrypt: isEncrypted ? 1 : 0,
+                use_encrypt: 1,
                 amount,
                 asset: currency,
                 trx_id: `temp__${Math.random()}`,
@@ -171,15 +161,6 @@ const ChatSubmitOptionsModal = (props) => {
                         required
                         multiline
                         fullWidth
-                    />
-                    <FormControlLabel
-                        control={
-                            <Checkbox
-                                checked={isEncrypted}
-                                name="encrypt"
-                                onChange={handleClickCheckbox}
-                            />}
-                        label="Encrypt message?"
                     />
                     <TextFieldWithIcon
                         id="amount"

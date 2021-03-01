@@ -23,7 +23,7 @@ function* getSavedThemeRequest(payload, meta) {
     let theme = { mode: 'dark' }
 
     try {
-        let saved = yield call(getItemLocalStorage, 'theme')
+        let saved = yield call(getItemLocalStorage, 'hpm_theme')
         saved = JSON.parse(saved)
         if (saved !== null) {
             theme = saved
@@ -38,7 +38,7 @@ function* setThemeRequest(payload, meta) {
     try {
         const { mode } = payload
         const theme = { mode }
-        yield call(setItemLocalStorage, 'theme', JSON.stringify(theme))
+        yield call(setItemLocalStorage, 'hpm_theme', JSON.stringify(theme))
         yield put(setThemeSuccess(theme, meta))
     } catch (error) {
         yield put(setThemeFailure(error, meta))
@@ -48,21 +48,21 @@ function* setThemeRequest(payload, meta) {
 function* checkVersionRequest(meta) {
     let remote = yield call(checkVersion);
     remote = yield remote.data;
-   
-    let  running = yield call(getItemLocalStorage, 'version');
+
+    let running = yield call(getItemLocalStorage, 'version');
     let latest = false;
 
-    if(!running) {
-      running = JSON.stringify(remote);
+    if (!running) {
+        running = JSON.stringify(remote);
     } else {
-      const { prod, dev } = JSON.parse(running);
-      const { BRANCH } = config;
-  
-      latest = (BRANCH === 'dev' && dev === remote.dev) || (BRANCH === 'prod' && prod === remote.prod);
+        const { prod, dev } = JSON.parse(running);
+        const { BRANCH } = config;
+
+        latest = (BRANCH === 'dev' && dev === remote.dev) || (BRANCH === 'prod' && prod === remote.prod);
     }
-  
-    if(!latest) {
-      yield call(setItemLocalStorage, "version", JSON.stringify(remote));
+
+    if (!latest) {
+        yield call(setItemLocalStorage, "version", JSON.stringify(remote));
     }
 
     yield put(checkVersionSuccess(latest, meta));
