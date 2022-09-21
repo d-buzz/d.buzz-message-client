@@ -1,4 +1,4 @@
-import { createMuiTheme } from "@material-ui/core";
+import { createTheme } from "@material-ui/core";
 import { forEach, merge } from "lodash";
 import themeColors from "./themeColors"
 import themeOptions from "./themeOptions"
@@ -7,7 +7,7 @@ const createThemes = () => {
     let themes = {};
 
     forEach(themeColors, (value, key) => {
-        themes[key] = createMuiTheme(merge({}, themeOptions, value));
+        themes[key] = createTheme(merge({}, themeOptions, value));
     });
     return themes;
 }

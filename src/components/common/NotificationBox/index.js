@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from "react";
 import { Snackbar, makeStyles } from "@material-ui/core";
-import { AlertTitle, Alert } from "@material-ui/lab";
 import { connect } from "react-redux";
+import { Alert, AlertTitle } from "@material-ui/lab";
 
 const useStyles = makeStyles((theme) => ({
     wrapper: {
