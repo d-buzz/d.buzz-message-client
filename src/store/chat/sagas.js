@@ -144,11 +144,12 @@ function* sendMessageRequest(payload, meta) {
                 const response = yield call(keychainRequestTransfer, username, main_user, amount.toString(), memo, currency)
                 if (response.success) {
                     sendResponse.success = true
-                    const { result } = response
-                    const operations = result.operations[0][1]
-                    if (operations && ("memo" in operations)) {
-                        encryptedMemo = operations.memo
-                    }
+                    encryptedMemo = response.data.memo
+                    // const { result } = response
+                    // const operations = result.operations[0][1]
+                    // if (operations && ("memo" in operations)) {
+                    //     encryptedMemo = operations.memo
+                    // }
                 }
                 sendResponse.message = response.message
             }
