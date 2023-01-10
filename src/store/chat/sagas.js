@@ -141,7 +141,7 @@ function* sendMessageRequest(payload, meta) {
             } else {
                 // implement keychain transfer here...
                 const memo = use_encrypt === 1 ? `# ${message}` : message
-                const response = yield call(keychainRequestTransfer, username, main_user, amount, memo, currency)
+                const response = yield call(keychainRequestTransfer, username, main_user, amount.toString(), memo, currency)
                 if (response.success) {
                     sendResponse.success = true
                     const { result } = response
