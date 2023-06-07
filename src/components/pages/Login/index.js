@@ -173,18 +173,18 @@ const Login = (props) => {
     }
   }
 
-  const handleClickCheckbox = (e) => {
-    const { target } = e
-    const { name, checked } = target
-    if (name === 'keychain') {
-      if (checked) {
-        const isCompatible = hasCompatibleKeychain() ? true : false
-        setHasKeyChain(isCompatible)
-        setPassword('')
-      }
-      setUseHiveKeychain(checked)
-    }
-  }
+//   const handleClickCheckbox = (e) => {
+//     const { target } = e
+//     const { name, checked } = target
+//     if (name === 'keychain') {
+//       if (checked) {
+//         const isCompatible = hasCompatibleKeychain() ? true : false
+//         setHasKeyChain(isCompatible)
+//         setPassword('')
+//       }
+//       setUseHiveKeychain(checked)
+//     }
+//   }
 
   const isDisabled = () => {
     return (loading || (useHiveKeychain && !hasKeyChain))
@@ -250,7 +250,6 @@ const Login = (props) => {
                     control={
                       <Checkbox
                         checked={useHiveKeychain}
-                        // onChange={handleClickCheckbox}
                         name="keychain"
                       />}
                     label="Login with Hive Keychain"
