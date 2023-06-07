@@ -9,8 +9,6 @@ import {
   Box,
   Typography,
   Link,
-  FormControlLabel,
-  Checkbox,
 } from "@material-ui/core"
 import { makeStyles } from "@material-ui/core/styles";
 
@@ -58,6 +56,7 @@ const useStyles = makeStyles((theme) => ({
     color: theme.palette.secondary.main
   },
   signinPaper: {
+    width: 400,
     paddingLeft: "1rem",
     paddingRight: "1rem"
   },
@@ -92,8 +91,12 @@ const Login = (props) => {
   const [hasKeyChain, setHasKeyChain] = useState(false)
 
   useEffect(() => {
-    const isCompatible = hasCompatibleKeychain() ? true : false
-    setHasKeyChain(isCompatible)
+    setLoading(true)
+    setTimeout(() => {
+      const isCompatible = hasCompatibleKeychain() ? true : false
+      setHasKeyChain(isCompatible)
+      setLoading(false)
+    }, 1000)
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [])
 
@@ -102,7 +105,6 @@ const Login = (props) => {
       <div style={{ height: 15, width: '100%' }}></div>
     )
   }
-
 
   const onChangeInput = (e) => {
     const { target } = e;
@@ -245,7 +247,7 @@ const Login = (props) => {
                     error={isPasswordTouched && !password}
                     helperText={isPasswordTouched && !password ? "Master password is required" : ""}
                   />}
-                {!isMobile &&
+                {/* {!isMobile &&
                   <FormControlLabel
                     control={
                       <Checkbox
@@ -255,7 +257,7 @@ const Login = (props) => {
                     label="Login with Hive Keychain"
                     className={classes.isHiveKeychain}
                   />
-                }
+                } */}
                 {useHiveKeychain && !hasKeyChain && !isMobile &&
                   <Fragment>
                     <FormSpacer />

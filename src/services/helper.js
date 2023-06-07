@@ -123,6 +123,7 @@ export const hasCompatibleKeychain = () => {
     )
 }
 
+
 export const isMemoEncrypted = (memo) => {
     return memo && memo.charAt(0) === "#"
 }
