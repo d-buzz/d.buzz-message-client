@@ -88,7 +88,7 @@ const Login = (props) => {
   const [password, setPassword] = useState("")
   const [isUsernameTouched, setIsIUsernameTouched] = useState(false)
   const [isPasswordTouched, setIsIPasswordTouched] = useState(false)
-  const [useHiveKeychain, setUseHiveKeychain] = useState(true)
+  const [useHiveKeychain] = useState(true)
   const [hasKeyChain, setHasKeyChain] = useState(false)
 
   useEffect(() => {
