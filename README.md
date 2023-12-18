@@ -1,4 +1,4 @@
-### HIVE.PM FRONTEND
+### PM FRONTEND
 Private messaging app for HIVE
 
 ### Contribution

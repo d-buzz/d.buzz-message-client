@@ -56,7 +56,7 @@ const PasswordWall = (props) => {
       {disabled && (
         <div className={classes.root} size="md">
           <Container maxWidth="sm">
-            <Typography variant="h5">Welcome to Hive.pm</Typography>
+            <Typography variant="h5">Welcome to PM</Typography>
             <Typography variant="h6">Please enter password to participate in beta testing</Typography>
             <TextField
               className={classes.field}

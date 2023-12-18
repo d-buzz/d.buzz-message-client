@@ -13,7 +13,7 @@ const NoChatSelected = (props) => {
                                 <div className="h-220 w-220 rounded elevation-z6 bg-chat flex justify-center items-center">
                                     <ChatIcon style={{ fontSize: "4rem" }} />
                                 </div>
-                                <span style={{ fontSize: "1.2rem", paddingTop: "1rem" }}>Welcome to HIVE.PM</span>
+                                <span style={{ fontSize: "1.2rem", paddingTop: "1rem" }}>Welcome to PM</span>
                                 <p>Select a contact to start messaging.</p>
                             </div>
                         </div>

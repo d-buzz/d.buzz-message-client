@@ -107,7 +107,7 @@ const SideNavLeft = (props) => {
     //         <small className="text-muted mb-0">
     //             About{" "}
     //             <Link color="inherit" href="/">
-    //                 HIVE.PM
+    //                 PM
     //             </Link>
     //         </small>
     //     )

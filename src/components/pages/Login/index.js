@@ -211,7 +211,7 @@ const Login = (props) => {
               Sign in
             </Typography>
             <Typography variant="subtitle1">
-              Sign in to continue to HivePM
+              Sign in to continue to PM
           </Typography>
           </Grid>
           <Grid item xs={12} className={classes.signinPaper}>
